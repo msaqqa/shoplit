@@ -78,8 +78,13 @@ const EditUser = ({ user }: { user: TUser }) => {
   };
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-    await updateUserById(user.id, data);
+    const updatedUser: TUser = {
+      ...user,
+      name: data.name,
+      email: data.email,
+      avatar: data.avatar,
+    };
+    await updateUserById(user.id, updatedUser);
     router.refresh();
     setOpen(false);
     toast.success("User updated successfully!");

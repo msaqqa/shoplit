@@ -17,13 +17,16 @@ export async function createProduct(data: ProductFormInputs) {
 }
 
 // app/actions/products.ts
-export async function updateProduct(id: number, data: TProductFormEdit) {
-  await prisma.product.update({
-    where: { id },
-    data,
-  });
-  revalidatePath("/admin/products");
-}
+// export async function updateProduct(id: number, data: TProductFormEdit) {
+//   await prisma.product.update({
+//     where: { id },
+//     data: {
+//       ...data,
+//       categoryId: data.categoryId !== undefined ? Number(data.categoryId) : undefined,
+//     },
+//   });
+//   revalidatePath("/admin/products");
+// }
 
 export async function deleteProduct(id: number) {
   const product = await prisma.product.findUnique({

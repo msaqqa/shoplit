@@ -1,14 +1,18 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { OrderFormInputs } from "@/types/orders";
 import { revalidatePath } from "next/cache";
 
 // create order
-export async function createOrder(data) {
+export async function createOrder(data: OrderFormInputs) {
   try {
     await prisma.order.create({
       data: {
-        ...data,
+        userId: data.userId,
+        email: data.email,
+        amount: data.amount,
+        status: data.status as any,
         products: {
           create: data.products,
         },

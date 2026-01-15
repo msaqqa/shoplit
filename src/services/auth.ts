@@ -25,7 +25,7 @@ export const signinUserClient = async (data: {
 
 export const logout = async () => {
   const res = await api.post("/auth/signout");
-  const data = await res.data;
+  const data = res.data as { message: string };
   toast.success(data.message);
 };
 

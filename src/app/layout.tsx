@@ -47,7 +47,12 @@ export default async function RootLayout({
             <SidebarProvider defaultOpen={defaultOpen}>
               <AppSidebar
                 categories={categories}
-                products={products}
+                products={products.map((product: any) => ({
+                  ...product,
+                  sizes: Array.isArray(product.sizes) ? product.sizes : [],
+                  colors: Array.isArray(product.colors) ? product.colors : [],
+                  images: Array.isArray(product.images) ? product.images : [],
+                }))}
                 users={users}
               />
               <main className="w-full">

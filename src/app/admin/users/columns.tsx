@@ -47,7 +47,7 @@ export const columns: ColumnDef<TUser>[] = [
       return (
         <div className="w-9 h-9 relative">
           <Image
-            src={user.avatar}
+            src={user.avatar ?? ""}
             alt={user.name}
             fill
             className="rounded object-cover"
@@ -124,7 +124,7 @@ export const columns: ColumnDef<TUser>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
+              onClick={() => navigator.clipboard.writeText(String(user.id))}
             >
               Copy user ID
             </DropdownMenuItem>

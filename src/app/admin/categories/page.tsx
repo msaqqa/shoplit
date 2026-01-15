@@ -9,7 +9,7 @@ async function CategoriesPage() {
       <div className="mb-8 px-4 py-2 bg-secondary rounded-md">
         <h1 className="font-semibold">All Categories</h1>
       </div>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns as any} data={data} />
     </div>
   );
 }
