@@ -54,7 +54,7 @@ export default function Page() {
   const onSubmit = async (data: PasswordFormInputs) => {
     setIsProcessing(true);
     try {
-      const res = await resetPassword({ ...data, token, email });
+      const res = (await resetPassword({ ...data, token, email }))  as { message: string; };
       toast.success(res.message);
       router.replace("/signin");
     } catch (error) {
