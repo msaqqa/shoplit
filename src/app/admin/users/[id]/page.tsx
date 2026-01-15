@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppLineChart from "@/components/admin/AppLineChart";
 import { getUserById } from "@/services/users";
 import EditUser from "@/components/admin/EditUser";
+import { TUser } from "@/types/users";
 
 const SingleUserPage = async ({
   params,
@@ -25,7 +26,6 @@ const SingleUserPage = async ({
 }) => {
   const { id } = await params;
   const user = await getUserById(Number(id));
-  console.log("id", id);
   if (!user) {
     return <div className="">User not found!</div>;
   }
@@ -163,11 +163,16 @@ const SingleUserPage = async ({
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Status:</span>
-                <span>{user.status ? "banned" : "active"}</span>
+                <span>{(user as TUser).status
+                      ? "banned"
+                      : "active"
+                    }</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground mt-4">
-              Joined on {new Date(user.createdAt).toLocaleDateString("en-US")}
+              Joined on {(user as TUser).createdAt
+                ? new Date((user as any).createdAt).toLocaleDateString("en-US")
+                : "-"}
             </p>
           </div>
         </div>

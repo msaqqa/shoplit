@@ -25,9 +25,10 @@ import React from "react";
 export const generateMetadata = async ({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) => {
-  const product = await geTProductByID(Number(params.id));
+  const { id } = await params
+  const product = await geTProductByID(Number(id));
   return {
     title: product?.name,
     describe: product?.description,
@@ -38,10 +39,10 @@ async function SingleProductPage({
   params,
   searchParams,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   searchParams?: { size?: string; color?: string };
 }) {
-  const { id } = params;
+  const { id } = await params;
   if (Number.isNaN(id)) {
     notFound();
   }
