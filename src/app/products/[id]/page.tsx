@@ -40,7 +40,7 @@ async function SingleProductPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams?: { size?: string; color?: string };
+  searchParams?: Promise<{ size?: string; color?: string }>;
 }) {
   const { id } = await params;
   if (Number.isNaN(id)) {
@@ -50,9 +50,8 @@ async function SingleProductPage({
   if (!product) {
     notFound();
   }
-  console.log("product", product);
-  const size = searchParams?.size;
-  const color = searchParams?.color;
+  const size = (await searchParams)?.size;
+  const color = (await searchParams)?.color;
   const selectedSize = String(
     size ?? (Array.isArray(product.sizes) ? product.sizes[0] : undefined)
   );
