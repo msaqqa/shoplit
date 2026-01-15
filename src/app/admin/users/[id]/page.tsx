@@ -25,7 +25,7 @@ const SingleUserPage = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  const user = await getUserById(Number(id));
+  const user = await getUserById(Number(id)) as TUser;
   if (!user) {
     return <div className="">User not found!</div>;
   }
@@ -163,16 +163,11 @@ const SingleUserPage = async ({
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Status:</span>
-                <span>{(user as TUser).status
-                      ? "banned"
-                      : "active"
-                    }</span>
+                <span>{user.status? "banned" : "active" }</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground mt-4">
-              Joined on {(user as TUser).createdAt
-                ? new Date((user as any).createdAt).toLocaleDateString("en-US")
-                : "-"}
+              Joined on {user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-US") : "-"}
             </p>
           </div>
         </div>
