@@ -4,10 +4,11 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
-    const categoryId = Number(params.id);
+    const categoryId = Number(id);
     if (!categoryId) {
       return NextResponse.json(
         { message: "category id is not found" },
