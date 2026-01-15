@@ -31,8 +31,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function AppBarChart({ orderChart }: { orderChart: TOrderChart[] }) {
-  console.log("orderChart", orderChart);
+export function AppBarChart({ orderChart }: { orderChart: TOrderChart[]}) {
   return (
     <div>
       <h1 className="text-lg font-medium mb-6">Total Revenue</h1>

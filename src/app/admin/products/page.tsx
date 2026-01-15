@@ -1,10 +1,10 @@
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { geTProducts } from "@/services/products";
+import { getProducts } from "@/services/products";
 import { getCategories } from "@/services/categories";
 
 async function ProductsPage() {
-  const data = await geTProducts();
+  const data = await getProducts();
   const categories = await getCategories();
   return (
     <div className="">

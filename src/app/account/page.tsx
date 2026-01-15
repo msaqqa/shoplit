@@ -18,15 +18,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppLineChart from "@/components/admin/AppLineChart";
 import EditUser from "@/components/admin/EditUser";
 import useUserStore from "@/stores/userStore";
-import { useEffect, useState } from "react";
+import { TUser } from "@/types/users";
 
 const AccountPage = () => {
   const { user } = useUserStore();
-  const [newUser, setNewUser] = useState({});
-
-  useEffect(() => {
-    setNewUser(user);
-  }, [user]);
 
   return (
     <div className="">
@@ -75,7 +70,7 @@ const AccountPage = () => {
                   />
                 </HoverCardTrigger>
                 <HoverCardContent>
-                  <h1 className="font-bold mb-2">{user.name}</h1>
+                  <h1 className="font-bold mb-2">{user?.name}</h1>
                   <p className="text-sm text-muted-foreground">
                     Admin users have access to all features and can manage
                     users.
@@ -134,7 +129,7 @@ const AccountPage = () => {
           <div className="bg-primary-foreground p-4 rounded-lg">
             <div className="flex items-center justify-between">
               <h1 className="text-xl font-semibold">User Information</h1>
-              <EditUser user={newUser} />
+              <EditUser user={user as TUser} />
             </div>
             <div className="space-y-4 mt-4">
               <div className="flex flex-col gap-2 mb-8">
@@ -157,15 +152,15 @@ const AccountPage = () => {
               </div> */}
               <div className="flex items-center gap-2">
                 <span className="font-bold">Role:</span>
-                <span>{String(user.role) || "user"}</span>
+                <span>{String(user?.role) || "user"}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Status:</span>
-                <span>{user.status ? "banned" : "active"}</span>
+                <span>{user?.status ? "banned" : "active"}</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground mt-4">
-              Joined on {new Date(user.createdAt).toLocaleDateString("en-US")}
+              Joined on {new Date(user?.createdAt || "").toLocaleDateString("en-US")}
             </p>
           </div>
         </div>

@@ -1,12 +1,13 @@
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { getOrders } from "@/services/orders";
-import { geTProducts } from "@/services/products";
+import { getProducts } from "@/services/products";
 import { getUsers } from "@/services/users";
+import { TProducts } from "@/types/products";
 
 async function OrdersPage() {
   const data = await getOrders({ limit: undefined });
-  const products = await geTProducts({});
+  const products = await getProducts();
   const users = await getUsers();
   return (
     <div className="">
@@ -16,7 +17,7 @@ async function OrdersPage() {
       <DataTable
         columns={columns}
         data={data}
-        products={products}
+        products={products as TProducts}
         users={users}
       />
     </div>

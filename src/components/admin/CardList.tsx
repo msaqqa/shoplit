@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { getOrders } from "@/services/orders";
-import { geTProducts } from "@/services/products";
+import { getProducts } from "@/services/products";
 import { TOrders } from "@/types/orders";
 import { TProducts } from "@/types/products";
 import Image from "next/image";
@@ -129,7 +129,7 @@ async function CardList({ title }: { title: string }) {
   let popuarProducts: TProducts = [];
   let latestTransactions: TOrders = [];
   if (title === "popularProducts") {
-    popuarProducts = await geTProducts({ params: "popularProducts" });
+    popuarProducts = (await getProducts({ params: "popularProducts" })) as TProducts;
   } else {
     latestTransactions = await getOrders({ limit: 5 });
   }

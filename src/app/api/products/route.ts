@@ -4,10 +4,9 @@ const products = [
   {
     id: 1,
     name: "Adidas CoreFit T-Shirt",
-    shortDescription:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-    description:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    category: "T-shirts", // تصنيف القمصان
+    shortDescription: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    description: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit...",
     price: 39.9,
     sizes: ["s", "m", "l", "xl", "xxl"],
     colors: ["gray", "purple", "green"],
@@ -20,10 +19,9 @@ const products = [
   {
     id: 2,
     name: "Puma Ultra Warm Zip",
-    shortDescription:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-    description:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    category: "Jackets", // تصنيف السترات (بسبب الـ Zip والتدفئة)
+    shortDescription: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    description: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit...",
     price: 59.9,
     sizes: ["s", "m", "l", "xl"],
     colors: ["gray", "green"],
@@ -32,10 +30,9 @@ const products = [
   {
     id: 3,
     name: "Nike Air Essentials Pullover",
-    shortDescription:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-    description:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    category: "Jackets", // الـ Pullover غالباً ما يصنف مع السترات أو الملابس العلوية الثقيلة
+    shortDescription: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    description: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit...",
     price: 69.9,
     sizes: ["s", "m", "l"],
     colors: ["green", "blue", "black"],
@@ -48,10 +45,9 @@ const products = [
   {
     id: 4,
     name: "Nike Dri Flex T-Shirt",
-    shortDescription:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-    description:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    category: "T-shirts",
+    shortDescription: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    description: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit...",
     price: 29.9,
     sizes: ["s", "m", "l"],
     colors: ["white", "pink"],
@@ -60,10 +56,9 @@ const products = [
   {
     id: 5,
     name: "Under Armour StormFleece",
-    shortDescription:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-    description:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    category: "Jackets", // الـ Fleece يعتبر نوع من السترات الرياضية
+    shortDescription: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    description: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit...",
     price: 49.9,
     sizes: ["s", "m", "l"],
     colors: ["red", "orange", "black"],
@@ -76,10 +71,9 @@ const products = [
   {
     id: 6,
     name: "Nike Air Max 270",
-    shortDescription:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-    description:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    category: "Shoes", // تصنيف الأحذية
+    shortDescription: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    description: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit...",
     price: 59.9,
     sizes: ["40", "42", "43", "44"],
     colors: ["gray", "white"],
@@ -87,11 +81,10 @@ const products = [
   },
   {
     id: 7,
-    name: "Nike Ultraboost Pulse ",
-    shortDescription:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-    description:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    name: "Nike Ultraboost Pulse",
+    category: "Shoes",
+    shortDescription: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    description: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit...",
     price: 69.9,
     sizes: ["40", "42", "43"],
     colors: ["gray", "pink"],
@@ -100,10 +93,9 @@ const products = [
   {
     id: 8,
     name: "Levi’s Classic Denim",
-    shortDescription:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-    description:
-      "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    category: "Jackets", // الـ Denim (الجينز) غالباً ما يكون سترة (Denim Jacket)
+    shortDescription: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
+    description: "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit...",
     price: 59.9,
     sizes: ["s", "m", "l"],
     colors: ["blue", "green"],

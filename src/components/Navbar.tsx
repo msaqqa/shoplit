@@ -41,7 +41,7 @@ function Navbar() {
       {/* Left */}
       <div className="flex items-center gap-4">
         <SearchBar />
-        {Object.keys(user).length > 0 && (
+        {user && (
           <>
             <Bell className="w-4 h-4 text-gray-600" />
             <ShoppingCartIcon />

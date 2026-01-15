@@ -25,7 +25,7 @@ function TogleUserIcon() {
     signoutUser();
   };
   console.log("user", user);
-  if (Object.keys(user).length === 0) {
+  if (!user) {
     return (
       <>
         <Link href="/signin" title="Sign in">

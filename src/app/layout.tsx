@@ -9,7 +9,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
 import AppSidebar from "@/components/admin/AppSidebar";
 import { getCategories } from "@/services/categories";
-import { geTProducts } from "@/services/products";
+import { getProducts } from "@/services/products";
 import { getUsers } from "@/services/users";
 
 const geistSans = Geist({
@@ -34,7 +34,7 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const categories = await getCategories();
-  const products = await geTProducts({});
+  const products = await getProducts();
   const users = await getUsers();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
   return (

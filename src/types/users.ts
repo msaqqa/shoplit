@@ -24,7 +24,7 @@ export type UserFormInputs = z.infer<typeof userFormSchema>;
 
 // User store
 export type TUserStoreState = {
-  user: TUser | object;
+  user: TUser | null;
   hasHydrated: boolean;
 };
 

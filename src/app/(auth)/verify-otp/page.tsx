@@ -43,7 +43,7 @@ export default function Page() {
     setIsProcessing(true);
     try {
       const res = await verifyOtp(data);
-      router.replace(`/reset-password?email=${email}&token=${res.token}`);
+      router.replace(`/reset-password?email=${email}&token=${(res as {token: string}).token}`);
     } catch (error) {
       console.log("error", error);
     } finally {

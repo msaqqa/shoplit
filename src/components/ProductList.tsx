@@ -4,7 +4,7 @@ import Categories from "./Categories";
 import Link from "next/link";
 import Filter from "./Filter";
 import ProductCard from "./ProductCard";
-import { geTProducts } from "@/services/products";
+import { getProducts } from "@/services/products";
 import { getCategories } from "@/services/categories";
 
 // TEMPORARY
@@ -125,7 +125,7 @@ async function ProductList({
   search,
   params,
 }: TProductsParams) {
-  const products = await geTProducts({ categoryId, sort, search, params });
+  const products = await getProducts({ categoryId, sort, search, params });
   console.log("products:", products);
   const categories = await getCategories();
   return (

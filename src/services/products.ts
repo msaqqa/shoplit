@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { TProductsParams } from "@/types/products";
 
-// export async function geTProducts() {
+// export async function getProducts() {
 //   try {
 //     const response = await prisma.product.findMany({
 //       include: {
@@ -14,12 +14,12 @@ import { TProductsParams } from "@/types/products";
 //   }
 // }
 
-export async function geTProducts({
+export async function getProducts({
   categoryId,
   sort,
   search,
   params,
-}: TProductsParams) {
+}: TProductsParams = {}) {
   try {
     const response = await prisma.product.findMany({
       where: {
@@ -53,7 +53,7 @@ export async function geTProducts({
   }
 }
 
-export async function geTProductsByCategory(slug: string) {
+export async function getProductsByCategory(slug: string) {
   try {
     const response = await prisma.product.findMany({
       where: {

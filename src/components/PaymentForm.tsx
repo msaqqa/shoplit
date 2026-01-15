@@ -28,7 +28,7 @@ export default function PaymentForm({
   const intentCreatedRef = useRef(false);
 
   const createPaymentIntent = async () => {
-    if (!(user as TUser)?.id || cart.length === 0) {
+    if (!(user?.id) || cart.length === 0) {
       setError("⚠️ Cannot create payment: missing user or empty cart");
       return null;
     }
@@ -41,14 +41,14 @@ export default function PaymentForm({
 
     const data = await payOrder({
       amount,
-      userId: (user as TUser).id,
+      userId: user?.id,
       products,
       email: shippingForm.email,
     }).catch((error) => {
       console.error("error", error);
       setError("⚠️ Unable to load the payment form. Please try again later.");
     });
-    setClientSecret(data.clientSecret);
+    setClientSecret((data as { clientSecret: string }).clientSecret);
   };
 
   useEffect(() => {

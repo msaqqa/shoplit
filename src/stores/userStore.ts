@@ -6,10 +6,10 @@ const useUserStore = create<TUserStoreState & TUserStoreActions>()(
   devtools(
     persist(
       (set) => ({
-        user: {},
+        user: null,
         hasHydrated: false,
         signinUser: (user) => set({ user }),
-        signoutUser: () => set({ user: {} }),
+        signoutUser: () => set({ user: null }),
       }),
       {
         name: "user-storage",
