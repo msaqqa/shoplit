@@ -31,14 +31,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function AppBarChart({ orderChart }: { orderChart: TOrderChart[]}) {
+export function AppBarChart({ orderChart }: { orderChart: TOrderChart[] }) {
   return (
     <div>
       <h1 className="text-lg font-medium mb-6">Total Revenue</h1>
       <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
         <BarChart accessibilityLayer data={orderChart}>
           {/*  CartesianGrid to add vertical grid lines, and can u remove any one as in the bottom*/}
-          .
           <CartesianGrid vertical={false} />
           <XAxis
             dataKey="month"

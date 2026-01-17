@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       throw new Error("Missing amount or userId");
     }
 
-    // ⚡ Stripe requires amount in cents
+    // Stripe requires amount in cents
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100),
       currency: "usd",

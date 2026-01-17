@@ -5,7 +5,6 @@ import useCartStore from "@/stores/cartStore";
 import useUserStore from "@/stores/userStore";
 import CheckoutForm from "./CheckoutForm";
 import { TShippingFormInputs } from "@/types/cart";
-import { TUser } from "@/types/users";
 import { payOrder } from "@/services/orders";
 import { useTheme } from "next-themes";
 
@@ -28,7 +27,7 @@ export default function PaymentForm({
   const intentCreatedRef = useRef(false);
 
   const createPaymentIntent = async () => {
-    if (!(user?.id) || cart.length === 0) {
+    if (!user?.id || cart.length === 0) {
       setError("⚠️ Cannot create payment: missing user or empty cart");
       return null;
     }

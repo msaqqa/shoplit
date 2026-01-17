@@ -1,19 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { TProductsParams } from "@/types/products";
 
-// export async function getProducts() {
-//   try {
-//     const response = await prisma.product.findMany({
-//       include: {
-//         category: true,
-//       },
-//     });
-//     return response;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
-
 export async function getProducts({
   categoryId,
   sort,

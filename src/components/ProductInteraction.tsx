@@ -1,5 +1,4 @@
 "use client";
-
 import useCartStore from "@/stores/cartStore";
 import { TProduct } from "@/types/products";
 import { Minus, Plus, ShoppingCart } from "lucide-react";

@@ -1,6 +1,4 @@
 "use client";
-
-// import { createCategory } from "@/app/actions/categories";
 import { CategoryFormInputs, categoryFormSchema } from "@/types/categoryies";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Projector } from "lucide-react";

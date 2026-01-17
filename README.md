@@ -5,6 +5,7 @@ A full-featured e-commerce platform built with Next.js, featuring a powerful adm
 ## ✨ Features
 
 ### Customer Features
+
 - 🛒 **Shopping Cart** - Add, update, and remove products
 - 🔍 **Product Search & Filtering** - Search products and filter by category
 - 👤 **User Authentication** - Secure sign up, sign in, and password reset
@@ -14,6 +15,7 @@ A full-featured e-commerce platform built with Next.js, featuring a powerful adm
 - 📱 **Responsive Design** - Works seamlessly on all devices
 
 ### Admin Features
+
 - 📊 **Dashboard** - Analytics charts and statistics
 - 🏷️ **Product Management** - Add, edit, and delete products
 - 📂 **Category Management** - Organize products by categories
@@ -27,7 +29,7 @@ A full-featured e-commerce platform built with Next.js, featuring a powerful adm
 - **Framework:** Next.js 15.4.5 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS 4
-- **Database:** Prisma ORM with SQLite
+- **Database:** Prisma ORM with postgreSQL
 - **Authentication:** JWT (jose)
 - **Payment:** Stripe
 - **Image Upload:** Cloudinary
@@ -41,18 +43,20 @@ A full-featured e-commerce platform built with Next.js, featuring a powerful adm
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm, yarn, pnpm, or bun
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/shoplit.git
    cd shoplit
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    # or
@@ -64,6 +68,7 @@ A full-featured e-commerce platform built with Next.js, featuring a powerful adm
 3. **Set up environment variables**
 
    Create a `.env` file in the root directory:
+
    ```env
    # Database
    DATABASE_URL="file:./dev.db"
@@ -87,6 +92,7 @@ A full-featured e-commerce platform built with Next.js, featuring a powerful adm
    ```
 
 4. **Set up the database**
+
    ```bash
    # Generate Prisma Client
    npx prisma generate
@@ -99,6 +105,7 @@ A full-featured e-commerce platform built with Next.js, featuring a powerful adm
    ```
 
 5. **Run the development server**
+
    ```bash
    npm run dev
    # or
@@ -153,6 +160,7 @@ The application uses JWT-based authentication with secure password hashing using
 ## 💳 Payment Integration
 
 Stripe is integrated for secure payment processing:
+
 - Stripe Checkout for payment
 - Webhook handling for order confirmation
 - Order status tracking (success/failed)
@@ -169,6 +177,7 @@ Stripe is integrated for secure payment processing:
 ## 🎨 UI Components
 
 The project uses [shadcn/ui](https://ui.shadcn.com/) components built on Radix UI:
+
 - Responsive design
 - Dark mode support
 - Accessible components
@@ -198,7 +207,7 @@ This project is open source and available under the MIT License.
 
 ## 👨‍💻 Author
 
-Built with ❤️ using Next.js
+Built with Mahmoud Alsaqqa using Next.js
 
 ---
 

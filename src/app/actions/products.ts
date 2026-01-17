@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { ProductFormInputs, TProductFormEdit } from "@/types/products";
+import { ProductFormInputs } from "@/types/products";
 import { revalidatePath } from "next/cache";
 import { deleteImageFromCloudinary } from "./delete-image";
 

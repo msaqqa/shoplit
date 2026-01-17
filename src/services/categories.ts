@@ -2,15 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { api } from "./api";
 import { CategoryFormInputs } from "@/types/categoryies";
 
-// const BASE_URL = process.env.API_BASE_URL;
-
-// export async function getCategories() {
-//   const res = await fetch(`${BASE_URL}/api/categories`, {
-//     cache: "no-store",
-//   });
-//   return res.json();
-// }
-
 export async function getCategories() {
   try {
     const response = await prisma.category.findMany({
