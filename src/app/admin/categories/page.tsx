@@ -12,7 +12,7 @@ async function CategoriesPage() {
         <h1 className="font-semibold">All Categories</h1>
       </div>
       <DataTable
-        columns={columns as any}
+        columns={columns}
         data={categories as { id: number }[]}
       />
     </div>

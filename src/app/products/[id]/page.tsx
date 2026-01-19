@@ -1,8 +1,7 @@
 import ProductInteraction from "@/components/ProductInteraction";
-import { geTProductByID } from "@/services/products";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import React from "react";
+import { geTProductByID } from "@/app/actions/products";
 
 // TEMPORARY
 // const product: TProduct = {
@@ -27,7 +26,7 @@ export const generateMetadata = async ({
 }: {
   params: Promise<{ id: string }>;
 }) => {
-  const { id } = await params
+  const { id } = await params;
   const product = await geTProductByID(Number(id));
   return {
     title: product?.name,
@@ -53,10 +52,10 @@ async function SingleProductPage({
   const size = (await searchParams)?.size;
   const color = (await searchParams)?.color;
   const selectedSize = String(
-    size ?? (Array.isArray(product.sizes) ? product.sizes[0] : undefined)
+    size ?? (Array.isArray(product.sizes) ? product.sizes[0] : undefined),
   );
   const selectedColor = String(
-    color ?? (Array.isArray(product.colors) ? product.colors[0] : undefined)
+    color ?? (Array.isArray(product.colors) ? product.colors[0] : undefined),
   );
   const imageSrc =
     selectedColor && product.images
