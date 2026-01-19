@@ -29,15 +29,10 @@ import { deleteImageFromCloudinary } from "@/app/actions/delete-image";
 import { SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 import { toast } from "react-toastify";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getCategories } from "@/services/categories";
 
-function AddProduct({
-  categories,
-  onSuccess,
-}: {
-  categories: TCategories;
-  onSuccess: () => void;
-}) {
+function AddProduct({ onSuccess }: { onSuccess: () => void }) {
   const colors = [
     "blue",
     "green",
@@ -51,7 +46,6 @@ function AddProduct({
     "black",
     "white",
   ] as const;
-
   const sizes = [
     "xs",
     "s",
@@ -75,7 +69,19 @@ function AddProduct({
     "47",
     "48",
   ] as const;
+
+  const [categories, setCategories] = useState<TCategories>([]);
   const [isDesabled, setIsDisabled] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await getCategories();
+      const categoriesData = (data as { data: TCategories }).data || [];
+      setCategories(categoriesData);
+    };
+    loadData();
+  }, []);
+
   const form = useForm<ProductFormInputs>({
     resolver: zodResolver(productFormSchema),
   });
@@ -219,7 +225,7 @@ function AddProduct({
                                 field.onChange([...currentValues, size]);
                               } else {
                                 field.onChange(
-                                  currentValues.filter((v) => v !== size)
+                                  currentValues.filter((v) => v !== size),
                                 );
                               }
                             }}
@@ -258,7 +264,7 @@ function AddProduct({
                                   field.onChange([...currentValues, color]);
                                 } else {
                                   field.onChange(
-                                    currentValues.filter((v) => v !== color)
+                                    currentValues.filter((v) => v !== color),
                                   );
                                 }
                                 // كمان نحذف الصورة المرتبطة بهذا اللون

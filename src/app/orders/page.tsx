@@ -1,4 +1,4 @@
-import { getOrders } from "@/services/orders";
+import { getOrders } from "@/app/actions/orders";
 import { TOrder } from "@/types/orders";
 
 const OrdersPage = async () => {

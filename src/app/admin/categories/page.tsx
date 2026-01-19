@@ -1,15 +1,20 @@
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { getCategories } from "@/services/categories";
+import { TCategories } from "@/types/categoryies";
 
 async function CategoriesPage() {
   const data = await getCategories();
+  const categories = (data as { data: TCategories }).data || [];
   return (
     <div className="">
       <div className="mb-8 px-4 py-2 bg-secondary rounded-md">
         <h1 className="font-semibold">All Categories</h1>
       </div>
-      <DataTable columns={columns as any} data={data} />
+      <DataTable
+        columns={columns as any}
+        data={categories as { id: number }[]}
+      />
     </div>
   );
 }

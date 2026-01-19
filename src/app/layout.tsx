@@ -8,9 +8,6 @@ import ThemeProvider from "@/providers/ThemeProdider";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
 import AppSidebar from "@/components/admin/AppSidebar";
-import { getCategories } from "@/services/categories";
-import { getProducts } from "@/services/products";
-import { getUsers } from "@/services/users";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,10 +30,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const categories = await getCategories();
-  const products = await getProducts();
-  const users = await getUsers();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+
   return (
     <html lang="en">
       <body
@@ -45,16 +40,7 @@ export default async function RootLayout({
         <div className="mx-auto py-4 px-0 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-7xl">
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <SidebarProvider defaultOpen={defaultOpen}>
-              <AppSidebar
-                categories={categories}
-                products={products.map((product: any) => ({
-                  ...product,
-                  sizes: Array.isArray(product.sizes) ? product.sizes : [],
-                  colors: Array.isArray(product.colors) ? product.colors : [],
-                  images: Array.isArray(product.images) ? product.images : [],
-                }))}
-                users={users}
-              />
+              <AppSidebar />
               <main className="w-full">
                 <Navbar />
                 {children}

@@ -24,22 +24,16 @@ import ConfirmDeleteDialog from "@/components/common/confirm-delete-dialog";
 import { deleteOrder } from "@/app/actions/orders";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
-import { TUsers } from "@/types/users";
-import { TProducts } from "@/types/products";
 import AddOrder from "@/components/admin/AddOrder";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  products: TProducts;
-  users: TUsers;
 }
 
 export function DataTable<TData extends { id: number }, TValue>({
   columns,
   data,
-  products,
-  users,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -71,11 +65,7 @@ export function DataTable<TData extends { id: number }, TValue>({
               </SidebarMenuButton>
             </SheetTrigger>
             <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-              <AddOrder
-                onSuccess={() => setOpen(false)}
-                products={products}
-                users={users}
-              />
+              <AddOrder onSuccess={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
           {Object.keys(rowSelection).length > 0 && (

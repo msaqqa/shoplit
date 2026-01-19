@@ -4,8 +4,9 @@ import Categories from "./Categories";
 import Link from "next/link";
 import Filter from "./Filter";
 import ProductCard from "./ProductCard";
-import { getProducts } from "@/services/products";
+import { getProducts } from "@/app/actions/products";
 import { getCategories } from "@/services/categories";
+import { TCategories } from "@/types/categoryies";
 
 // TEMPORARY
 // const products: TProducts = [
@@ -126,8 +127,8 @@ async function ProductList({
   params,
 }: TProductsParams) {
   const products = await getProducts({ categoryId, sort, search, params });
-  console.log("products:", products);
-  const categories = await getCategories();
+  const data = await getCategories();
+  const categories = (data as { data: TCategories }).data || [];
   return (
     <div className="w-full">
       <Categories categories={categories} />

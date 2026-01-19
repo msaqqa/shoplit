@@ -23,20 +23,17 @@ import { Plus, Trash2 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 import AddProduct from "@/components/admin/AddProduct";
-import { TCategories } from "@/types/categoryies";
 import ConfirmDeleteDialog from "@/components/common/confirm-delete-dialog";
 import { deleteProduct } from "@/app/actions/products";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  categories: TCategories;
 }
 
 export function DataTable<TData extends { id: number }, TValue>({
   columns,
   data,
-  categories,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -68,10 +65,7 @@ export function DataTable<TData extends { id: number }, TValue>({
               </SidebarMenuButton>
             </SheetTrigger>
             <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-              <AddProduct
-                categories={categories}
-                onSuccess={() => setOpen(false)}
-              />
+              <AddProduct onSuccess={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
           {Object.keys(rowSelection).length > 0 && (

@@ -7,25 +7,25 @@ export const signupUserClient = async (data: {
   password: string;
   avatar?: string;
 }) => {
-  const res = await api.post("/auth/signup", data, {
+  const response = await api.post("/auth/signup", data, {
     showNotification: true,
   });
-  return res.data;
+  return response.data;
 };
 
 export const signinUserClient = async (data: {
   email: string;
   password: string;
 }) => {
-  const res = await api.post("/auth/signin", data, {
+  const response = await api.post("/auth/signin", data, {
     showNotification: true,
   });
-  return res.data;
+  return response.data;
 };
 
 export const logout = async () => {
-  const res = await api.post("/auth/signout");
-  const data = res.data as { message: string };
+  const response = await api.post("/auth/signout");
+  const data = response.data as { message: string };
   toast.success(data.message);
 };
 

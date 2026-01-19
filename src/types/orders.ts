@@ -38,7 +38,7 @@ export const orderFormSchema = z.object({
   userId: z.number(),
   email: z.email().min(1, "Email is required!"),
   amount: z.number().min(1, "Amount must be at least 1"),
-  status: z.enum(["pending", "processing", "success", "failed"]),
+  status: z.enum(["success", "failed"]),
   products: z.array(productSchema).min(1, "At least 1 product is required"),
 });
 

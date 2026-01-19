@@ -2,6 +2,7 @@
 import useCartStore from "@/stores/cartStore";
 import { TProduct } from "@/types/products";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -118,9 +119,14 @@ const ProductInteraction = ({
         <Plus className="w-4 h-4" />
         Add to Cart
       </button>
-      <button className="ring-1 ring-gray-400 shadow-lg text-gray-800 px-4 py-2 rounded-md flex items-center justify-center cursor-pointer gap-2 text-sm font-medium">
-        <ShoppingCart className="w-4 h-4" />
-        Buy this Item
+      <button onClick={handleAddToCart}>
+        <Link
+          href="/cart"
+          className="ring-1 ring-gray-400 shadow-lg text-gray-800 px-4 py-2 rounded-md flex items-center justify-center cursor-pointer gap-2 text-sm font-medium"
+        >
+          <ShoppingCart className="w-4 h-4" />
+          Buy this Item
+        </Link>
       </button>
     </div>
   );

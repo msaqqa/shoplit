@@ -5,7 +5,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -30,16 +30,29 @@ import { toast } from "react-toastify";
 import { TProducts } from "@/types/products";
 import { TUsers } from "@/types/users";
 import { OrderFormInputs, orderFormSchema } from "@/types/orders";
+import { getUsers } from "@/services/users";
+import { getProducts } from "@/app/actions/products";
 
-const AddOrder = ({
-  onSuccess,
-  products: dataProducts,
-  users,
-}: {
-  onSuccess: () => void;
-  products: TProducts;
-  users: TUsers;
-}) => {
+const AddOrder = ({ onSuccess }: { onSuccess: () => void }) => {
+  const [dataProducts, setProducts] = useState<TProducts>([]);
+  const [users, setUsers] = useState<TUsers>([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const productsData = await getProducts();
+      const fixedProductsData = productsData.map((product) => ({
+        ...product,
+        sizes: product.sizes as string[],
+        colors: product.colors as string[],
+        images: product.images as Record<string, string>,
+      }));
+      setProducts(fixedProductsData);
+      const usersData = await getUsers();
+      setUsers(usersData);
+    };
+    loadData();
+  }, []);
+
   const form = useForm<OrderFormInputs>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
@@ -63,6 +76,7 @@ const AddOrder = ({
   }, [dataProducts, form, fields]);
 
   const products = form.watch("products");
+
   useEffect(() => {
     const total = products.reduce((acc, p) => acc + p.quantity * p.price, 0);
     form.setValue("amount", total);

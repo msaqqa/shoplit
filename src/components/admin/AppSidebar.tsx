@@ -39,9 +39,6 @@ import AddProduct from "./AddProduct";
 import AddCategory from "./AddCategory";
 import useUserStore from "@/stores/userStore";
 import { useState } from "react";
-import { TCategories } from "@/types/categoryies";
-import { TProducts } from "@/types/products";
-import { TUsers } from "@/types/users";
 import { logout } from "@/services/auth";
 import { useRouter } from "next/navigation";
 import AddUser from "./AddUser";
@@ -70,15 +67,7 @@ const items = [
   },
 ];
 
-function AppSidebar({
-  categories,
-  products,
-  users,
-}: {
-  categories: TCategories;
-  products: TProducts;
-  users: TUsers;
-}) {
+function AppSidebar() {
   const router = useRouter();
   const { user, signoutUser } = useUserStore();
   const [openCategory, setOpenCategory] = useState(false);
@@ -182,10 +171,7 @@ function AppSidebar({
                         </SidebarMenuButton>
                       </SheetTrigger>
                       <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                        <AddProduct
-                          categories={categories}
-                          onSuccess={() => setOpenProduc(false)}
-                        />
+                        <AddProduct onSuccess={() => setOpenProduc(false)} />
                       </SheetContent>
                     </Sheet>
                   </SidebarMenuButton>
@@ -247,11 +233,7 @@ function AppSidebar({
                         </SidebarMenuButton>
                       </SheetTrigger>
                       <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                        <AddOrder
-                          onSuccess={() => setOpenOrder(false)}
-                          products={products}
-                          users={users}
-                        />
+                        <AddOrder onSuccess={() => setOpenOrder(false)} />
                       </SheetContent>
                     </Sheet>
                   </SidebarMenuButton>

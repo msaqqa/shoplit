@@ -24,7 +24,6 @@ function TogleUserIcon() {
     router.push("/signin");
     signoutUser();
   };
-  console.log("user", user);
   if (!user) {
     return (
       <>

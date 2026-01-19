@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { handleApiError } from "./error-handler";
+import { handleApiError } from "../lib/error-handler";
 
 // Extend AxiosRequestConfig to allow showNotification
 export interface CustomAxiosRequestConfig<T = unknown>

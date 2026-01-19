@@ -1,4 +1,5 @@
 "use server";
+import { actionWrapper } from "@/lib/action-wrapper";
 import cloudinary from "cloudinary";
 
 cloudinary.v2.config({
@@ -8,7 +9,7 @@ cloudinary.v2.config({
 });
 
 export async function deleteImageFromCloudinary(url: string) {
-  try {
+  return actionWrapper(async () => {
     const parts = url.split("/upload/")[1];
     const publicId = parts.includes("/")
       ? parts.split("/").slice(1).join("/").split(".")[0]
@@ -16,7 +17,5 @@ export async function deleteImageFromCloudinary(url: string) {
     const result = await cloudinary.v2.uploader.destroy(publicId);
     console.log("result", result);
     return result;
-  } catch (error) {
-    console.log("error", error);
-  }
+  });
 }
