@@ -1,9 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { handleApiError } from "../lib/error-handler";
+import { handleApiError } from "../lib/error/api-error-handler";
 
 // Extend AxiosRequestConfig to allow showNotification
-export interface CustomAxiosRequestConfig<T = unknown>
-  extends AxiosRequestConfig<T> {
+export interface CustomAxiosRequestConfig<
+  T = unknown,
+> extends AxiosRequestConfig<T> {
   showNotification?: boolean;
 }
 
@@ -11,21 +12,21 @@ export interface CustomAxiosRequestConfig<T = unknown>
 interface CustomAxiosInstance extends AxiosInstance {
   get<T, R = AxiosResponse<T>>(
     url: string,
-    config?: CustomAxiosRequestConfig
+    config?: CustomAxiosRequestConfig,
   ): Promise<R>;
   post<T, R = AxiosResponse<T>>(
     url: string,
     data?: unknown,
-    config?: CustomAxiosRequestConfig
+    config?: CustomAxiosRequestConfig,
   ): Promise<R>;
   put<T, R = AxiosResponse<T>>(
     url: string,
     data?: unknown,
-    config?: CustomAxiosRequestConfig
+    config?: CustomAxiosRequestConfig,
   ): Promise<R>;
   delete<T, R = AxiosResponse<T>>(
     url: string,
-    config?: CustomAxiosRequestConfig
+    config?: CustomAxiosRequestConfig,
   ): Promise<R>;
 }
 
@@ -57,7 +58,7 @@ const createAxiosInstance = (baseURL: string): CustomAxiosInstance => {
     },
     (error) => {
       return Promise.reject(error);
-    }
+    },
   );
 
   // response interceptor
@@ -67,12 +68,12 @@ const createAxiosInstance = (baseURL: string): CustomAxiosInstance => {
       const showNotification = error.config.showNotification !== false;
       handleApiError(error, { showNotification });
       return Promise.reject(error);
-    }
+    },
   );
 
   return instance;
 };
 
 export const api = createAxiosInstance(
-  `${process.env.NEXT_PUBLIC_API_BASE_URL}/api`
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}/api`,
 );

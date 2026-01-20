@@ -34,18 +34,18 @@ export async function getProducts({
         sort === "newest"
           ? { id: "desc" }
           : sort === "oldest"
-          ? { id: "asc" }
-          : sort === "asc"
-          ? { price: "asc" }
-          : sort === "desc"
-          ? { price: "desc" }
-          : undefined,
+            ? { id: "asc" }
+            : sort === "asc"
+              ? { price: "asc" }
+              : sort === "desc"
+                ? { price: "desc" }
+                : undefined,
       take:
         params === "homePage"
           ? 8
           : params === "popularProducts"
-          ? 5
-          : undefined,
+            ? 5
+            : undefined,
       include: {
         category: true,
       },

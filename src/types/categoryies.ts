@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export type TCategory = {
-  id: number | string;
+  id: number;
   name: string;
   icon: string;
   slug: string;

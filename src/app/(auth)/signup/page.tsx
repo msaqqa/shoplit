@@ -18,6 +18,8 @@ import { useForm } from "react-hook-form";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "react-toastify";
 import { signupUserClient } from "@/services/auth";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function Page() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -25,8 +27,32 @@ export default function Page() {
     useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const form = useForm();
-  const onSubmit = async (data) => {
+  const formSchema = z
+    .object({
+      name: z.string().min(1, { message: "User name is required!" }),
+      email: z.email().min(1, "Email is required!"),
+      password: z
+        .string()
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/,
+          "Password must contains uppercase, lowercase and special character",
+        ),
+      confirmPassword: z.string(),
+      accept: z.boolean(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords do not match.",
+      path: ["confirmPassword"],
+    });
+
+  type SignupFormInputs = z.infer<typeof formSchema>;
+
+  const form = useForm<SignupFormInputs>({
+    resolver: zodResolver(formSchema),
+    mode: "onBlur",
+  });
+
+  const onSubmit = async (data: SignupFormInputs) => {
     console.log("data", data);
     setIsProcessing(true);
     try {
@@ -127,7 +153,6 @@ export default function Page() {
                   <Button
                     type="button"
                     variant="ghost"
-                    mode="icon"
                     size="sm"
                     onClick={() => setPasswordVisible(!passwordVisible)}
                     className="absolute end-0 top-1/2 -translate-y-1/2 h-7 w-7 me-1.5 bg-transparent!"
@@ -149,7 +174,7 @@ export default function Page() {
 
           <FormField
             control={form.control}
-            name="passwordConfirmation"
+            name="confirmPassword"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Confirm password</FormLabel>
@@ -163,11 +188,10 @@ export default function Page() {
                   <Button
                     type="button"
                     variant="ghost"
-                    mode="icon"
                     size="sm"
                     onClick={() =>
                       setPasswordConfirmationVisible(
-                        !passwordConfirmationVisible
+                        !passwordConfirmationVisible,
                       )
                     }
                     className="absolute end-0 top-1/2 -translate-y-1/2 h-7 w-7 me-1.5 bg-transparent!"

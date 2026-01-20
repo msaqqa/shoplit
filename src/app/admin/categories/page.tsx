@@ -5,16 +5,14 @@ import { TCategories } from "@/types/categoryies";
 
 async function CategoriesPage() {
   const data = await getCategories();
-  const categories = (data as { data: TCategories }).data || [];
+  const categories: TCategories = (data as { data: TCategories }).data || [];
+
   return (
     <div className="">
       <div className="mb-8 px-4 py-2 bg-secondary rounded-md">
         <h1 className="font-semibold">All Categories</h1>
       </div>
-      <DataTable
-        columns={columns as any}
-        data={categories as { id: number }[]}
-      />
+      <DataTable columns={columns as never} data={categories} />
     </div>
   );
 }

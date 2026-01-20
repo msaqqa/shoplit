@@ -8,6 +8,6 @@ export async function GET() {
   } catch (error: unknown) {
     const message =
       error instanceof Error ? error.message : "An error occurred";
-    return NextResponse.json({ message }, { status: 401 });
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

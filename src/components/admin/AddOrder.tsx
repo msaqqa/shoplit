@@ -30,8 +30,8 @@ import { toast } from "react-toastify";
 import { TProducts } from "@/types/products";
 import { TUsers } from "@/types/users";
 import { OrderFormInputs, orderFormSchema } from "@/types/orders";
-import { getUsers } from "@/services/users";
 import { getProducts } from "@/app/actions/products";
+import { getUsers } from "@/app/actions/users";
 
 const AddOrder = ({ onSuccess }: { onSuccess: () => void }) => {
   const [dataProducts, setProducts] = useState<TProducts>([]);
@@ -58,7 +58,7 @@ const AddOrder = ({ onSuccess }: { onSuccess: () => void }) => {
     defaultValues: {
       email: "",
       amount: 0,
-      status: "pending",
+      status: "success",
       products: [{ name: "", quantity: 1, price: 0 }],
     },
   });
@@ -221,12 +221,12 @@ const AddOrder = ({ onSuccess }: { onSuccess: () => void }) => {
                               onValueChange={(val) => {
                                 field.onChange(val);
                                 const selected = dataProducts.find(
-                                  (p) => p.name === val
+                                  (p) => p.name === val,
                                 );
                                 if (selected) {
                                   form.setValue(
                                     `products.${index}.price`,
-                                    selected.price
+                                    selected.price,
                                   );
                                 }
                               }}
@@ -267,12 +267,12 @@ const AddOrder = ({ onSuccess }: { onSuccess: () => void }) => {
                                   form.getValues("products");
                                 const updatedProducts = currenTProducts.map(
                                   (p, i) =>
-                                    i === index ? { ...p, quantity: qty } : p
+                                    i === index ? { ...p, quantity: qty } : p,
                                 );
                                 form.setValue("products", updatedProducts);
                                 const total = updatedProducts.reduce(
                                   (acc, p) => acc + p.quantity * p.price,
-                                  0
+                                  0,
                                 );
                                 form.setValue("amount", total);
                               }}

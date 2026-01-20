@@ -26,7 +26,7 @@ import ConfirmDeleteDialog from "@/components/common/confirm-delete-dialog";
 import { deleteCategory } from "@/services/categories";
 import { useRouter } from "next/navigation";
 
-interface DataTableProps<TData extends { id: number }, TValue> {
+interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
@@ -83,7 +83,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                   .getSelectedRowModel()
                   .rows.map((row) => row.original.id);
                 await Promise.all(
-                  selectedCategoryIds.map((id) => deleteCategory(id))
+                  selectedCategoryIds.map((id) => deleteCategory(id)),
                 ).finally(() => {
                   setRowSelection({});
                   router.refresh();
@@ -103,7 +103,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -122,7 +122,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

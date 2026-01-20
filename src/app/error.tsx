@@ -5,7 +5,7 @@ import {
   ERROR_CODES,
   handleApiError,
   DEFAULT_MESSAGES,
-} from "@/lib/error-handler";
+} from "@/lib/error/api-error-handler";
 
 export default function Error({
   error,
@@ -59,12 +59,9 @@ export default function Error({
     displayStatus = isNetwork ? "OFFLINE" : "CLIENT_ERROR";
   }
 
-  // --- نهاية الفرز المنطقي ---
-
   return (
     <div className="flex flex-col items-center justify-center min-h-[75vh] px-4 bg-white dark:bg-[#0a0a0a]">
       <div className="bg-white dark:bg-[#121212] p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-zinc-800 max-w-md w-full text-center">
-        {/* أيقونة الحالة */}
         <div
           className={`mx-auto flex items-center justify-center h-20 w-20 rounded-full mb-6 ${
             isNetwork
@@ -79,22 +76,18 @@ export default function Error({
           )}
         </div>
 
-        {/* عنوان الخطأ */}
         <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-2 tracking-tight">
           {isNetwork ? "Connection Lost" : "Something went wrong"}
         </h2>
 
-        {/* رسالة الخطأ الوصفية */}
         <p className="text-zinc-500 dark:text-zinc-400 mb-8 text-sm leading-relaxed px-2">
           {displayMessage}
         </p>
 
-        {/* تفاصيل تقنية (Badge) */}
         <div className="inline-block px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/50 text-zinc-400 dark:text-zinc-500 text-[10px] font-mono mb-8 border border-zinc-200 dark:border-zinc-700/30 uppercase tracking-widest">
           Code: {displayStatus} | ID: {error.digest?.substring(0, 8) || "Local"}
         </div>
 
-        {/* أزرار التحكم */}
         <div className="grid grid-cols-2 gap-4">
           <button
             onClick={() => reset()}
@@ -112,7 +105,6 @@ export default function Error({
         </div>
       </div>
 
-      {/* تذييل الصفحة السري */}
       <p className="mt-8 text-zinc-400 dark:text-zinc-600 text-[11px] uppercase tracking-[0.2em]">
         System Failure Protocol Activated
       </p>

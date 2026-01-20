@@ -15,9 +15,9 @@ import { Progress } from "@/components/ui/progress";
 import { BadgeCheck, Candy, Citrus, Shield } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppLineChart from "@/components/admin/AppLineChart";
-import { getUserById } from "@/services/users";
-import EditUser from "@/components/admin/EditUser";
 import { TUser } from "@/types/users";
+import { getUserById } from "@/app/actions/users";
+import AddUser from "@/components/admin/AddUser";
 
 const SingleUserPage = async ({
   params,
@@ -25,7 +25,7 @@ const SingleUserPage = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  const user = await getUserById(Number(id)) as TUser;
+  const user = (await getUserById(Number(id))) as TUser;
   if (!user) {
     return <div className="">User not found!</div>;
   }
@@ -136,7 +136,7 @@ const SingleUserPage = async ({
           <div className="bg-primary-foreground p-4 rounded-lg">
             <div className="flex items-center justify-between">
               <h1 className="text-xl font-semibold">User Information</h1>
-              <EditUser user={user} />
+              <AddUser user={user} tableBtn={true} />
             </div>
             <div className="space-y-4 mt-4">
               <div className="flex flex-col gap-2 mb-8">
@@ -163,11 +163,14 @@ const SingleUserPage = async ({
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Status:</span>
-                <span>{user.status? "banned" : "active" }</span>
+                <span>{user.status ? "banned" : "active"}</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground mt-4">
-              Joined on {user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-US") : "-"}
+              Joined on{" "}
+              {user.createdAt
+                ? new Date(user.createdAt).toLocaleDateString("en-US")
+                : "-"}
             </p>
           </div>
         </div>

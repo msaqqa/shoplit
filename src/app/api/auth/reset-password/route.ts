@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth/jwt";
 import { hashPassword } from "@/lib/auth/password";
-import { ApiError } from "@/lib/api-error";
+import { RouteError } from "@/lib/error/route-error-handler";
 
 export async function POST(req: Request) {
   const { email, token, newPassword } = await req.json();
@@ -17,10 +17,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: "Password updated successfully" });
   } catch (error: unknown) {
-    if (error instanceof ApiError) {
+    if (error instanceof RouteError) {
       return NextResponse.json(
         { message: error.message },
-        { status: error.status }
+        { status: error.status },
       );
     }
     const message =

@@ -27,14 +27,13 @@ export default function ForgetPasswordPage() {
     email: z.email({ message: "Please enter a valid email address." }),
   });
 
-  const form = useForm({
+  type ForgetPasswordFormInputs = z.infer<typeof formSchema>;
+
+  const form = useForm<ForgetPasswordFormInputs>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-    },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: ForgetPasswordFormInputs) => {
     setIsProcessing(true);
     try {
       await forgetPassword(data);

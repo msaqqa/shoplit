@@ -1,22 +1,21 @@
 import { NextResponse } from "next/server";
 import { signToken } from "@/lib/auth/jwt";
 import { loginUser } from "@/lib/server/auth";
+import { RouteError } from "@/lib/error/route-error-handler";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const user = await loginUser(body);
 
-    // .catch((error) => {
-    //   return NextResponse.json({ error }, { status: 401 });
-    // });
+    if (!user) throw new RouteError("Invalid credentials", 404);
 
-    if (!user) {
-      return NextResponse.json(
-        { message: "Invalid credentials" },
-        { status: 401 }
-      );
-    }
+    // if (!user) {
+    //   return NextResponse.json(
+    //     { message: "Invalid credentials" },
+    //     { status: 401 }
+    //   );
+    // }
 
     // create token
     const token = await signToken({ id: user.id, role: user.role });
@@ -40,8 +39,14 @@ export async function POST(req: Request) {
     });
     return response;
   } catch (error: unknown) {
+    if (error instanceof RouteError) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: error.status },
+      );
+    }
     const message =
-      error instanceof Error ? error.message : "An error occurred";
-    return NextResponse.json({ message }, { status: 401 });
+      error instanceof Error ? error.message : "Internal server error";
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

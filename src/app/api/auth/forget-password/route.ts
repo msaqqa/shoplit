@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ApiError } from "@/lib/api-error";
+import { RouteError } from "@/lib/error/route-error-handler";
 import { NextResponse } from "next/server";
 import { generateOTP, hashOTP } from "@/lib/auth/otp";
 import { sendEmailOTP } from "@/lib/email/send-email-otp";
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   try {
     const { email } = await req.json();
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) throw new ApiError("This email is not registered", 404);
+    if (!user) throw new RouteError("This email is not registered", 404);
 
     // 1. create OTP
     const otp = generateOTP();
@@ -25,10 +25,10 @@ export async function POST(req: Request) {
     // create response
     return NextResponse.json({ message: "OTP sent to email" });
   } catch (error: unknown) {
-    if (error instanceof ApiError) {
+    if (error instanceof RouteError) {
       return NextResponse.json(
         { message: error.message },
-        { status: error.status }
+        { status: error.status },
       );
     }
     const message =

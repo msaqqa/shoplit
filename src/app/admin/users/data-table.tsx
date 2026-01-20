@@ -18,9 +18,7 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import DataTablePagination from "@/components/admin/DataTablePagination";
-import { Plus, Trash2 } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { SidebarMenuButton } from "@/components/ui/sidebar";
+import { Trash2 } from "lucide-react";
 import AddUser from "@/components/admin/AddUser";
 import ConfirmDeleteDialog from "@/components/common/confirm-delete-dialog";
 import { deleteUser } from "@/app/actions/users";
@@ -36,7 +34,6 @@ export function DataTable<TData extends { id: number }, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [open, setOpen] = useState(false);
 
   const table = useReactTable({
     data,
@@ -56,17 +53,7 @@ export function DataTable<TData extends { id: number }, TValue>({
     <div>
       <div className="overflow-hidden rounded-md border">
         <div className="flex justify-end gap-2 p-4">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <SidebarMenuButton className="w-auto flex items-center gap-2 bg-blue-500 text-white px-2 py-1 text-sm rounded-md cursor-pointer">
-                <Plus />
-                <span>Add User</span>
-              </SidebarMenuButton>
-            </SheetTrigger>
-            <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-              <AddUser onSuccess={() => setOpen(false)} />
-            </SheetContent>
-          </Sheet>
+          <AddUser tableBtn={true} />
           {Object.keys(rowSelection).length > 0 && (
             <ConfirmDeleteDialog
               trigger={
@@ -81,7 +68,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                   .getSelectedRowModel()
                   .rows.map((row) => row?.original.id);
                 await Promise.all(
-                  selectedUserIds.map((id) => deleteUser(id))
+                  selectedUserIds.map((id) => deleteUser(id)),
                 ).finally(() => setRowSelection({}));
               }}
             />
@@ -98,7 +85,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -117,7 +104,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

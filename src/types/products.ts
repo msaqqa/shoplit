@@ -2,7 +2,7 @@ import { z } from "zod";
 import { TCategory } from "./categoryies";
 
 export type TProduct = {
-  id: number | string;
+  id: number;
   name: string;
   shortDescription: string;
   description: string;

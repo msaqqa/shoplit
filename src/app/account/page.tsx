@@ -16,9 +16,9 @@ import { Progress } from "@/components/ui/progress";
 import { BadgeCheck, Candy, Citrus, Shield } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppLineChart from "@/components/admin/AppLineChart";
-import EditUser from "@/components/admin/EditUser";
 import useUserStore from "@/stores/userStore";
 import { TUser } from "@/types/users";
+import AddUser from "@/components/admin/AddUser";
 
 const AccountPage = () => {
   const { user } = useUserStore();
@@ -129,7 +129,7 @@ const AccountPage = () => {
           <div className="bg-primary-foreground p-4 rounded-lg">
             <div className="flex items-center justify-between">
               <h1 className="text-xl font-semibold">User Information</h1>
-              <EditUser user={user as TUser} />
+              <AddUser user={user as TUser} />
             </div>
             <div className="space-y-4 mt-4">
               <div className="flex flex-col gap-2 mb-8">
@@ -160,7 +160,8 @@ const AccountPage = () => {
               </div>
             </div>
             <p className="text-sm text-muted-foreground mt-4">
-              Joined on {new Date(user?.createdAt || "").toLocaleDateString("en-US")}
+              Joined on{" "}
+              {new Date(user?.createdAt || "").toLocaleDateString("en-US")}
             </p>
           </div>
         </div>

@@ -86,9 +86,10 @@ function CartPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [shippingForm, setShippingForm] = useState<TShippingFormInputs | null>(
-    null
+    null,
   );
   const { cart, removeFromCart } = useCartStore();
+  console.log("CART ITEMS:", cart);
 
   const activeStep = parseInt(searchParams.get("step") || "1");
 

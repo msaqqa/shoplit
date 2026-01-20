@@ -22,6 +22,11 @@ export const userFormSchema = z.object({
 
 export type UserFormInputs = z.infer<typeof userFormSchema>;
 
+export const updateUserSchema = userFormSchema.omit({
+  password: true,
+});
+export type UserUpdateInputs = z.infer<typeof updateUserSchema>;
+
 // User store
 export type TUserStoreState = {
   user: TUser | null;

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { TUser } from "./users";
 
 export type TOrderProduct = {
-  id?: number;
+  id: number;
   name: string;
   quantity: number;
   price: number;

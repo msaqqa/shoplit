@@ -82,7 +82,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                   .getSelectedRowModel()
                   .rows.map((row) => row.original.id);
                 await Promise.all(
-                  selectedProductIds.map((id) => deleteProduct(id))
+                  selectedProductIds.map((id) => deleteProduct(id)),
                 ).finally(() => setRowSelection({}));
               }}
             />
@@ -99,7 +99,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -118,7 +118,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

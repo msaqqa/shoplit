@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,9 @@ import { signinUserClient } from "@/services/auth";
 import { toast } from "react-toastify";
 import useUserStore from "@/stores/userStore";
 import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { TUser } from "@/types/users";
 
 export default function Page() {
   const router = useRouter();
@@ -27,15 +29,28 @@ export default function Page() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const form = useForm();
-  const onSubmit = async (data) => {
+  const formSchema = z.object({
+    email: z.email().min(1, "Email is required!"),
+    password: z.string(),
+    rememberMe: z.boolean(),
+  });
+
+  type SigninFormInputs = z.infer<typeof formSchema>;
+
+  const form = useForm<SigninFormInputs>({
+    resolver: zodResolver(formSchema),
+    mode: "onBlur",
+  });
+  const onSubmit = async (data: SigninFormInputs) => {
     console.log("data", data);
     setIsProcessing(true);
     try {
       const result = await signinUserClient(data);
-      toast.success(result.message);
-      result.user.role === "ADMIN" ? router.push("/admin") : router.push("/");
-      signinUser(result.user);
+      const { message, user } = result as { message: string; user: TUser };
+      toast.success(message);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      user?.role === "ADMIN" ? router.push("/admin") : router.push("/");
+      signinUser(user);
     } catch (error) {
       console.log("error", error);
     } finally {
@@ -53,6 +68,18 @@ export default function Page() {
             Sign in
           </h1>
         </div>
+
+        {/* <Alert size="sm" close={false}>
+          <AlertIcon>
+            <RiErrorWarningFill className="text-primary" />
+          </AlertIcon>
+          <AlertTitle className="text-accent-foreground">
+            Use <span className="text-mono font-semibold">demo@kt.com</span>{' '}
+            username and{' '}
+            <span className="text-mono font-semibold">demo123</span> for demo
+            access.
+          </AlertTitle>
+        </Alert> */}
 
         {/* <div className="flex flex-col gap-3.5">
           <Button variant="outline" type="button" onClick={handleGoogleSignin}>
@@ -108,7 +135,6 @@ export default function Page() {
                 <Button
                   type="button"
                   variant="ghost"
-                  mode="icon"
                   size="sm"
                   onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
                   className="absolute end-0 top-1/2 -translate-y-1/2 h-7 w-7 me-1.5 bg-transparent!"

@@ -73,7 +73,6 @@ function AppSidebar() {
   const [openCategory, setOpenCategory] = useState(false);
   const [openProduct, setOpenProduc] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
-  const [openUser, setOpenUser] = useState(false);
 
   const handleUserLogout = async () => {
     await logout();
@@ -131,19 +130,17 @@ function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Sheet open={openCategory} onOpenChange={setOpenCategory}>
-                      <SheetTrigger asChild>
-                        <SidebarMenuButton>
-                          <Plus />
-                          <span>Add Category</span>
-                        </SidebarMenuButton>
-                      </SheetTrigger>
-                      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                        <AddCategory onSuccess={() => setOpenCategory(false)} />
-                      </SheetContent>
-                    </Sheet>
-                  </SidebarMenuButton>
+                  <Sheet open={openCategory} onOpenChange={setOpenCategory}>
+                    <SheetTrigger asChild>
+                      <SidebarMenuButton className="cursor-pointer">
+                        <Plus />
+                        <span>Add Category</span>
+                      </SidebarMenuButton>
+                    </SheetTrigger>
+                    <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+                      <AddCategory onSuccess={() => setOpenCategory(false)} />
+                    </SheetContent>
+                  </Sheet>
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
@@ -162,19 +159,17 @@ function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Sheet open={openProduct} onOpenChange={setOpenProduc}>
-                      <SheetTrigger asChild>
-                        <SidebarMenuButton>
-                          <Plus />
-                          <span>Add Product</span>
-                        </SidebarMenuButton>
-                      </SheetTrigger>
-                      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                        <AddProduct onSuccess={() => setOpenProduc(false)} />
-                      </SheetContent>
-                    </Sheet>
-                  </SidebarMenuButton>
+                  <Sheet open={openProduct} onOpenChange={setOpenProduc}>
+                    <SheetTrigger asChild>
+                      <SidebarMenuButton className="cursor-pointer">
+                        <Plus />
+                        <span>Add Product</span>
+                      </SidebarMenuButton>
+                    </SheetTrigger>
+                    <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+                      <AddProduct onSuccess={() => setOpenProduc(false)} />
+                    </SheetContent>
+                  </Sheet>
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
@@ -193,19 +188,7 @@ function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Sheet open={openUser} onOpenChange={setOpenUser}>
-                      <SheetTrigger asChild>
-                        <SidebarMenuButton>
-                          <Plus />
-                          <span>Add User</span>
-                        </SidebarMenuButton>
-                      </SheetTrigger>
-                      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                        <AddUser onSuccess={() => setOpenUser(false)} />
-                      </SheetContent>
-                    </Sheet>
-                  </SidebarMenuButton>
+                  <AddUser />
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
@@ -224,19 +207,17 @@ function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Sheet open={openOrder} onOpenChange={setOpenOrder}>
-                      <SheetTrigger asChild>
-                        <SidebarMenuButton>
-                          <Plus />
-                          <span>Add Oreder</span>
-                        </SidebarMenuButton>
-                      </SheetTrigger>
-                      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                        <AddOrder onSuccess={() => setOpenOrder(false)} />
-                      </SheetContent>
-                    </Sheet>
-                  </SidebarMenuButton>
+                  <Sheet open={openOrder} onOpenChange={setOpenOrder}>
+                    <SheetTrigger asChild>
+                      <SidebarMenuButton className="cursor-pointer">
+                        <Plus />
+                        <span>Add Oreder</span>
+                      </SidebarMenuButton>
+                    </SheetTrigger>
+                    <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+                      <AddOrder onSuccess={() => setOpenOrder(false)} />
+                    </SheetContent>
+                  </Sheet>
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>

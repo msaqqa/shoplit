@@ -1,6 +1,6 @@
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { getUsers } from "@/services/users";
+import { getUsers } from "@/app/actions/users";
 
 // const getData = async (): Promise<User[]> => {
 //   return [

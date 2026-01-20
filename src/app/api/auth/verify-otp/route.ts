@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashOTP } from "@/lib/auth/otp";
 import { signToken } from "@/lib/auth/jwt";
-import { ApiError } from "@/lib/api-error";
+import { RouteError } from "@/lib/error/route-error-handler";
 
 export async function POST(req: Request) {
   try {
@@ -35,10 +35,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: "OTP verified", token: resetToken });
   } catch (error: unknown) {
-    if (error instanceof ApiError) {
+    if (error instanceof RouteError) {
       return NextResponse.json(
         { message: error.message },
-        { status: error.status }
+        { status: error.status },
       );
     }
     const message =
