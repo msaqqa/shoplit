@@ -10,9 +10,8 @@ export async function POST() {
       maxAge: 0,
     });
     return response;
-  } catch (error: unknown) {
-    const message =
-      error instanceof Error ? error.message : "An error occurred";
-    return NextResponse.json({ message }, { status: 400 });
+  } catch {
+    const message = "An unexpected error occurred.";
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

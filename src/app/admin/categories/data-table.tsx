@@ -18,9 +18,7 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import DataTablePagination from "@/components/admin/DataTablePagination";
-import { Plus, Trash2 } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { SidebarMenuButton } from "@/components/ui/sidebar";
+import { Trash2 } from "lucide-react";
 import AddCategory from "@/components/admin/AddCategory";
 import ConfirmDeleteDialog from "@/components/common/confirm-delete-dialog";
 import { deleteCategory } from "@/services/categories";
@@ -38,7 +36,6 @@ export function DataTable<TData extends { id: number }, TValue>({
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [open, setOpen] = useState(false);
 
   const table = useReactTable({
     data,
@@ -58,17 +55,7 @@ export function DataTable<TData extends { id: number }, TValue>({
     <div>
       <div className="overflow-hidden rounded-md border">
         <div className="flex justify-end gap-2 p-4">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <SidebarMenuButton className="w-auto flex items-center gap-2 bg-blue-500 text-white px-2 py-1 text-sm rounded-md cursor-pointer">
-                <Plus />
-                <span>Add Category</span>
-              </SidebarMenuButton>
-            </SheetTrigger>
-            <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-              <AddCategory onSuccess={() => setOpen(false)} />
-            </SheetContent>
-          </Sheet>
+          <AddCategory tableBtn={true} />
           {Object.keys(rowSelection).length > 0 && (
             <ConfirmDeleteDialog
               trigger={

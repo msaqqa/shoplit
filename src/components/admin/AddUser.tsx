@@ -238,7 +238,7 @@ function AddUser({
                   )}
                 />
               )}
-              <Button type="submit">Add user</Button>
+              <Button type="submit">{user ? "Update" : "Add"} user</Button>
             </form>
           </Form>
         </ScrollArea>

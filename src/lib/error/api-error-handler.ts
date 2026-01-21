@@ -1,35 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-
-/**
- * Error codes and their corresponding messages
- */
-export const ERROR_CODES = {
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  VALIDATION_ERROR: 422,
-  INTERNAL_SERVER_ERROR: 500,
-  SERVICE_UNAVAILABLE: 503,
-  NETWORK_ERROR: "NETWORK_ERROR", // tested
-  TIMEOUT_ERROR: "TIMEOUT_ERROR",
-};
-
-/**
- * Default error messages for different scenarios
- */
-export const DEFAULT_MESSAGES = {
-  [ERROR_CODES.UNAUTHORIZED]: "Your session has expired. Please login again.",
-  [ERROR_CODES.FORBIDDEN]: "You do not have permission to perform this action.",
-  [ERROR_CODES.NOT_FOUND]: "The requested resource was not found.",
-  [ERROR_CODES.VALIDATION_ERROR]: "Please check your input and try again.",
-  [ERROR_CODES.INTERNAL_SERVER_ERROR]: "An internal server error occurred.",
-  [ERROR_CODES.SERVICE_UNAVAILABLE]: "The service is currently unavailable.",
-  [ERROR_CODES.NETWORK_ERROR]:
-    "Unable to connect to the server. Please check your internet connection.",
-  [ERROR_CODES.TIMEOUT_ERROR]: "The request timed out. Please try again.",
-  DEFAULT: "An unexpected error occurred.",
-};
+import { DEFAULT_MESSAGES, ERROR_CODES } from "./error-constants";
 
 /**
  * Handles API errors consistently across the application
@@ -60,9 +31,11 @@ type TErrorResponse = {
 
 export const handleApiError = (
   error: unknown,
-  options = { showNotification: true }
+  options = { showNotification: true, returnOnly: false },
 ) => {
   let errorResponse!: TErrorResponse;
+
+  // Handle axios errors
   if (axios.isAxiosError(error)) {
     errorResponse = {
       status: error.response?.status as number,
@@ -130,13 +103,39 @@ export const handleApiError = (
     default:
       // Log unexpected errors
       if (Number(errorResponse.status) >= 500) {
+        errorResponse = {
+          ...errorResponse,
+          status: ERROR_CODES.INTERNAL_SERVER_ERROR,
+          message: DEFAULT_MESSAGES[ERROR_CODES.INTERNAL_SERVER_ERROR],
+        };
         console.error("Server Error:", errorResponse);
       }
   }
 
+  // Return formatted error object immediately without throwing (useful for Auth/Forms)
+  if (options.returnOnly) {
+    return errorResponse;
+  }
+
+  // Check if the error is "Fatal" (e.g., Server Crash or Network Failure)
+  const isFatalError =
+    errorResponse.status === ERROR_CODES.NETWORK_ERROR ||
+    errorResponse.status === ERROR_CODES.TIMEOUT_ERROR ||
+    Number(errorResponse.status) >= 500;
+
   // Show toast if enabled
-  if (options.showNotification) {
+  if (options.showNotification && !isFatalError) {
     toast.error(errorResponse.message);
+  }
+
+  // Throw fatal errors to show in the error boundary (Error.tsx)
+  if (isFatalError) {
+    throw new Error(
+      JSON.stringify({
+        ...errorResponse,
+        isNetwork: errorResponse.status === ERROR_CODES.NETWORK_ERROR,
+      }),
+    );
   }
 
   return errorResponse;

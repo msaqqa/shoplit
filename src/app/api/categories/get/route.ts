@@ -13,7 +13,7 @@ export async function GET() {
     return response;
   } catch (error: unknown) {
     const message =
-      error instanceof Error ? error.message : "An error occurred";
+      error instanceof Error ? error.message : "Internal Server Error";
     return NextResponse.json({ message }, { status: 500 });
   }
 }

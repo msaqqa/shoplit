@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, InfoIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { TUser } from "@/types/users";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function Page() {
   const router = useRouter();
@@ -69,17 +70,15 @@ export default function Page() {
           </h1>
         </div>
 
-        {/* <Alert size="sm" close={false}>
-          <AlertIcon>
-            <RiErrorWarningFill className="text-primary" />
-          </AlertIcon>
+        <Alert>
+          <InfoIcon size="sm" color="orange" />
           <AlertTitle className="text-accent-foreground">
-            Use <span className="text-mono font-semibold">demo@kt.com</span>{' '}
-            username and{' '}
-            <span className="text-mono font-semibold">demo123</span> for demo
-            access.
+            For admin access:
           </AlertTitle>
-        </Alert> */}
+          <AlertDescription className="text-mono font-semibold">
+            email: admin@site.com and password: admin123
+          </AlertDescription>
+        </Alert>
 
         {/* <div className="flex flex-col gap-3.5">
           <Button variant="outline" type="button" onClick={handleGoogleSignin}>

@@ -25,14 +25,8 @@ export async function POST(req: Request) {
     // create response
     return NextResponse.json({ message: "OTP sent to email" });
   } catch (error: unknown) {
-    if (error instanceof RouteError) {
-      return NextResponse.json(
-        { message: error.message },
-        { status: error.status },
-      );
-    }
     const message =
-      error instanceof Error ? error.message : "Internal server error";
+      error instanceof Error ? error.message : "An unexpected error occurred.";
     return NextResponse.json({ message }, { status: 500 });
   }
 }

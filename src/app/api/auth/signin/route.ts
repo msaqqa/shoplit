@@ -38,15 +38,8 @@ export async function POST(req: Request) {
       path: "/",
     });
     return response;
-  } catch (error: unknown) {
-    if (error instanceof RouteError) {
-      return NextResponse.json(
-        { message: error.message },
-        { status: error.status },
-      );
-    }
-    const message =
-      error instanceof Error ? error.message : "Internal server error";
+  } catch {
+    const message = "An unexpected error occurred.";
     return NextResponse.json({ message }, { status: 500 });
   }
 }

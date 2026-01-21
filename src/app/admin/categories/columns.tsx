@@ -1,5 +1,5 @@
 "use client";
-import UpdateCategory from "@/components/admin/UpdateCategory";
+import AddCategory from "@/components/admin/AddCategory";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -9,7 +9,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { TCategory } from "@/types/categoryies";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
@@ -64,21 +63,13 @@ export const columns: ColumnDef<TCategory>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(category.id as string)
-              }
+              onClick={() => navigator.clipboard.writeText(String(category.id))}
             >
               Copy category ID
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Sheet>
-                <SheetTrigger className="px-2 py-1.5 rounded-sm text-sm hover:bg-accent hover:text-accent-foreground">
-                  Update category
-                </SheetTrigger>
-                <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                  <UpdateCategory category={category} />
-                </SheetContent>
-              </Sheet>
+              {/* className="px-2 py-1.5 rounded-sm text-sm hover:bg-accent hover:text-accent-foreground" */}
+              <AddCategory category={category} />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

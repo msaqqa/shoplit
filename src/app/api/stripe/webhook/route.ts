@@ -18,36 +18,31 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET!,
     );
   } catch (err) {
     console.error("Webhook signature verification failed:", err);
-    return new Response("Webhook Error", { status: 400 });
+    return new Response("Webhook Error", { status: 500 });
   }
 
   switch (event.type) {
     case "payment_intent.succeeded": {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
-
       const userId = Number(paymentIntent.metadata.userId);
       const products = JSON.parse(paymentIntent.metadata.products);
       const email = paymentIntent.metadata.email;
-
       createOrder({
         userId,
         products,
         amount: paymentIntent.amount / 100,
         email,
         status: "success",
-      }).catch((err) => console.error("createOrder failed:", err));
-
+      });
       break;
     }
-
     case "payment_intent.payment_failed":
       console.log("Payment failed");
       break;
-
     default:
       console.log("Unhandled event type:", event.type);
   }

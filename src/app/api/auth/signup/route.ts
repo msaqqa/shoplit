@@ -8,9 +8,8 @@ export async function POST(req: Request) {
     const user = await registerUser(body);
     revalidatePath("/admin/users");
     return NextResponse.json(user);
-  } catch (error: unknown) {
-    const message =
-      error instanceof Error ? error.message : "An error occurred";
-    return NextResponse.json({ message }, { status: 400 });
+  } catch {
+    const message = "An unexpected error occurred.";
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

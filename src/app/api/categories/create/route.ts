@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     if (!name || !slug || !icon) {
       return NextResponse.json(
         { message: "some data is not found" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const cat = await prisma.category.create({ data: body });
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     return response;
   } catch (error: unknown) {
     const message =
-      error instanceof Error ? error.message : "An error occurred";
+      error instanceof Error ? error.message : "Internal Server Error";
     return NextResponse.json({ message }, { status: 500 });
   }
 }

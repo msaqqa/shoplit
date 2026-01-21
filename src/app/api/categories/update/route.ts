@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     if (!id) {
       return NextResponse.json(
         { message: "category id is not found" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const cat = await prisma.category.update({
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     return response;
   } catch (error: unknown) {
     const message =
-      error instanceof Error ? error.message : "An error occurred";
+      error instanceof Error ? error.message : "Internal Server Error";
     return NextResponse.json({ message }, { status: 500 });
   }
 }

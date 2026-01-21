@@ -70,7 +70,6 @@ const items = [
 function AppSidebar() {
   const router = useRouter();
   const { user, signoutUser } = useUserStore();
-  const [openCategory, setOpenCategory] = useState(false);
   const [openProduct, setOpenProduc] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
 
@@ -130,17 +129,7 @@ function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <Sheet open={openCategory} onOpenChange={setOpenCategory}>
-                    <SheetTrigger asChild>
-                      <SidebarMenuButton className="cursor-pointer">
-                        <Plus />
-                        <span>Add Category</span>
-                      </SidebarMenuButton>
-                    </SheetTrigger>
-                    <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                      <AddCategory onSuccess={() => setOpenCategory(false)} />
-                    </SheetContent>
-                  </Sheet>
+                  <AddCategory />
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>

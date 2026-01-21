@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
+import { AlertCircleIcon, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -20,12 +20,14 @@ import { toast } from "react-toastify";
 import { signupUserClient } from "@/services/auth";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 
 export default function Page() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordConfirmationVisible, setPasswordConfirmationVisible] =
     useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const formSchema = z
     .object({
@@ -38,7 +40,9 @@ export default function Page() {
           "Password must contains uppercase, lowercase and special character",
         ),
       confirmPassword: z.string(),
-      accept: z.boolean(),
+      accept: z.boolean().refine((val) => val === true, {
+        message: "Please agree to the privacy policy to continue.",
+      }),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords do not match.",
@@ -54,13 +58,18 @@ export default function Page() {
 
   const onSubmit = async (data: SignupFormInputs) => {
     console.log("data", data);
+    setError(null);
     setIsProcessing(true);
     try {
       const result = await signupUserClient(data);
       console.log("result", result);
       toast.success("Registered successfully! Please sign in.");
-    } catch (error) {
-      console.log("error", error);
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred.";
+      setError(message);
     } finally {
       setIsProcessing(false);
     }
@@ -100,14 +109,12 @@ export default function Page() {
             </div>
           </div> */}
 
-          {/* {error && (
+          {error && (
             <Alert variant="destructive">
-              <AlertIcon>
-                <AlertCircle />
-              </AlertIcon>
+              <AlertCircleIcon />
               <AlertTitle>{error}</AlertTitle>
             </Alert>
-          )} */}
+          )}
 
           <FormField
             control={form.control}
@@ -224,7 +231,7 @@ export default function Page() {
                       <Checkbox
                         id="accept"
                         checked={field.value}
-                        // onCheckedChange={(checked) => field.onChange(!!checked)}
+                        onCheckedChange={(checked) => field.onChange(!!checked)}
                       />
 
                       <label

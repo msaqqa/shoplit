@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
   try {
@@ -12,7 +12,7 @@ export async function DELETE(
     if (!categoryId) {
       return NextResponse.json(
         { message: "category id is not found" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const productsCount = await prisma.product.count({
@@ -34,7 +34,7 @@ export async function DELETE(
     return response;
   } catch (error: unknown) {
     const message =
-      error instanceof Error ? error.message : "An error occurred";
+      error instanceof Error ? error.message : "Internal Server Error";
     return NextResponse.json({ message }, { status: 500 });
   }
 }

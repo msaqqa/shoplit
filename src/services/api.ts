@@ -6,6 +6,7 @@ export interface CustomAxiosRequestConfig<
   T = unknown,
 > extends AxiosRequestConfig<T> {
   showNotification?: boolean;
+  returnOnly?: boolean;
 }
 
 // Extend AxiosInstance so its methods accept CustomAxiosRequestConfig
@@ -66,8 +67,12 @@ const createAxiosInstance = (baseURL: string): CustomAxiosInstance => {
     (response) => response,
     (error) => {
       const showNotification = error.config.showNotification !== false;
-      handleApiError(error, { showNotification });
-      return Promise.reject(error);
+      const returnOnly = error.config.returnOnly === true;
+      const formattedError = handleApiError(error, {
+        showNotification,
+        returnOnly,
+      });
+      return Promise.reject(formattedError);
     },
   );
 
