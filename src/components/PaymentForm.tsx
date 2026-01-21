@@ -9,7 +9,7 @@ import { payOrder } from "@/services/orders";
 import { useTheme } from "next-themes";
 
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
 
 export default function PaymentForm({
@@ -21,7 +21,7 @@ export default function PaymentForm({
   const { cart, clearCart } = useCartStore();
   const { user } = useUserStore();
   const [clientSecret, setClientSecret] = useState<string | undefined>(
-    undefined
+    undefined,
   );
   const [error, setError] = useState<string | null>(null);
   const intentCreatedRef = useRef(false);
@@ -32,6 +32,7 @@ export default function PaymentForm({
       return null;
     }
     const products = cart.map((p) => ({
+      id: p.id,
       name: p.name,
       quantity: p.quantity,
       price: p.price,
