@@ -100,9 +100,7 @@ export const columns: ColumnDef<TProduct>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(product.id as string)
-              }
+              onClick={() => navigator.clipboard.writeText(String(product.id))}
             >
               Copy product ID
             </DropdownMenuItem>
