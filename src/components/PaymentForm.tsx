@@ -28,7 +28,7 @@ export default function PaymentForm({
 
   const createPaymentIntent = async () => {
     if (!user?.id || cart.length === 0) {
-      setError("⚠️ Cannot create payment: missing user or empty cart");
+      setError("Cannot create payment: missing user or empty cart");
       return null;
     }
     const products = cart.map((p) => ({

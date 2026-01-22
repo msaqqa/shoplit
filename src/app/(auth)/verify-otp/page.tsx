@@ -17,12 +17,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { verifyOtp } from "@/services/auth";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { AlertCircleIcon } from "lucide-react";
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const email = searchParams.get("email");
+  const email = searchParams.get("email") || "";
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const formSchema = z.object({
     otp: z.string().regex(/^\d{6}$/, "Should be exactly 6 digits long"),
@@ -39,13 +42,14 @@ export default function Page() {
   });
 
   const onSubmit = async (data: EmailFormInput) => {
-    console.log("data", data);
     setIsProcessing(true);
     try {
-      const res = await verifyOtp(data);
-      router.replace(`/reset-password?email=${email}&token=${(res as {token: string}).token}`);
+      const res = await verifyOtp({ email, ...data });
+      router.replace(
+        `/reset-password?email=${email}&token=${(res as { token: string }).token}`,
+      );
     } catch (error) {
-      console.log("error", error);
+      setError((error as { message: string }).message);
     } finally {
       setIsProcessing(false);
     }
@@ -61,6 +65,14 @@ export default function Page() {
           Check your email and enter the code received it.
         </p>
       </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircleIcon />
+          <AlertTitle>{error}</AlertTitle>
+        </Alert>
+      )}
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

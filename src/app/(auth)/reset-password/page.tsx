@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
+import { AlertCircleIcon, Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { resetPassword } from "@/services/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -28,6 +29,7 @@ export default function Page() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordConfirmationVisible, setPasswordConfirmationVisible] =
     useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const formSchema = z
     .object({
@@ -35,7 +37,7 @@ export default function Page() {
         .string()
         .regex(
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/,
-          "Password must contains uppercase, lowercase and special character"
+          "Password must contains uppercase, lowercase and special character",
         ),
       confirmPassword: z.string(),
     })
@@ -54,11 +56,13 @@ export default function Page() {
   const onSubmit = async (data: PasswordFormInputs) => {
     setIsProcessing(true);
     try {
-      const res = (await resetPassword({ ...data, token, email }))  as { message: string; };
+      const res = (await resetPassword({ ...data, token, email })) as {
+        message: string;
+      };
       toast.success(res.message);
       router.replace("/signin");
     } catch (error) {
-      console.log("error", error);
+      setError((error as { message: string }).message);
     } finally {
       setIsProcessing(false);
     }
@@ -71,6 +75,14 @@ export default function Page() {
           Reset Password
         </h1>
       </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircleIcon />
+          <AlertTitle>{error}</AlertTitle>
+        </Alert>
+      )}
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -130,7 +142,7 @@ export default function Page() {
                     variant="ghost"
                     onClick={() =>
                       setPasswordConfirmationVisible(
-                        !passwordConfirmationVisible
+                        !passwordConfirmationVisible,
                       )
                     }
                     className="absolute end-0 top-1/2 -translate-y-1/2 h-7 w-7 me-1.5 bg-transparent!"

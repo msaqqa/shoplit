@@ -8,8 +8,7 @@ export async function POST(req: Request) {
   try {
     const { email } = await req.json();
     const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) throw new RouteError("This email is not registered", 404);
-
+    if (!user) throw new RouteError("This email is not registered.", 404);
     // 1. create OTP
     const otp = generateOTP();
     // 2. save OTP hash in DB
@@ -22,9 +21,15 @@ export async function POST(req: Request) {
     });
     // 3. send email OTP
     sendEmailOTP(email, otp);
-    // create response
-    return NextResponse.json({ message: "OTP sent to email" });
+    // 4. create response
+    return NextResponse.json({ message: "OTP sent to email." });
   } catch (error: unknown) {
+    if (error instanceof RouteError) {
+      return NextResponse.json(
+        { message: error.message },
+        { status: error.status },
+      );
+    }
     const message =
       error instanceof Error ? error.message : "An unexpected error occurred.";
     return NextResponse.json({ message }, { status: 500 });

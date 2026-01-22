@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Eye, EyeOff, InfoIcon } from "lucide-react";
+import { AlertCircleIcon, Eye, EyeOff, InfoIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -29,11 +29,12 @@ export default function Page() {
   const { signinUser } = useUserStore();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const formSchema = z.object({
     email: z.email().min(1, "Email is required!"),
     password: z.string(),
-    rememberMe: z.boolean(),
+    rememberMe: z.boolean().optional(),
   });
 
   type SigninFormInputs = z.infer<typeof formSchema>;
@@ -43,17 +44,19 @@ export default function Page() {
     mode: "onBlur",
   });
   const onSubmit = async (data: SigninFormInputs) => {
-    console.log("data", data);
     setIsProcessing(true);
     try {
       const result = await signinUserClient(data);
-      const { message, user } = result as { message: string; user: TUser };
+      const { message, data: user } = result as {
+        message: string;
+        data: TUser;
+      };
       toast.success(message);
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       user?.role === "ADMIN" ? router.push("/admin") : router.push("/");
       signinUser(user);
-    } catch (error) {
-      console.log("error", error);
+    } catch (error: unknown) {
+      setError((error as { message: string }).message);
     } finally {
       setIsProcessing(false);
     }
@@ -69,6 +72,13 @@ export default function Page() {
             Sign in
           </h1>
         </div>
+
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircleIcon />
+            <AlertTitle>{error}</AlertTitle>
+          </Alert>
+        )}
 
         <Alert>
           <InfoIcon size="sm" color="orange" />
@@ -177,7 +187,7 @@ export default function Page() {
         </div>
 
         <div className="flex flex-col gap-2.5">
-          <Button type="submit">
+          <Button type="submit" className="cursor-pointer">
             {isProcessing ? <Spinner className="size-4 animate-spin" /> : null}
             Sign in
           </Button>

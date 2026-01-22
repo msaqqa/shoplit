@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./lib/auth/jwt";
 
-export default async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value as string;
   const pathname = req.nextUrl.pathname;
   const protectedRoutes = ["/cart", "/account"];

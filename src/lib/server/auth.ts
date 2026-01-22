@@ -1,6 +1,7 @@
 import { TUser } from "@/types/users";
 import { comparePassword, hashPassword } from "../auth/password";
 import { prisma } from "../prisma";
+import { RouteError } from "../error/route-error-handler";
 
 export async function registerUser(data: {
   name: string;
@@ -8,8 +9,15 @@ export async function registerUser(data: {
   password: string;
   avatar?: string;
 }) {
-  const hashed = await hashPassword(data.password);
+  // Check if email already exists
+  const checkEmail = await prisma.user.findUnique({
+    where: { email: data.email },
+  });
+  if (checkEmail)
+    throw new RouteError("This email is already registered.", 400);
 
+  // Hash password and create user
+  const hashed = await hashPassword(data.password);
   const user = await prisma.user.create({
     data: {
       name: data.name,
@@ -19,21 +27,24 @@ export async function registerUser(data: {
     },
   });
 
-  return user;
+  // Return user without password
+  const { password: _, ...safeUser } = user;
+  return safeUser;
 }
 
 export async function loginUser(data: {
   email: string;
   password: string;
 }): Promise<Omit<TUser, "password">> {
+  // Check if user exists
   const user = await prisma.user.findUnique({
     where: { email: data.email },
   });
+  if (!user) throw new RouteError("User not found.", 404);
 
-  if (!user) throw new Error("User not found");
-
+  // Verify password
   const valid = await comparePassword(data.password, user.password);
-  if (!valid) throw new Error("Invalid credentials");
+  if (!valid) throw new RouteError("Invalid credentials.", 401);
 
   // Return user without password
   const { password: _, ...safeUser } = user;

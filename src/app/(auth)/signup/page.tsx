@@ -57,19 +57,13 @@ export default function Page() {
   });
 
   const onSubmit = async (data: SignupFormInputs) => {
-    console.log("data", data);
     setError(null);
     setIsProcessing(true);
     try {
       const result = await signupUserClient(data);
-      console.log("result", result);
-      toast.success("Registered successfully! Please sign in.");
+      toast.success((result as { message: string }).message);
     } catch (error: unknown) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "An unexpected error occurred.";
-      setError(message);
+      setError((error as { message: string }).message);
     } finally {
       setIsProcessing(false);
     }
@@ -87,6 +81,13 @@ export default function Page() {
               Sign up
             </h1>
           </div>
+
+          {error && (
+            <Alert variant="destructive">
+              <AlertCircleIcon />
+              <AlertTitle>{error}</AlertTitle>
+            </Alert>
+          )}
 
           {/* <div className="flex flex-col gap-3.5">
             <Button
@@ -108,13 +109,6 @@ export default function Page() {
               </span>
             </div>
           </div> */}
-
-          {error && (
-            <Alert variant="destructive">
-              <AlertCircleIcon />
-              <AlertTitle>{error}</AlertTitle>
-            </Alert>
-          )}
 
           <FormField
             control={form.control}

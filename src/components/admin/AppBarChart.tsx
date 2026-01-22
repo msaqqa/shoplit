@@ -10,6 +10,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { TOrderChart } from "@/types/orders";
+import { useEffect, useState } from "react";
+import { fetchOrderChart } from "@/services/orders";
 
 // const chartData = [
 //   { month: "January", total: 186, successful: 80 },
@@ -31,7 +33,16 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function AppBarChart({ orderChart }: { orderChart: TOrderChart[] }) {
+export function AppBarChart() {
+  const [orderChart, setOrderChart] = useState<TOrderChart[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetchOrderChart();
+      setOrderChart((result as { data: TOrderChart[] }).data);
+      console.log("result", (result as { data: TOrderChart[] }).data);
+    };
+    fetchData();
+  }, []);
   return (
     <div>
       <h1 className="text-lg font-medium mb-6">Total Revenue</h1>

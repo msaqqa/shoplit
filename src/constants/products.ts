@@ -1,6 +1,4 @@
-import { NextResponse } from "next/server";
-
-const products = [
+export const products = [
   {
     id: 1,
     name: "Adidas CoreFit T-Shirt",
@@ -118,15 +116,3 @@ const products = [
     images: { blue: "/products/8b.png", green: "/products/8gr.png" },
   },
 ];
-
-export async function GET() {
-  // const { searchParams } = new URL(req.url);
-  // const categoryId = searchParams.get("categoryId");
-
-  return NextResponse.json(products);
-  // return NextResponse.json(
-  //   categoryId
-  //     ? products.filter((p) => p.categoryId === Number(categoryId))
-  //     : products
-  // );
-}

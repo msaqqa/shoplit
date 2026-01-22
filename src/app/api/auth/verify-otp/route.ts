@@ -7,24 +7,25 @@ import { RouteError } from "@/lib/error/route-error-handler";
 export async function POST(req: Request) {
   try {
     const { email, otp } = await req.json();
+    if (!email || !otp) {
+      throw new RouteError("Missing required fields.", 400);
+    }
 
+    // Check if token record exists
     const tokenRecord = await prisma.passwordResetToken.findFirst({
       where: { email },
       orderBy: { createdAt: "desc" },
     });
-
     if (!tokenRecord) {
-      return NextResponse.json({ message: "OTP not found" }, { status: 404 });
+      throw new RouteError("OTP not found.", 404);
     }
-
     // check expiration
     if (new Date() > tokenRecord.expiresAt) {
-      return NextResponse.json({ message: "OTP expired" }, { status: 400 });
+      throw new RouteError("OTP expired.", 400);
     }
-
     // check OTP
     if (tokenRecord.tokenHash !== hashOTP(otp)) {
-      return NextResponse.json({ message: "Invalid OTP" }, { status: 400 });
+      throw new RouteError("Invalid OTP.", 400);
     }
 
     // Optionally: delete the token after verification
@@ -33,7 +34,10 @@ export async function POST(req: Request) {
     // create a token for resetting password
     const resetToken = await signToken({ email }, "5m");
 
-    return NextResponse.json({ message: "OTP verified", token: resetToken });
+    return NextResponse.json({
+      message: "OTP verified.",
+      data: { token: resetToken },
+    });
   } catch (error: unknown) {
     if (error instanceof RouteError) {
       return NextResponse.json(
@@ -42,7 +46,7 @@ export async function POST(req: Request) {
       );
     }
     const message =
-      error instanceof Error ? error.message : "Internal server error";
+      error instanceof Error ? error.message : "An unexpected error occurred.";
     return NextResponse.json({ message }, { status: 500 });
   }
 }

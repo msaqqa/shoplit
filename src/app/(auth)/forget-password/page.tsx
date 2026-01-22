@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { AlertCircleIcon, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,10 +18,12 @@ import { forgetPassword } from "@/services/auth";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 
 export default function ForgetPasswordPage() {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const formSchema = z.object({
     email: z.email({ message: "Please enter a valid email address." }),
@@ -39,7 +41,7 @@ export default function ForgetPasswordPage() {
       await forgetPassword(data);
       router.push(`/verify-otp?email=${data.email}`);
     } catch (error) {
-      console.log("error", error);
+      setError((error as { message: string }).message);
     } finally {
       setIsProcessing(false);
     }
@@ -51,6 +53,14 @@ export default function ForgetPasswordPage() {
           Forget Password
         </h1>
       </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircleIcon />
+          <AlertTitle>{error}</AlertTitle>
+        </Alert>
+      )}
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

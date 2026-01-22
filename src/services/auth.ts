@@ -39,7 +39,7 @@ export const forgetPassword = async (data: { email: string }) => {
   return response.data;
 };
 
-export const verifyOtp = async (data: { otp: string }) => {
+export const verifyOtp = async (data: { email: string; otp: string }) => {
   const response = await api.post("/auth/verify-otp", data, {
     showNotification: false,
     returnOnly: true,
