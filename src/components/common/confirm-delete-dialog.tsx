@@ -12,12 +12,14 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { toast } from "react-toastify";
+import { Spinner } from "../ui/spinner";
 
 type ConfirmDeleteDialogProps = {
   trigger: ReactNode;
   title?: string;
   description?: string;
   onConfirm: () => Promise<void>;
+  showToast?: boolean;
 };
 
 function ConfirmDeleteDialog({
@@ -25,14 +27,17 @@ function ConfirmDeleteDialog({
   title = "Are you absolutely sure?",
   description = "This action cannot be undone.",
   onConfirm,
+  showToast = true,
 }: ConfirmDeleteDialogProps) {
-  const [loading, setLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleConfirm = async () => {
-    setLoading(true);
+    setIsProcessing(true);
     await onConfirm();
-    toast.success("Deleted successfully");
-    setLoading(false);
+    if (showToast) {
+      toast.success("Deleted successfully");
+    }
+    setIsProcessing(false);
   };
 
   return (
@@ -46,16 +51,20 @@ function ConfirmDeleteDialog({
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel className="w-[100px]" disabled={loading}>
-            Cancel
-          </AlertDialogCancel>
+          <AlertDialogCancel className="w-[100px]">Cancel</AlertDialogCancel>
 
           <AlertDialogAction
             onClick={handleConfirm}
-            disabled={loading}
+            disabled={isProcessing}
             className="w-[100px] bg-red-400 text-white px-2 py-1 text-sm cursor-pointer hover:bg-red-500"
           >
-            {loading ? "Deleting..." : "Delete"}
+            {isProcessing ? (
+              <>
+                <Spinner className="size-4 animate-spin" /> Deleting...
+              </>
+            ) : (
+              "Delete"
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

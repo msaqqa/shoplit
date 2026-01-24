@@ -1,9 +1,11 @@
 import { handleServerError } from "./error/server-error-handler";
 
-export async function actionWrapper<T>(actionFn: () => Promise<T>): Promise<T> {
+export async function actionWrapper<T>(actionFn: () => Promise<T>) {
   try {
-    return await actionFn();
+    const result = await actionFn();
+    return { data: result, error: null };
   } catch (error: unknown) {
-    throw handleServerError(error);
+    const errorData = handleServerError(error);
+    return { data: null, error: errorData };
   }
 }

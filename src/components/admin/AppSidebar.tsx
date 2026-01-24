@@ -25,7 +25,6 @@ import {
   Settings,
   ChevronUp,
   User2,
-  Plus,
   Projector,
   Shirt,
   User,
@@ -33,12 +32,10 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import Link from "next/link";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import AddOrder from "./AddOrder";
 import AddProduct from "./AddProduct";
 import AddCategory from "./AddCategory";
 import useUserStore from "@/stores/userStore";
-import { useState } from "react";
 import { logout } from "@/services/auth";
 import { useRouter } from "next/navigation";
 import AddUser from "./AddUser";
@@ -70,8 +67,6 @@ const items = [
 function AppSidebar() {
   const router = useRouter();
   const { user, signoutUser } = useUserStore();
-  const [openProduct, setOpenProduc] = useState(false);
-  const [openOrder, setOpenOrder] = useState(false);
 
   const handleUserLogout = async () => {
     await logout();
@@ -148,17 +143,7 @@ function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <Sheet open={openProduct} onOpenChange={setOpenProduc}>
-                    <SheetTrigger asChild>
-                      <SidebarMenuButton className="cursor-pointer">
-                        <Plus />
-                        <span>Add Product</span>
-                      </SidebarMenuButton>
-                    </SheetTrigger>
-                    <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                      <AddProduct onSuccess={() => setOpenProduc(false)} />
-                    </SheetContent>
-                  </Sheet>
+                  <AddProduct />
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
@@ -196,17 +181,7 @@ function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <Sheet open={openOrder} onOpenChange={setOpenOrder}>
-                    <SheetTrigger asChild>
-                      <SidebarMenuButton className="cursor-pointer">
-                        <Plus />
-                        <span>Add Oreder</span>
-                      </SidebarMenuButton>
-                    </SheetTrigger>
-                    <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-                      <AddOrder onSuccess={() => setOpenOrder(false)} />
-                    </SheetContent>
-                  </Sheet>
+                  <AddOrder />
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>

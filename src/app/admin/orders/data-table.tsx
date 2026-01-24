@@ -18,13 +18,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import DataTablePagination from "@/components/admin/DataTablePagination";
 import ConfirmDeleteDialog from "@/components/common/confirm-delete-dialog";
 import { deleteOrder } from "@/app/actions/orders";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { SidebarMenuButton } from "@/components/ui/sidebar";
 import AddOrder from "@/components/admin/AddOrder";
+import { toast } from "react-toastify";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,7 +36,7 @@ export function DataTable<TData extends { id: number }, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [open, setOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const table = useReactTable({
     data,
@@ -57,17 +56,7 @@ export function DataTable<TData extends { id: number }, TValue>({
     <div>
       <div className="overflow-hidden rounded-md border">
         <div className="flex justify-end gap-2 p-4">
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <SidebarMenuButton className="w-auto flex items-center gap-2 bg-blue-500 text-white px-2 py-1 text-sm rounded-md cursor-pointer">
-                <Plus />
-                <span>Add Order</span>
-              </SidebarMenuButton>
-            </SheetTrigger>
-            <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
-              <AddOrder onSuccess={() => setOpen(false)} />
-            </SheetContent>
-          </Sheet>
+          <AddOrder tableBtn={true} />
           {Object.keys(rowSelection).length > 0 && (
             <ConfirmDeleteDialog
               trigger={
@@ -77,13 +66,27 @@ export function DataTable<TData extends { id: number }, TValue>({
               }
               title="Delete order?"
               description="This order will be permanently removed."
+              showToast={showToast}
               onConfirm={async () => {
-                const selectedOrderIds = table
+                const selectedUserIds = table
                   .getSelectedRowModel()
-                  .rows.map((row) => row.original.id);
-                await Promise.all(
-                  selectedOrderIds.map((id) => deleteOrder(Number(id)))
-                ).finally(() => setRowSelection({}));
+                  .rows.map((row) => row?.original.id);
+                const results = await Promise.all(
+                  selectedUserIds.map((id) => deleteOrder(id)),
+                );
+                // Check and show the errors for each individual row
+                let successCount = 0;
+                results.map((res, index) => {
+                  if ("error" in res && res.error) {
+                    toast.error(
+                      `Error deleting order ${index + 1}: ${res.error.message}`,
+                    );
+                  } else {
+                    successCount++;
+                  }
+                });
+                if (successCount > 0) setShowToast(true);
+                setRowSelection({});
               }}
             />
           )}
@@ -99,7 +102,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -118,7 +121,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

@@ -1,14 +1,15 @@
 "use server";
 
 import { actionWrapper } from "@/lib/action-wrapper";
+import { AppError } from "@/lib/error/route-error-handler";
 import { prisma } from "@/lib/prisma";
 import { OrderFormInputs } from "@/types/orders";
 import { revalidatePath } from "next/cache";
 
-// create order
+// Create order
 export async function createOrder(data: OrderFormInputs) {
   return actionWrapper(async () => {
-    await prisma.order.create({
+    const response = await prisma.order.create({
       data: {
         userId: data.userId,
         email: data.email,
@@ -20,9 +21,11 @@ export async function createOrder(data: OrderFormInputs) {
       },
     });
     revalidatePath("/admin/orders");
+    return response;
   });
 }
 
+// Get orders
 export async function getOrders({ limit }: { limit?: number | undefined }) {
   return actionWrapper(async () => {
     const response = await prisma.order.findMany({
@@ -36,14 +39,14 @@ export async function getOrders({ limit }: { limit?: number | undefined }) {
   });
 }
 
-// delete order
+// Delete order
 export async function deleteOrder(id: number) {
   return actionWrapper(async () => {
     const order = await prisma.order.findUnique({
       where: { id },
     });
 
-    if (!order) return;
+    if (!order) throw new AppError("Order not found.", 404);
 
     await prisma.order.delete({
       where: { id },

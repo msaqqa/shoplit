@@ -19,9 +19,25 @@ import AppLineChart from "@/components/admin/AppLineChart";
 import useUserStore from "@/stores/userStore";
 import { TUser } from "@/types/users";
 import AddUser from "@/components/admin/AddUser";
+import Link from "next/link";
 
 const AccountPage = () => {
   const { user } = useUserStore();
+
+  if (!user) {
+    return (
+      <div className="text-center py-12">
+        <h1 className="text-2xl font-medium mb-4">User not found</h1>
+        <p className="text-md">
+          click on the{" "}
+          <Link href="/signin" className="text-yellow-500">
+            Signin
+          </Link>{" "}
+          to show it
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="">

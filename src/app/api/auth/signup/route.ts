@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { registerUser } from "@/lib/server/auth";
-import { RouteError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/route-error-handler";
 
 export async function POST(req: Request) {
   try {
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       data: user,
     });
   } catch (error: unknown) {
-    if (error instanceof RouteError) {
+    if (error instanceof AppError) {
       return NextResponse.json(
         { message: error.message },
         { status: error.status },

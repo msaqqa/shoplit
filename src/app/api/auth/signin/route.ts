@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { signToken } from "@/lib/auth/jwt";
 import { loginUser } from "@/lib/server/auth";
-import { RouteError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/route-error-handler";
 
 export async function POST(req: Request) {
   try {
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     });
     return response;
   } catch (error: unknown) {
-    if (error instanceof RouteError) {
+    if (error instanceof AppError) {
       return NextResponse.json(
         { message: error.message },
         { status: error.status },

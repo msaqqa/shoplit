@@ -1,7 +1,7 @@
 import { TUser } from "@/types/users";
 import { comparePassword, hashPassword } from "../auth/password";
 import { prisma } from "../prisma";
-import { RouteError } from "../error/route-error-handler";
+import { AppError } from "../error/route-error-handler";
 
 export async function registerUser(data: {
   name: string;
@@ -13,8 +13,7 @@ export async function registerUser(data: {
   const checkEmail = await prisma.user.findUnique({
     where: { email: data.email },
   });
-  if (checkEmail)
-    throw new RouteError("This email is already registered.", 400);
+  if (checkEmail) throw new AppError("This email is already registered.", 400);
 
   // Hash password and create user
   const hashed = await hashPassword(data.password);
@@ -40,11 +39,11 @@ export async function loginUser(data: {
   const user = await prisma.user.findUnique({
     where: { email: data.email },
   });
-  if (!user) throw new RouteError("User not found.", 404);
+  if (!user) throw new AppError("User not found.", 404);
 
   // Verify password
   const valid = await comparePassword(data.password, user.password);
-  if (!valid) throw new RouteError("Invalid credentials.", 401);
+  if (!valid) throw new AppError("Invalid credentials.", 401);
 
   // Return user without password
   const { password: _, ...safeUser } = user;

@@ -3,7 +3,6 @@ import { shippingFormSchema, TShippingFormInputs } from "@/types/cart";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 function ShippingForm({

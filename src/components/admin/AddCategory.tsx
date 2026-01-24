@@ -19,6 +19,7 @@ import { createCategory, updateCategory } from "@/services/categories";
 import { useRouter } from "next/navigation";
 import { SidebarMenuButton } from "../ui/sidebar";
 import { useState } from "react";
+import { Spinner } from "../ui/spinner";
 
 function AddCategory({
   category,
@@ -29,6 +30,7 @@ function AddCategory({
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const {
     register,
     handleSubmit,
@@ -45,10 +47,12 @@ function AddCategory({
   const handleCategoryForm: SubmitHandler<CategoryFormInputs> = async (
     data,
   ) => {
+    setIsProcessing(true);
     await (category ? updateCategory(category.id, data) : createCategory(data));
     toast.success("Category added successfully");
     setOpen(false);
     router.refresh();
+    setIsProcessing(false);
   };
 
   return (
@@ -128,8 +132,10 @@ function AddCategory({
           <button
             type="submit"
             className="w-full bg-gray-800 hover:bg-gray-900 transition-all duration-300 text-white p-2 rounded-lg cursor-pointer flex items-center justify-center gap-2"
+            disabled={isProcessing}
           >
-            {category ? "Update" : "Add"}
+            {isProcessing ? <Spinner className="size-4 animate-spin" /> : null}
+            {category ? "Update" : "Add"} category
             <Projector className="w-3 h-3" />
           </button>
         </form>

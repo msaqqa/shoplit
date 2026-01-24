@@ -164,7 +164,7 @@ export default function Page() {
             )}
           />
           <Button type="submit" disabled={isProcessing} className="w-full">
-            {isProcessing ? <Spinner className="animate-spin" /> : null}
+            {isProcessing ? <Spinner className="size-4 animate-spin" /> : null}
             Submit
           </Button>
         </form>

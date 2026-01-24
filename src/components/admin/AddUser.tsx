@@ -29,13 +29,14 @@ import {
 import { toast } from "react-toastify";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRef, useState } from "react";
-import { Edit, Eye, EyeOff, Plus } from "lucide-react";
+import { Edit, Eye, EyeOff, Plus, User } from "lucide-react";
 import { signupUserClient } from "@/services/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { uploadImage } from "@/lib/cloudinary";
+import { uploadImageToCloudinary } from "@/services/cloudinary";
 import { useRouter } from "next/navigation";
 import { updateUserById } from "@/app/actions/users";
 import { SidebarMenuButton } from "../ui/sidebar";
+import { Spinner } from "../ui/spinner";
 
 function AddUser({
   user,
@@ -49,6 +50,7 @@ function AddUser({
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [preview, setPreview] = useState(user?.avatar || "");
   const [open, setOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const form = useForm<UserFormInputs | UserUpdateInputs>({
     resolver: zodResolver(user ? updateUserSchema : userFormSchema),
@@ -68,7 +70,7 @@ function AddUser({
   ) => {
     if (!file) return;
     try {
-      const url = await uploadImage(file);
+      const url = await uploadImageToCloudinary(file);
       setPreview(url);
       onChange?.(url);
     } catch (err) {
@@ -82,19 +84,20 @@ function AddUser({
   const handleUserForm: SubmitHandler<
     UserFormInputs | UserUpdateInputs
   > = async (data: UserFormInputs | UserUpdateInputs) => {
+    setIsProcessing(true);
     const updatedUser = {
       ...user,
       name: data.name,
       email: data.email,
       avatar: data.avatar,
     };
-    console.log(data);
     await (user && user.id
       ? updateUserById(user.id, updatedUser)
       : signupUserClient(data as UserFormInputs));
     toast.success("User added successfully");
     setOpen(false);
     router.refresh();
+    setIsProcessing(false);
   };
 
   return (
@@ -238,7 +241,13 @@ function AddUser({
                   )}
                 />
               )}
-              <Button type="submit">{user ? "Update" : "Add"} user</Button>
+              <Button disabled={isProcessing} type="submit">
+                {isProcessing ? (
+                  <Spinner className="size-4 animate-spin" />
+                ) : null}
+                {user ? "Update" : "Add"} user
+                <User className="w-3 h-3" />
+              </Button>
             </form>
           </Form>
         </ScrollArea>

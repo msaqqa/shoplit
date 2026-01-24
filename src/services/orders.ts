@@ -7,7 +7,9 @@ export const payOrder = async (data: {
   amount: number;
   email: string;
 }) => {
-  const response = await api.post("/stripe/create-payment-intent", data);
+  const response = await api.post("/stripe/create-payment-intent", data, {
+    showNotification: false,
+  });
   return await response.data;
 };
 

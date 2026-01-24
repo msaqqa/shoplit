@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { ProductFormInputs, TProductsParams } from "@/types/products";
 import { revalidatePath } from "next/cache";
-import { deleteImageFromCloudinary } from "./delete-image";
+import { deleteImageFromCloudinary } from "./cloudinary";
 import { actionWrapper } from "@/lib/action-wrapper";
 
 export async function createProduct(data: ProductFormInputs) {
@@ -62,7 +62,7 @@ export async function geTProductByID(id: number) {
   });
 }
 
-// app/actions/products.ts
+// Update Product
 // export async function updateProduct(id: number, data: TProductFormEdit) {
 //   await prisma.product.update({
 //     where: { id },
@@ -77,7 +77,7 @@ export async function geTProductByID(id: number) {
 export async function deleteProduct(id: number) {
   return actionWrapper(async () => {
     const product = await prisma.product.findUnique({ where: { id } });
-    if (!product) return;
+    if (!product) throw new Error("Product not found");
 
     if (product.images) {
       const images = product.images as Record<string, string>;
@@ -87,5 +87,6 @@ export async function deleteProduct(id: number) {
     }
     await prisma.product.delete({ where: { id } });
     revalidatePath("/admin/products");
+    return product;
   });
 }

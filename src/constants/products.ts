@@ -1,3 +1,4 @@
+// TEMPORARY Products
 export const products = [
   {
     id: 1,
@@ -116,3 +117,43 @@ export const products = [
     images: { blue: "/products/8b.png", green: "/products/8gr.png" },
   },
 ];
+
+// Products Colors
+export const colors = [
+  "blue",
+  "green",
+  "red",
+  "yellow",
+  "purple",
+  "orange",
+  "pink",
+  "brown",
+  "gray",
+  "black",
+  "white",
+] as const;
+
+// Products Sizes
+export const sizes = [
+  "xs",
+  "s",
+  "m",
+  "l",
+  "xl",
+  "xxl",
+  "34",
+  "35",
+  "36",
+  "37",
+  "38",
+  "39",
+  "40",
+  "41",
+  "42",
+  "43",
+  "44",
+  "45",
+  "46",
+  "47",
+  "48",
+] as const;

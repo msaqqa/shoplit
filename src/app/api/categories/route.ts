@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { RouteError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/route-error-handler";
 import { revalidatePath } from "next/cache";
 
 // GET /api/categories
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name, slug, icon } = body;
     if (!name || !slug || !icon) {
-      throw new RouteError("Missing required fields.", 400);
+      throw new AppError("Missing required fields.", 400);
     }
     const category = await prisma.category.create({ data: body });
     revalidatePath("/admin/categories");
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     });
     return response;
   } catch (error: unknown) {
-    if (error instanceof RouteError) {
+    if (error instanceof AppError) {
       return NextResponse.json(
         { message: error.message },
         { status: error.status },

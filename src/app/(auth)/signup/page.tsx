@@ -1,5 +1,4 @@
 "use client";
-
 import { Suspense, useState } from "react";
 import Link from "next/link";
 import { AlertCircleIcon, Eye, EyeOff } from "lucide-react";
@@ -21,8 +20,10 @@ import { signupUserClient } from "@/services/auth";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import { useRouter } from "next/router";
 
 export default function Page() {
+  const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordConfirmationVisible, setPasswordConfirmationVisible] =
     useState(false);
@@ -62,6 +63,7 @@ export default function Page() {
     try {
       const result = await signupUserClient(data);
       toast.success((result as { message: string }).message);
+      router.push("/signin");
     } catch (error: unknown) {
       setError((error as { message: string }).message);
     } finally {

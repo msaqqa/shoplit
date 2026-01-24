@@ -45,8 +45,7 @@ export default function PaymentForm({
       products,
       email: shippingForm.email,
     }).catch((error) => {
-      console.error("error", error);
-      setError("⚠️ Unable to load the payment form. Please try again later.");
+      setError(error.message);
     });
     setClientSecret((data as { clientSecret: string }).clientSecret);
   };

@@ -3,24 +3,6 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { geTProductByID } from "@/app/actions/products";
 
-// TEMPORARY
-// const product: TProduct = {
-//   id: 1,
-//   name: "Adidas CoreFit T-Shirt",
-//   shortDescription:
-//     "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-//   description:
-//     "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-//   price: 59.9,
-//   sizes: ["xs", "s", "m", "l", "xl"],
-//   colors: ["gray", "purple", "green"],
-//   images: {
-//     gray: "/products/1g.png",
-//     purple: "/products/1p.png",
-//     green: "/products/1gr.png",
-//   },
-// };
-
 export const generateMetadata = async ({
   params,
 }: {

@@ -8,6 +8,7 @@ import {
 import { TShippingFormInputs } from "@/types/cart";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { Spinner } from "./ui/spinner";
 
 type Props = {
   shippingForm: TShippingFormInputs;
@@ -18,12 +19,12 @@ function CheckoutForm({ shippingForm, clearCart }: Props) {
   const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
-  const [loading, setLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [paymentReady, setPaymentReady] = useState(false);
 
   const handleClick = async () => {
     if (!stripe || !elements) return;
-    setLoading(true);
+    setIsProcessing(true);
     const result = await stripe.confirmPayment({
       elements,
       redirect: "if_required",
@@ -48,7 +49,7 @@ function CheckoutForm({ shippingForm, clearCart }: Props) {
       clearCart();
       router.push("/");
     }
-    setLoading(false);
+    setIsProcessing(false);
   };
 
   return (
@@ -60,11 +61,12 @@ function CheckoutForm({ shippingForm, clearCart }: Props) {
       {paymentReady && (
         <button
           type="button"
-          disabled={loading}
+          disabled={isProcessing}
           onClick={handleClick}
           className="mt-4 w-full bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-lg flex items-center justify-center"
         >
-          {loading ? "Processing..." : "Pay"}
+          {isProcessing ? <Spinner className="size-4 animate-spin" /> : null}
+          {isProcessing ? "Processing..." : "Pay"}
         </button>
       )}
     </form>

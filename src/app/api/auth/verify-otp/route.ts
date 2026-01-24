@@ -2,13 +2,13 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashOTP } from "@/lib/auth/otp";
 import { signToken } from "@/lib/auth/jwt";
-import { RouteError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/route-error-handler";
 
 export async function POST(req: Request) {
   try {
     const { email, otp } = await req.json();
     if (!email || !otp) {
-      throw new RouteError("Missing required fields.", 400);
+      throw new AppError("Missing required fields.", 400);
     }
 
     // Check if token record exists
@@ -17,15 +17,15 @@ export async function POST(req: Request) {
       orderBy: { createdAt: "desc" },
     });
     if (!tokenRecord) {
-      throw new RouteError("OTP not found.", 404);
+      throw new AppError("OTP not found.", 404);
     }
     // check expiration
     if (new Date() > tokenRecord.expiresAt) {
-      throw new RouteError("OTP expired.", 400);
+      throw new AppError("OTP expired.", 400);
     }
     // check OTP
     if (tokenRecord.tokenHash !== hashOTP(otp)) {
-      throw new RouteError("Invalid OTP.", 400);
+      throw new AppError("Invalid OTP.", 400);
     }
 
     // Optionally: delete the token after verification
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
       data: { token: resetToken },
     });
   } catch (error: unknown) {
-    if (error instanceof RouteError) {
+    if (error instanceof AppError) {
       return NextResponse.json(
         { message: error.message },
         { status: error.status },
