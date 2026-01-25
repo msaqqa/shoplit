@@ -5,7 +5,7 @@ import {
   PaymentElement,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { TShippingFormInputs } from "@/types/cart";
+import { TShippingFormInputs } from "@/lib/schemas/payment";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Spinner } from "./ui/spinner";

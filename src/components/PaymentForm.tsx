@@ -4,7 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import useCartStore from "@/stores/cartStore";
 import useUserStore from "@/stores/userStore";
 import CheckoutForm from "./CheckoutForm";
-import { TShippingFormInputs } from "@/types/cart";
+import { TShippingFormInputs } from "@/lib/schemas/payment";
 import { payOrder } from "@/services/orders";
 import { useTheme } from "next-themes";
 
