@@ -17,10 +17,10 @@ import { useForm } from "react-hook-form";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "react-toastify";
 import { signupUserClient } from "@/services/auth";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/router";
+import { signupSchema, TSignupSchema } from "@/lib/schemas/auth";
 
 export default function Page() {
   const router = useRouter();
@@ -30,34 +30,12 @@ export default function Page() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const formSchema = z
-    .object({
-      name: z.string().min(1, { message: "User name is required!" }),
-      email: z.email().min(1, "Email is required!"),
-      password: z
-        .string()
-        .regex(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/,
-          "Password must contains uppercase, lowercase and special character",
-        ),
-      confirmPassword: z.string(),
-      accept: z.boolean().refine((val) => val === true, {
-        message: "Please agree to the privacy policy to continue.",
-      }),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords do not match.",
-      path: ["confirmPassword"],
-    });
-
-  type SignupFormInputs = z.infer<typeof formSchema>;
-
-  const form = useForm<SignupFormInputs>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<TSignupSchema>({
+    resolver: zodResolver(signupSchema),
     mode: "onBlur",
   });
 
-  const onSubmit = async (data: SignupFormInputs) => {
+  const onSubmit = async (data: TSignupSchema) => {
     setError(null);
     setIsProcessing(true);
     try {

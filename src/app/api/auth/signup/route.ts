@@ -8,10 +8,11 @@ export async function POST(req: Request) {
     const body = await req.json();
     const user = await registerUser(body);
     revalidatePath("/admin/users");
-    return NextResponse.json({
+    const response = NextResponse.json({
       message: "Account created successfully.",
       data: user,
     });
+    return response;
   } catch (error: unknown) {
     if (error instanceof AppError) {
       return NextResponse.json(

@@ -15,7 +15,6 @@ import { Progress } from "@/components/ui/progress";
 import { BadgeCheck, Candy, Citrus, Shield } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppLineChart from "@/components/admin/AppLineChart";
-import { TUser } from "@/types/users";
 import { getUserById } from "@/app/actions/users";
 import AddUser from "@/components/admin/AddUser";
 
@@ -25,7 +24,7 @@ const SingleUserPage = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  const user = (await getUserById(Number(id))) as TUser;
+  const { data: user } = await getUserById(Number(id));
   if (!user) {
     return <div className="">User not found!</div>;
   }
@@ -159,7 +158,7 @@ const SingleUserPage = async ({
               </div> */}
               <div className="flex items-center gap-2">
                 <span className="font-bold">Role:</span>
-                <span>{String(user.role) || "user"}</span>
+                <span>{user.role}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">Status:</span>

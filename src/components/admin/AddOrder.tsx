@@ -31,14 +31,14 @@ import { createOrder } from "@/app/actions/orders";
 import { toast } from "react-toastify";
 import { TProducts } from "@/types/products";
 import { TUsers } from "@/types/users";
-import { OrderFormInputs, orderFormSchema } from "@/types/orders";
+import { OrderFormInputs, orderFormSchema } from "@/lib/schemas/orders";
 import { getProducts } from "@/app/actions/products";
 import { getUsers } from "@/app/actions/users";
 import { Spinner } from "../ui/spinner";
 import { Plus, ShoppingBasket } from "lucide-react";
 import { SidebarMenuButton } from "../ui/sidebar";
 
-const AddOrder = ({ tableBtn = false }) => {
+function AddOrder({ tableBtn = false }) {
   const [dataProducts, setProducts] = useState<TProducts>([]);
   const [users, setUsers] = useState<Omit<TUsers, "password">>([]);
   const [open, setOpen] = useState(false);
@@ -47,7 +47,7 @@ const AddOrder = ({ tableBtn = false }) => {
   useEffect(() => {
     const loadData = async () => {
       const { data: productsData } = await getProducts();
-      const fixedProductsData = (productsData ?? []).map((product) => ({
+      const fixedProductsData = (productsData?.data ?? []).map((product) => ({
         ...product,
         sizes: product.sizes as string[],
         colors: product.colors as string[],
@@ -55,7 +55,7 @@ const AddOrder = ({ tableBtn = false }) => {
       }));
       setProducts(fixedProductsData);
       const { data: usersData } = await getUsers();
-      setUsers(usersData ?? []);
+      setUsers(usersData?.data ?? []);
     };
     loadData();
   }, []);
@@ -91,8 +91,11 @@ const AddOrder = ({ tableBtn = false }) => {
 
   const handleOrderForm = async (data: OrderFormInputs) => {
     setIsProcessing(true);
-    await createOrder({ ...data, userId: Number(data.userId) });
-    toast.success("Order created successfully");
+    const { data: result } = await createOrder({
+      ...data,
+      userId: Number(data.userId),
+    });
+    toast.success(result?.message);
     setOpen(false);
     setIsProcessing(false);
   };
@@ -384,6 +387,6 @@ const AddOrder = ({ tableBtn = false }) => {
       </SheetContent>
     </Sheet>
   );
-};
+}
 
 export default AddOrder;

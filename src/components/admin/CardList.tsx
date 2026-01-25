@@ -128,13 +128,13 @@ async function CardList({ title }: { title: string }) {
   let popuarProducts: TProducts = [];
   let latestTransactions: TOrders = [];
   if (title === "popularProducts") {
-    const { data } = await getProducts({
+    const { data: result } = await getProducts({
       params: "popularProducts",
     });
-    popuarProducts = data as TProducts;
+    popuarProducts = (result?.data as TProducts) || [];
   } else {
-    const { data } = await getOrders({ limit: 5 });
-    latestTransactions = data as TOrders;
+    const { data: result } = await getOrders({ limit: 5 });
+    latestTransactions = (result?.data as TOrders) || [];
   }
   return (
     <div>

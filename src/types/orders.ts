@@ -1,6 +1,6 @@
-import { z } from "zod";
 import { TUser } from "./users";
 
+// Order product type
 export type TOrderProduct = {
   id: number;
   name: string;
@@ -8,6 +8,7 @@ export type TOrderProduct = {
   price: number;
 };
 
+// Order type
 export type TOrder = {
   id: number;
   userId: number;
@@ -20,26 +21,12 @@ export type TOrder = {
   user?: TUser;
 };
 
+// Orders data type
 export type TOrders = TOrder[];
 
+// Orde chart type
 export type TOrderChart = {
   month: string;
   total: number;
   successful: number;
 };
-
-const productSchema = z.object({
-  name: z.string().min(1, "Product name is required"),
-  quantity: z.number().min(1, "Quantity must be at least 1"),
-  price: z.number().min(0, "Price must be at least 0"),
-});
-
-export const orderFormSchema = z.object({
-  userId: z.number(),
-  email: z.email().min(1, "Email is required!"),
-  amount: z.number().min(1, "Amount must be at least 1"),
-  status: z.enum(["success", "failed"]),
-  products: z.array(productSchema).min(1, "At least 1 product is required"),
-});
-
-export type OrderFormInputs = z.infer<typeof orderFormSchema>;

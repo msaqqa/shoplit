@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/chart";
 import { TOrderChart } from "@/types/orders";
 import { useEffect, useState } from "react";
-import { fetchOrderChart } from "@/services/orders";
+import { getOrderChart } from "@/services/orders";
 
 // const chartData = [
 //   { month: "January", total: 186, successful: 80 },
@@ -33,13 +33,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function AppBarChart() {
+function AppBarChart() {
   const [orderChart, setOrderChart] = useState<TOrderChart[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetchOrderChart();
+      const result = await getOrderChart();
       setOrderChart((result as { data: TOrderChart[] }).data);
-      console.log("result", (result as { data: TOrderChart[] }).data);
     };
     fetchData();
   }, []);

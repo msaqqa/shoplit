@@ -34,10 +34,11 @@ export async function POST(req: Request) {
     // create a token for resetting password
     const resetToken = await signToken({ email }, "5m");
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       message: "OTP verified.",
       data: { token: resetToken },
     });
+    return response;
   } catch (error: unknown) {
     if (error instanceof AppError) {
       return NextResponse.json(

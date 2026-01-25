@@ -2,8 +2,7 @@
 import {
   CategoryFormInputs,
   categoryFormSchema,
-  TCategory,
-} from "@/types/categoryies";
+} from "@/lib/schemas/categories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit, Plus, Projector } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -20,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { SidebarMenuButton } from "../ui/sidebar";
 import { useState } from "react";
 import { Spinner } from "../ui/spinner";
+import { TCategory } from "@/types/categoryies";
 
 function AddCategory({
   category,

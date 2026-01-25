@@ -1,7 +1,7 @@
 import { prisma } from "../prisma";
 import { startOfMonth, subMonths } from "date-fns";
 
-export async function getOrderChart() {
+export async function setOrderChart() {
   const now = new Date();
   const sixMonthsAgo = startOfMonth(subMonths(now, 5));
 
@@ -43,7 +43,7 @@ export async function getOrderChart() {
     const monthOrders = orders.filter(
       (o) =>
         o.createdAt.getFullYear() === year &&
-        o.createdAt.getMonth() + 1 === month
+        o.createdAt.getMonth() + 1 === month,
     );
 
     results.push({

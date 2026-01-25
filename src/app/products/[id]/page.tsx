@@ -3,18 +3,19 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { geTProductByID } from "@/app/actions/products";
 
-export const generateMetadata = async ({
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
-}) => {
+}) {
   const { id } = await params;
-  const product = await geTProductByID(Number(id));
+  const { data: result } = await geTProductByID(Number(id));
+  const product = result?.data;
   return {
     title: product?.name,
     describe: product?.description,
   };
-};
+}
 
 async function SingleProductPage({
   params,
@@ -24,10 +25,8 @@ async function SingleProductPage({
   searchParams?: Promise<{ size?: string; color?: string }>;
 }) {
   const { id } = await params;
-  if (Number.isNaN(id)) {
-    notFound();
-  }
-  const product = await geTProductByID(Number(id));
+  const { data: result } = await geTProductByID(Number(id));
+  const product = result?.data;
   if (!product) {
     notFound();
   }

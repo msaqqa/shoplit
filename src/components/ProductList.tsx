@@ -13,21 +13,21 @@ async function ProductList({
   search,
   params,
 }: TProductsParams) {
-  const { data: products } = await getProducts({
+  const { data: productsData } = await getProducts({
     categoryId,
     sort,
     search,
     params,
   });
-  const data = await getCategories();
-  const categories = (data as { data: TCategories }).data || [];
+  const result = await getCategories();
+  const categories = (result as { data: TCategories }).data;
   return (
     <div className="w-full">
       <Categories categories={categories} />
       {params === "products" && <Filter />}
       {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
-          {(products ?? []).map((product) => (
+          {(productsData?.data ?? []).map((product) => (
             <ProductCard key={product.id} product={product as TProduct} />
           ))}
         </div>

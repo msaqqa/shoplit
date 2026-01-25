@@ -2,8 +2,7 @@
 import {
   CategoryFormInputs,
   categoryFormSchema,
-  TCategory,
-} from "@/types/categoryies";
+} from "@/lib/schemas/categories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Projector } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,6 +10,7 @@ import { toast } from "react-toastify";
 import { SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 import { updateCategory } from "@/services/categories";
 import { useRouter } from "next/navigation";
+import { TCategory } from "@/types/categoryies";
 
 function UpdateCategory({ category }: { category: TCategory }) {
   const router = useRouter();

@@ -12,11 +12,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
 
-export default function PaymentForm({
-  shippingForm,
-}: {
-  shippingForm: TShippingFormInputs;
-}) {
+function PaymentForm({ shippingForm }: { shippingForm: TShippingFormInputs }) {
   const { theme } = useTheme();
   const { cart, clearCart } = useCartStore();
   const { user } = useUserStore();
@@ -76,3 +72,5 @@ export default function PaymentForm({
     </Elements>
   );
 }
+
+export default PaymentForm;

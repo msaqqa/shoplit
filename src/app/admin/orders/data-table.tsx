@@ -61,7 +61,7 @@ export function DataTable<TData extends { id: number }, TValue>({
             <ConfirmDeleteDialog
               trigger={
                 <button className="flex items-center gap-2 bg-red-500 text-white px-2 py-1 text-sm rounded-md cursor-pointer">
-                  <Trash2 className="w-4 h-4" /> Delete category(s)
+                  <Trash2 className="w-4 h-4" /> Delete order(s)
                 </button>
               }
               title="Delete order?"

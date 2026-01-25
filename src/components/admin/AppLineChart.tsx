@@ -29,7 +29,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function AppLineChart() {
+function AppLineChart() {
   return (
     <ChartContainer config={chartConfig}>
       <LineChart

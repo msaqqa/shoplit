@@ -1,5 +1,4 @@
-import { z } from "zod";
-// User
+// User type
 export type TUser = {
   id: number;
   name: string;
@@ -11,28 +10,16 @@ export type TUser = {
   updatedAt?: Date;
 };
 
+// Users data type
 export type TUsers = TUser[];
 
-export const userFormSchema = z.object({
-  name: z.string().min(1, { message: "User name is required!" }),
-  password: z.string().min(1, { message: "password is required!" }),
-  email: z.email().min(1, "Email is required!"),
-  avatar: z.string().optional(),
-});
-
-export type UserFormInputs = z.infer<typeof userFormSchema>;
-
-export const updateUserSchema = userFormSchema.omit({
-  password: true,
-});
-export type UserUpdateInputs = z.infer<typeof updateUserSchema>;
-
-// User store
+// User store type
 export type TUserStoreState = {
   user: TUser | null;
   hasHydrated: boolean;
 };
 
+// User store actions type
 export type TUserStoreActions = {
   signinUser: (user: TUser) => void;
   signoutUser: () => void;

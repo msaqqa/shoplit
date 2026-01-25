@@ -1,8 +1,9 @@
 "use server";
+
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { actionWrapper } from "@/lib/action-wrapper";
-import { UserUpdateInputs } from "@/types/users";
+import { UserUpdateInputs } from "@/lib/schemas/users";
 import { deleteImageFromCloudinary } from "./cloudinary";
 import { AppError } from "@/lib/error/route-error-handler";
 
@@ -11,6 +12,7 @@ import { AppError } from "@/lib/error/route-error-handler";
 //   if (!name || !email || !password) return;
 //   await prisma.user.create({ data });
 //   revalidatePath("/admin/users");
+//   return { data: response, message: "User has been created successfully." };
 // }
 
 export async function getUsers() {
@@ -26,7 +28,7 @@ export async function getUsers() {
         status: true,
       },
     });
-    return response;
+    return { data: response };
   });
 }
 
@@ -40,9 +42,11 @@ export async function getUserById(id: number) {
         email: true,
         role: true,
         avatar: true,
+        status: true,
+        createdAt: true,
       },
     });
-    return response;
+    return { data: response };
   });
 }
 
@@ -50,7 +54,10 @@ export async function updateUserById(id: number, data: UserUpdateInputs) {
   return actionWrapper(async () => {
     const response = await prisma.user.update({ where: { id }, data });
     revalidatePath("/admin/users");
-    return response;
+    return {
+      data: response,
+      message: "User settings have been updated successfully.",
+    };
   });
 }
 
@@ -71,6 +78,6 @@ export async function deleteUser(id: number) {
       where: { id },
     });
     revalidatePath("/admin/users");
-    return user;
+    return { data: user, message: "User has been deleted successfully." };
   });
 }

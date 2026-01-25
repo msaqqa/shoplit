@@ -20,9 +20,9 @@ import { toast } from "react-toastify";
 import useUserStore from "@/stores/userStore";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { TUser } from "@/types/users";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { signinSchema, TSigninSchema } from "@/lib/schemas/auth";
 
 export default function Page() {
   const router = useRouter();
@@ -31,19 +31,11 @@ export default function Page() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const formSchema = z.object({
-    email: z.email().min(1, "Email is required!"),
-    password: z.string(),
-    rememberMe: z.boolean().optional(),
-  });
-
-  type SigninFormInputs = z.infer<typeof formSchema>;
-
-  const form = useForm<SigninFormInputs>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<TSigninSchema>({
+    resolver: zodResolver(signinSchema),
     mode: "onBlur",
   });
-  const onSubmit = async (data: SigninFormInputs) => {
+  const onSubmit = async (data: TSigninSchema) => {
     setIsProcessing(true);
     try {
       const result = await signinUserClient(data);

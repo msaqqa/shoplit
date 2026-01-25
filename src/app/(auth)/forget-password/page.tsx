@@ -15,27 +15,24 @@ import { Spinner } from "@/components/ui/spinner";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { forgetPassword } from "@/services/auth";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import {
+  forgetPasswordSchema,
+  TForgetPasswordSchema,
+} from "@/lib/schemas/auth";
 
 export default function ForgetPasswordPage() {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const formSchema = z.object({
-    email: z.email({ message: "Please enter a valid email address." }),
+  const form = useForm<TForgetPasswordSchema>({
+    resolver: zodResolver(forgetPasswordSchema),
   });
 
-  type ForgetPasswordFormInputs = z.infer<typeof formSchema>;
-
-  const form = useForm<ForgetPasswordFormInputs>({
-    resolver: zodResolver(formSchema),
-  });
-
-  const onSubmit = async (data: ForgetPasswordFormInputs) => {
+  const onSubmit = async (data: TForgetPasswordSchema) => {
     setIsProcessing(true);
     try {
       await forgetPassword(data);

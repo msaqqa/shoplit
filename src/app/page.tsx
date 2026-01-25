@@ -1,11 +1,11 @@
 import ProductList from "@/components/ProductList";
 import Image from "next/image";
 
-const HomePage = async ({
+export default async function HomePage({
   searchParams,
 }: {
   searchParams: Promise<{ categoryId?: string }>;
-}) => {
+}) {
   const categoryId = (await searchParams).categoryId;
 
   return (
@@ -16,6 +16,4 @@ const HomePage = async ({
       <ProductList categoryId={categoryId} params="homePage" />
     </div>
   );
-};
-
-export default HomePage;
+}

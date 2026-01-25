@@ -1,20 +1,23 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { ProductFormInputs, TProductsParams } from "@/types/products";
+import { TProductsParams } from "@/types/products";
 import { revalidatePath } from "next/cache";
 import { deleteImageFromCloudinary } from "./cloudinary";
 import { actionWrapper } from "@/lib/action-wrapper";
+import { AppError } from "@/lib/error/route-error-handler";
+import { ProductFormInputs } from "@/lib/schemas/products";
 
 export async function createProduct(data: ProductFormInputs) {
   return actionWrapper(async () => {
-    await prisma.product.create({
+    const response = await prisma.product.create({
       data: {
         ...data,
         categoryId: Number(data.categoryId),
       },
     });
     revalidatePath("/admin/products");
+    return { data: response, message: "Product created successfully." };
   });
 }
 
@@ -50,21 +53,22 @@ export async function getProducts({
         category: true,
       },
     });
-    return response;
+    return { data: response };
   });
 }
 
 export async function geTProductByID(id: number) {
   return actionWrapper(async () => {
-    return await prisma.product.findUnique({
+    const response = await prisma.product.findUnique({
       where: { id },
     });
+    return { data: response };
   });
 }
 
 // Update Product
 // export async function updateProduct(id: number, data: TProductFormEdit) {
-//   await prisma.product.update({
+//   const response = await prisma.product.update({
 //     where: { id },
 //     data: {
 //       ...data,
@@ -72,12 +76,13 @@ export async function geTProductByID(id: number) {
 //     },
 //   });
 //   revalidatePath("/admin/products");
+//   return { data: response, message: "Product updated successfully." };
 // }
 
 export async function deleteProduct(id: number) {
   return actionWrapper(async () => {
     const product = await prisma.product.findUnique({ where: { id } });
-    if (!product) throw new Error("Product not found");
+    if (!product) throw new AppError("Product not found.", 404);
 
     if (product.images) {
       const images = product.images as Record<string, string>;
@@ -87,6 +92,6 @@ export async function deleteProduct(id: number) {
     }
     await prisma.product.delete({ where: { id } });
     revalidatePath("/admin/products");
-    return product;
+    return { data: product, message: "Product has been deleted successfully." };
   });
 }

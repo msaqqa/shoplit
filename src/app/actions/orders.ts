@@ -3,7 +3,7 @@
 import { actionWrapper } from "@/lib/action-wrapper";
 import { AppError } from "@/lib/error/route-error-handler";
 import { prisma } from "@/lib/prisma";
-import { OrderFormInputs } from "@/types/orders";
+import { OrderFormInputs } from "@/lib/schemas/orders";
 import { revalidatePath } from "next/cache";
 
 // Create order
@@ -21,7 +21,7 @@ export async function createOrder(data: OrderFormInputs) {
       },
     });
     revalidatePath("/admin/orders");
-    return response;
+    return { data: response, message: "Order placed successfully." };
   });
 }
 
@@ -35,7 +35,7 @@ export async function getOrders({ limit }: { limit?: number | undefined }) {
       },
       take: limit || undefined,
     });
-    return response;
+    return { data: response };
   });
 }
 
@@ -52,6 +52,6 @@ export async function deleteOrder(id: number) {
       where: { id },
     });
     revalidatePath("/admin/orders");
-    return order;
+    return { data: order, message: "Order has been deleted successfully." };
   });
 }

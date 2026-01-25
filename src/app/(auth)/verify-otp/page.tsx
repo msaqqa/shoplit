@@ -14,10 +14,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { verifyOtp } from "@/services/auth";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
+import { TVerifyOtpSchema, verifyOtpSchema } from "@/lib/schemas/auth";
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -26,21 +26,15 @@ export default function Page() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const formSchema = z.object({
-    otp: z.string().regex(/^\d{6}$/, "Should be exactly 6 digits long"),
-  });
-
-  type EmailFormInput = z.infer<typeof formSchema>;
-
-  const form = useForm<EmailFormInput>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<TVerifyOtpSchema>({
+    resolver: zodResolver(verifyOtpSchema),
     defaultValues: {
       otp: "",
     },
     mode: "onBlur",
   });
 
-  const onSubmit = async (data: EmailFormInput) => {
+  const onSubmit = async (data: TVerifyOtpSchema) => {
     setIsProcessing(true);
     try {
       const res = await verifyOtp({ email, ...data });

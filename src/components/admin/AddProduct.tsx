@@ -1,5 +1,5 @@
 "use client";
-import { ProductFormInputs, productFormSchema } from "@/types/products";
+import { ProductFormInputs, productFormSchema } from "@/lib/schemas/products";
 import { TCategories } from "@/types/categoryies";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -50,8 +50,8 @@ function AddProduct({ tableBtn = false }) {
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await getCategories();
-      const categoriesData = (data as { data: TCategories }).data || [];
+      const result = await getCategories();
+      const categoriesData = (result as { data: TCategories }).data || [];
       setCategories(categoriesData);
     };
     loadData();
@@ -64,8 +64,8 @@ function AddProduct({ tableBtn = false }) {
   const handleProductForm: SubmitHandler<ProductFormInputs> = async (data) => {
     console.log(data);
     setIsProcessing(true);
-    await createProduct(data);
-    toast.success("Product created successfully");
+    const { data: result } = await createProduct(data);
+    toast.success(result?.message);
     setOpenProduct(false);
     setIsProcessing(false);
   };

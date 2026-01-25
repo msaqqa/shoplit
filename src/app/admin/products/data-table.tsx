@@ -23,6 +23,7 @@ import { Trash2 } from "lucide-react";
 import AddProduct from "@/components/admin/AddProduct";
 import ConfirmDeleteDialog from "@/components/common/confirm-delete-dialog";
 import { deleteProduct } from "@/app/actions/products";
+import { toast } from "react-toastify";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -35,6 +36,7 @@ export function DataTable<TData extends { id: number }, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
+  const [showToast, setShowToast] = useState(false);
 
   const table = useReactTable({
     data,
@@ -59,18 +61,32 @@ export function DataTable<TData extends { id: number }, TValue>({
             <ConfirmDeleteDialog
               trigger={
                 <button className="flex items-center gap-2 bg-red-500 text-white px-2 py-1 text-sm rounded-md cursor-pointer">
-                  <Trash2 className="w-4 h-4" /> Delete category(s)
+                  <Trash2 className="w-4 h-4" /> Delete product(s)
                 </button>
               }
               title="Delete product?"
               description="This product will be permanently removed."
+              showToast={true}
               onConfirm={async () => {
                 const selectedProductIds = table
                   .getSelectedRowModel()
                   .rows.map((row) => row.original.id);
-                await Promise.all(
+                const results = await Promise.all(
                   selectedProductIds.map((id) => deleteProduct(id)),
-                ).finally(() => setRowSelection({}));
+                );
+                // Check and show the errors for each individual row
+                let successCount = 0;
+                results.map((res, index) => {
+                  if ("error" in res && res.error) {
+                    toast.error(
+                      `Error deleting product ${index + 1}: ${res.error.message}`,
+                    );
+                  } else {
+                    successCount++;
+                  }
+                });
+                if (successCount > 0) setShowToast(true);
+                setRowSelection({});
               }}
             />
           )}

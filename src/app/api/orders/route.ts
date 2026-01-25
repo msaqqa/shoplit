@@ -1,13 +1,14 @@
-import { getOrderChart } from "@/lib/server/orders";
+import { setOrderChart } from "@/lib/server/orders";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const result = await getOrderChart();
-    return NextResponse.json({
+    const orderChart = await setOrderChart();
+    const response = NextResponse.json({
       message: "Order statistics retrieved successfully.",
-      data: result,
+      data: orderChart,
     });
+    return response;
   } catch (error: unknown) {
     const message =
       error instanceof Error ? error.message : "An unexpected error occurred.";

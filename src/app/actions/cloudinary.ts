@@ -1,4 +1,5 @@
 "use server";
+
 import cloudinary from "cloudinary";
 
 cloudinary.v2.config({
@@ -12,7 +13,6 @@ export async function deleteImageFromCloudinary(url: string) {
   const publicId = parts.includes("/")
     ? parts.split("/").slice(1).join("/").split(".")[0]
     : parts.split(".")[0];
-  const result = await cloudinary.v2.uploader.destroy(publicId);
-  console.log("result", result);
-  return result;
+  const response = await cloudinary.v2.uploader.destroy(publicId);
+  return response;
 }

@@ -7,7 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const ProductInteraction = ({
+function ProductInteraction({
   product,
   selectedSize,
   selectedColor,
@@ -15,7 +15,7 @@ const ProductInteraction = ({
   product: TProduct;
   selectedSize: string;
   selectedColor: string;
-}) => {
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -130,6 +130,6 @@ const ProductInteraction = ({
       </button>
     </div>
   );
-};
+}
 
 export default ProductInteraction;

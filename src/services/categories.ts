@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { CategoryFormInputs } from "@/types/categoryies";
+import { CategoryFormInputs } from "@/lib/schemas/categories";
 
 export async function getCategories() {
   const response = await api.get("/categories");

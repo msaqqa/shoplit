@@ -3,7 +3,6 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircleIcon, Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,6 +18,7 @@ import { resetPassword } from "@/services/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import { resetPasswordSchema, TResetPasswordSchema } from "@/lib/schemas/auth";
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -31,29 +31,12 @@ export default function Page() {
     useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const formSchema = z
-    .object({
-      newPassword: z
-        .string()
-        .regex(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/,
-          "Password must contains uppercase, lowercase and special character",
-        ),
-      confirmPassword: z.string(),
-    })
-    .refine((data) => data.newPassword === data.confirmPassword, {
-      message: "Passwords do not match.",
-      path: ["confirmPassword"],
-    });
-
-  type PasswordFormInputs = z.infer<typeof formSchema>;
-
-  const form = useForm<PasswordFormInputs>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<TResetPasswordSchema>({
+    resolver: zodResolver(resetPasswordSchema),
     mode: "onBlur",
   });
 
-  const onSubmit = async (data: PasswordFormInputs) => {
+  const onSubmit = async (data: TResetPasswordSchema) => {
     setIsProcessing(true);
     try {
       const res = (await resetPassword({ ...data, token, email })) as {

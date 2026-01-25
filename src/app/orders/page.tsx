@@ -1,16 +1,16 @@
 import { getOrders } from "@/app/actions/orders";
 import { TOrder } from "@/types/orders";
 
-const OrdersPage = async () => {
-  const { data: orders } = await getOrders({});
-  if (!orders) {
+async function OrdersPage() {
+  const { data: result } = await getOrders({});
+  if (!result?.data) {
     return <div className="">No orders found!</div>;
   }
   return (
     <div className="">
       <h1 className="text-2xl my-4 font-medium">Your Orders</h1>
       <ul>
-        {(orders ?? []).map((order: TOrder) => (
+        {(result?.data ?? []).map((order: TOrder) => (
           <li key={order.id} className="flex items-center mb-4">
             <div className="w-1/4">
               <span className="font-medium text-sm text-gray-500">
@@ -48,6 +48,6 @@ const OrdersPage = async () => {
       </ul>
     </div>
   );
-};
+}
 
 export default OrdersPage;

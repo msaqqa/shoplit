@@ -31,7 +31,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function AppAreaChart() {
+function AppAreaChart() {
   return (
     <div>
       <ChartContainer config={chartConfig} className="min-h-[200px] w-full">

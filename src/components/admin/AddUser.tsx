@@ -1,11 +1,10 @@
 "use client";
 import {
-  TUser,
   updateUserSchema,
   UserFormInputs,
   userFormSchema,
   UserUpdateInputs,
-} from "@/types/users";
+} from "@/lib/schemas/users";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -37,6 +36,7 @@ import { useRouter } from "next/navigation";
 import { updateUserById } from "@/app/actions/users";
 import { SidebarMenuButton } from "../ui/sidebar";
 import { Spinner } from "../ui/spinner";
+import { TUser } from "@/types/users";
 
 function AddUser({
   user,
@@ -91,9 +91,15 @@ function AddUser({
       email: data.email,
       avatar: data.avatar,
     };
-    await (user && user.id
-      ? updateUserById(user.id, updatedUser)
-      : signupUserClient(data as UserFormInputs));
+    if (user && user.id) {
+      const { data: result } = await updateUserById(user.id, updatedUser);
+      toast.success(result?.message);
+    } else {
+      const result = await signupUserClient(data as UserFormInputs);
+      if (result && typeof result === "object" && "message" in result) {
+        toast.success((result as { message?: string }).message);
+      }
+    }
     toast.success("User added successfully");
     setOpen(false);
     router.refresh();

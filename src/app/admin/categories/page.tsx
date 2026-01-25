@@ -4,8 +4,8 @@ import { getCategories } from "@/services/categories";
 import { TCategories } from "@/types/categoryies";
 
 async function CategoriesPage() {
-  const data = await getCategories();
-  const categories: TCategories = (data as { data: TCategories }).data || [];
+  const result = await getCategories();
+  const categories: TCategories = (result as { data: TCategories }).data || [];
 
   return (
     <div className="">

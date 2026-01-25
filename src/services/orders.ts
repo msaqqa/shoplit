@@ -13,7 +13,7 @@ export const payOrder = async (data: {
   return await response.data;
 };
 
-export const fetchOrderChart = async () => {
+export const getOrderChart = async () => {
   const response = await api.get("/orders");
   return response.data;
 };
