@@ -1,8 +1,9 @@
 "use client";
 import PaymentForm from "@/components/PaymentForm";
 import ShippingForm from "@/components/ShippingForm";
+import { TShippingFormInputs } from "@/lib/schemas/payment";
 import useCartStore from "@/stores/cartStore";
-import { TCartItem, TShippingFormInputs } from "@/types/cart";
+import { TCartItem } from "@/types/cart";
 import { ArrowRight, Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
