@@ -20,7 +20,7 @@ async function ProductList({
     params,
   });
   const result = await getCategories();
-  const categories = (result as { data: TCategories }).data;
+  const categories = (result as { data: TCategories }).data ?? [];
   return (
     <div className="w-full">
       <Categories categories={categories} />

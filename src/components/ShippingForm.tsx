@@ -1,5 +1,5 @@
 "use client";
-import { shippingFormSchema, TShippingFormInputs } from "@/types/cart";
+import { shippingFormSchema, TShippingFormInputs } from "@/lib/schemas/payment";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
