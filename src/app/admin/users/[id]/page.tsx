@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppLineChart from "@/components/admin/AppLineChart";
 import { getUserById } from "@/app/actions/users";
 import AddUser from "@/components/admin/AddUser";
+import { notFound } from "next/navigation";
 
 const SingleUserPage = async ({
   params,
@@ -24,9 +25,10 @@ const SingleUserPage = async ({
   params: Promise<{ id: number }>;
 }) => {
   const { id } = await params;
-  const { data: user } = await getUserById(Number(id));
+  const { data: result } = await getUserById(Number(id));
+  const user = result?.data;
   if (!user) {
-    return <div className="">User not found!</div>;
+    notFound();
   }
 
   return (
