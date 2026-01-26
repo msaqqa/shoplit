@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 import { signupUserClient } from "@/services/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { signupSchema, TSignupSchema } from "@/lib/schemas/auth";
 
 export default function Page() {
