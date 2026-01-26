@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import { LogOut, Settings, User as UserIcon } from "lucide-react";
 import { logout } from "@/services/auth";
 import { useRouter } from "next/navigation";

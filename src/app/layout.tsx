@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { ToastContainer } from "react-toastify";
 import ThemeProvider from "@/providers/ThemeProdider";
+import ToastProvider from "@/providers/ToastProvider";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
-import AppSidebar from "@/components/admin/AppSidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,25 +28,17 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
-
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="mx-auto py-4 px-0 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-7xl">
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <SidebarProvider defaultOpen={defaultOpen}>
-              <AppSidebar />
-              <main className="w-full">
-                <Navbar />
-                {children}
-                <Footer />
-              </main>
-            </SidebarProvider>
-          </ThemeProvider>
-        </div>
-        <ToastContainer position="bottom-right" />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <SidebarProvider defaultOpen={defaultOpen}>
+            <main className="w-full">{children}</main>
+          </SidebarProvider>
+        </ThemeProvider>
+        <ToastProvider />
       </body>
     </html>
   );

@@ -161,7 +161,9 @@ async function CardList({ title }: { title: string }) {
                       {item.name}
                     </CardTitle>
                   </CardContent>
-                  <CardFooter className="p-0">${item.price}</CardFooter>
+                  <CardFooter className="p-0">
+                    ${item.price.toFixed(2)}
+                  </CardFooter>
                 </Card>
               );
             })
@@ -175,7 +177,7 @@ async function CardList({ title }: { title: string }) {
                   </CardContent>
                   <CardFooter className="p-0 flex justify-between">
                     <Badge variant="secondary">{item.status}</Badge>
-                    <span>{item.amount / 100}$</span>
+                    <span>{(item.amount / 100).toFixed(2)}$</span>
                   </CardFooter>
                 </Card>
               );

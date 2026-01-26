@@ -1,6 +1,6 @@
 "use client";
-import PaymentForm from "@/components/PaymentForm";
-import ShippingForm from "@/components/ShippingForm";
+import PaymentForm from "@/components/client/PaymentForm";
+import ShippingForm from "@/components/client/ShippingForm";
 import { TShippingFormInputs } from "@/lib/schemas/payment";
 import useCartStore from "@/stores/cartStore";
 import { TCartItem } from "@/types/cart";

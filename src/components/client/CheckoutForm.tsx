@@ -8,7 +8,7 @@ import {
 import { TShippingFormInputs } from "@/lib/schemas/payment";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { Spinner } from "./ui/spinner";
+import { Spinner } from "../ui/spinner";
 
 type Props = {
   shippingForm: TShippingFormInputs;

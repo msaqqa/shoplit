@@ -1,4 +1,4 @@
-import ProductInteraction from "@/components/ProductInteraction";
+import ProductInteraction from "@/components/client/ProductInteraction";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { geTProductByID } from "@/app/actions/products";

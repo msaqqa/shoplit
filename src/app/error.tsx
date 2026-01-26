@@ -16,7 +16,7 @@ export default function Error({
     isNetwork: false,
   };
 
-// Check for client-side connectivity issues
+  // Check for client-side connectivity issues
   const isOffline = typeof window !== "undefined" && !navigator.onLine;
   if (isOffline) {
     errorDetails.message = DEFAULT_MESSAGES[ERROR_CODES.NETWORK_ERROR];
@@ -37,7 +37,7 @@ export default function Error({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[75vh] px-4 bg-white dark:bg-[#0a0a0a]">
+    <div className="h-screen min-h-min flex flex-col items-center justify-center p-8 bg-white dark:bg-[#0a0a0a]">
       <div className="bg-white dark:bg-[#121212] p-8 rounded-3xl shadow-xl border border-slate-100 dark:border-zinc-800 max-w-md w-full text-center">
         <div
           className={`mx-auto flex items-center justify-center h-20 w-20 rounded-full mb-6 ${

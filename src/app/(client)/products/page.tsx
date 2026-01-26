@@ -1,4 +1,4 @@
-import ProductList from "@/components/ProductList";
+import ProductList from "@/components/client/ProductList";
 import { TProductsParams } from "@/types/products";
 
 async function ProductsPage({

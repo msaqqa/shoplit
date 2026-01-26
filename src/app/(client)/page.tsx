@@ -1,4 +1,4 @@
-import ProductList from "@/components/ProductList";
+import ProductList from "@/components/client/ProductList";
 import Image from "next/image";
 
 export default async function HomePage({

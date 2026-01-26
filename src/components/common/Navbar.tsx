@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import SearchBar from "./SearchBar";
+import SearchBar from "../client/SearchBar";
 import { Bell, Moon, Sun } from "lucide-react";
 import ShoppingCartIcon from "./ShoppingCartIcon";
 import { useTheme } from "next-themes";
@@ -11,10 +10,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 import TogleUserIcon from "./TogleUserIcon";
-import SidebarButton from "./admin/SidebarButton";
+import SidebarButton from "../admin/SidebarButton";
 import useUserStore from "@/stores/userStore";
 
 function Navbar() {
