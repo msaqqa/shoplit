@@ -1,5 +1,6 @@
 "use client";
 import useCartStore from "@/stores/cartStore";
+import useUserStore from "@/stores/userStore";
 import { TProduct } from "@/types/products";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import Link from "next/link";
@@ -20,8 +21,8 @@ function ProductInteraction({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [quantity, setQuantity] = useState(1);
-
   const { addToCart } = useCartStore();
+  const { user } = useUserStore();
 
   const handleTypeChange = (type: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -112,22 +113,34 @@ function ProductInteraction({
         </div>
       </div>
       {/* BUTTONS */}
-      <button
-        onClick={handleAddToCart}
-        className="bg-gray-800 text-white px-4 py-2 rounded-md shadow-lg flex items-center justify-center gap-2 cursor-pointer text-sm font-medium"
-      >
-        <Plus className="w-4 h-4" />
-        Add to Cart
-      </button>
-      <button onClick={handleAddToCart}>
+      {user ? (
+        <>
+          <button
+            onClick={handleAddToCart}
+            className="bg-gray-800 text-white px-4 py-2 rounded-md shadow-lg flex items-center justify-center gap-2 cursor-pointer text-sm font-medium"
+          >
+            <Plus className="w-4 h-4" />
+            Add to Cart
+          </button>
+          <button onClick={handleAddToCart}>
+            <Link
+              href="/cart"
+              className="ring-1 ring-gray-400 shadow-lg text-gray-800 px-4 py-2 rounded-md flex items-center justify-center cursor-pointer gap-2 text-sm font-medium"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              Buy this Item
+            </Link>
+          </button>
+        </>
+      ) : (
         <Link
-          href="/cart"
+          href="/signin"
           className="ring-1 ring-gray-400 shadow-lg text-gray-800 px-4 py-2 rounded-md flex items-center justify-center cursor-pointer gap-2 text-sm font-medium"
         >
           <ShoppingCart className="w-4 h-4" />
-          Buy this Item
+          Sign in to Buy this Item
         </Link>
-      </button>
+      )}
     </div>
   );
 }
