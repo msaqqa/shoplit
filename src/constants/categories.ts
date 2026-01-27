@@ -1,3 +1,4 @@
+// TEMPORARY
 export const categories = [
   {
     name: "All",
