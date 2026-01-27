@@ -47,6 +47,7 @@ function ProductCard({ product }: { product: TProduct }) {
             src={product.images[productTypes.color]}
             alt={product.name}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover hover:scale-105 transition-all duration-300"
           />
         </div>

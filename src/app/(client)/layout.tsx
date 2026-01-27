@@ -1,11 +1,6 @@
-import type { Metadata } from "next";
 import Footer from "@/components/common/Footer";
 import Navbar from "@/components/common/Navbar";
-
-export const metadata: Metadata = {
-  title: "Shoplit",
-  description: "Shoplit",
-};
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default async function ClientLayout({
   children,

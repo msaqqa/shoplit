@@ -11,6 +11,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
+export const metadata = {
+  title: "Cart",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 const steps = [
   {
     id: 1,
@@ -85,14 +93,12 @@ const steps = [
 
 function CartPage() {
   const searchParams = useSearchParams();
+  const activeStep = parseInt(searchParams.get("step") || "1");
   const router = useRouter();
+  const { cart, removeFromCart } = useCartStore();
   const [shippingForm, setShippingForm] = useState<TShippingFormInputs | null>(
     null,
   );
-  const { cart, removeFromCart } = useCartStore();
-  console.log("CART ITEMS:", cart);
-
-  const activeStep = parseInt(searchParams.get("step") || "1");
 
   const handleRemoveFromCart = (product: TCartItem) => {
     removeFromCart(product);

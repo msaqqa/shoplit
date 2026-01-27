@@ -1,51 +1,22 @@
-import { getOrders } from "@/app/actions/orders";
-import { TOrder } from "@/types/orders";
+import { Suspense } from "react";
+import OrdersTableSkeleton from "@/components/skeletons/OrdersTableSkeleton";
+import OrdersList from "@/components/client/OrdersList";
+
+export const metadata = {
+  title: "Orders",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 async function OrdersPage() {
-  const { data: result } = await getOrders({});
-  if (!result?.data) {
-    return <div className="">No orders found!</div>;
-  }
   return (
-    <div className="">
+    <div className="w-full">
       <h1 className="text-2xl my-4 font-medium">Your Orders</h1>
-      <ul>
-        {(result?.data ?? []).map((order: TOrder) => (
-          <li key={order.id} className="flex items-center mb-4">
-            <div className="w-1/4">
-              <span className="font-medium text-sm text-gray-500">
-                Order ID
-              </span>
-              <p>{order.id}</p>
-            </div>
-            <div className="w-1/12">
-              <span className="font-medium text-sm text-gray-500">Total</span>
-              <p>{order.amount}</p>
-            </div>
-            <div className="w-1/12">
-              <span className="font-medium text-sm text-gray-500">Status</span>
-              <p>{order.status}</p>
-            </div>
-            <div className="w-1/8">
-              <span className="font-medium text-sm text-gray-500">Date</span>
-              <p>
-                {order.createdAt
-                  ? new Date(order.createdAt).toLocaleDateString("en-US")
-                  : "-"}
-              </p>
-            </div>
-            <div className="">
-              <span className="font-medium text-sm text-gray-500">
-                Products
-              </span>
-              <p>
-                {order.products?.map((product) => product.name).join(", ") ||
-                  "-"}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <Suspense fallback={<OrdersTableSkeleton />}>
+        <OrdersList />
+      </Suspense>
     </div>
   );
 }

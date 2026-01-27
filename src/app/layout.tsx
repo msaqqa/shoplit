@@ -17,8 +17,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Shoplit",
-  description: "Shoplit",
+  title: {
+    default: "Shoplit | Best Online Shop",
+    template: "%s | Shoplit",
+  },
+  description: "Your one-stop shop for everything.",
 };
 
 export default async function RootLayout({

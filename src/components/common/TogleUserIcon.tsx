@@ -1,7 +1,7 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useUserStore from "@/stores/userStore";
-import { LogIn, UserPlus } from "lucide-react";
+import { LogIn, ShoppingBasket, UserPlus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import {
@@ -50,7 +50,11 @@ function TogleUserIcon() {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <UserIcon className="size-[1.2rem] mr-2" />
-          <Link href="/account">Profile</Link>
+          <Link href="/account">My Profile</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <ShoppingBasket className="size-[1.2rem] mr-2" />
+          <Link href="/orders">My Orders</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Settings className="size-[1.2rem] mr-2" /> Settings

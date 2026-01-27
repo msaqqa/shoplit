@@ -26,7 +26,7 @@ export async function createOrder(data: OrderFormInputs) {
 }
 
 // Get orders
-export async function getOrders({ limit }: { limit?: number | undefined }) {
+export async function getOrders({ limit }: { limit?: number } = {}) {
   return actionWrapper(async () => {
     const response = await prisma.order.findMany({
       include: {

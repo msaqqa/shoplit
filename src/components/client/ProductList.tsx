@@ -13,14 +13,20 @@ async function ProductList({
   search,
   params,
 }: TProductsParams) {
-  const { data: productsData } = await getProducts({
-    categoryId,
-    sort,
-    search,
-    params,
-  });
-  const result = await getCategories();
-  const categories = (result as { data: TCategories }).data ?? [];
+  // const { data: productsData } = await getProducts({
+  //   categoryId,
+  //   sort,
+  //   search,
+  //   params,
+  // });
+  // const result = await getCategories();
+  // const categories = (result as { data: TCategories }).data ?? [];
+  const [productsRes, categoriesRes] = await Promise.all([
+    getProducts({ categoryId, sort, search, params }),
+    getCategories<{ data: TCategories }>(),
+  ]);
+  const productsData = productsRes.data;
+  const categories = categoriesRes.data ?? [];
   const renderProducts = () => {
     if (!productsData || productsData.data.length === 0) {
       return (
@@ -30,21 +36,17 @@ async function ProductList({
       );
     } else {
       return (
-        <div className="w-full">
-          {
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
-              {(productsData?.data ?? []).map((product) => (
-                <ProductCard key={product.id} product={product as TProduct} />
-              ))}
-            </div>
-          }
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
+          {(productsData?.data ?? []).map((product) => (
+            <ProductCard key={product.id} product={product as TProduct} />
+          ))}
         </div>
       );
     }
   };
 
   return (
-    <div className="w-full">
+    <div>
       <Categories categories={categories} />
       {params === "products" && <Filter />}
       {renderProducts()}

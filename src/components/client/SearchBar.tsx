@@ -1,14 +1,14 @@
 "use client";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 
 function SearchBar() {
-  const [value, setValue] = useState("");
-  const [debouncedValue] = useDebounce(value, 400);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [value, setValue] = useState(searchParams.get("search") || "");
+  const [debouncedValue] = useDebounce(value, 400);
 
   // const handleSearch = (value: string) => {
   //   const params = new URLSearchParams(searchParams);
@@ -22,10 +22,10 @@ function SearchBar() {
       params.delete("search");
     } else {
       params.set("search", debouncedValue);
-      router.push(`/products?${params.toString()}`, {
-        scroll: false,
-      });
     }
+    router.push(`/products?${params.toString()}`, {
+      scroll: false,
+    });
   }, [debouncedValue]);
 
   return (
@@ -36,6 +36,7 @@ function SearchBar() {
         placeholder="Search..."
         // className="bg-transparent border-none focus:outline-none w-full"
         className="text-sm outline-0"
+        value={value}
         onChange={(e) => setValue(e.target.value)}
       />
     </div>
