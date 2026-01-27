@@ -19,13 +19,16 @@ import AppLineChart from "@/components/admin/AppLineChart";
 import useUserStore from "@/stores/userStore";
 import { TUser } from "@/types/users";
 import AddUser from "@/components/admin/AddUser";
-import { notFound } from "next/navigation";
 
 function AccountForm() {
   const { user } = useUserStore();
 
   if (!user) {
-    NotFound();
+    return (
+      <div className="w-full text-center py-20 text-gray-500">
+        User not found!
+      </div>
+    );
   }
 
   return (
