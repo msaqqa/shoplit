@@ -20,9 +20,6 @@ function SearchBar() {
     const params = new URLSearchParams(searchParams);
     if (!debouncedValue.trim()) {
       params.delete("search");
-      router.push(`/products`, {
-        scroll: false,
-      });
     } else {
       params.set("search", debouncedValue);
       router.push(`/products?${params.toString()}`, {
