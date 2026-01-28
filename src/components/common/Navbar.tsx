@@ -14,7 +14,7 @@ import {
 import { Button } from "../ui/button";
 import TogleUserIcon from "./TogleUserIcon";
 import useUserStore from "@/stores/userStore";
-import React from "react";
+import React, { Suspense } from "react";
 
 function Navbar({ SidebarButton }: { SidebarButton?: React.ComponentType }) {
   const { setTheme } = useTheme();
@@ -39,7 +39,13 @@ function Navbar({ SidebarButton }: { SidebarButton?: React.ComponentType }) {
       </div>
       {/* Left */}
       <div className="flex items-center gap-4">
-        <SearchBar />
+        <Suspense
+          fallback={
+            <div className="hidden md:block w-32 h-8 bg-gray-100 animate-pulse rounded-md" />
+          }
+        >
+          <SearchBar />
+        </Suspense>
         {user && (
           <>
             <Bell className="w-4 h-4 text-gray-600" />

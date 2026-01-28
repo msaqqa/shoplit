@@ -6,16 +6,17 @@ A full-featured full-stack e-commerce solution built with Next.js 15, optimized 
 
 ### Customer Features
 
-🔍 Smart Search - Debounced, case-insensitive product search with real-time URL synchronization.
-🛒 Shopping Cart - Persisted cart state with Zustand.
-👤 User Profiles - Account management with profile completion tracking and activity charts.
-🌓 Theme Support - Seamless switching between Dark and Light modes.
+### 🔍 Smart Search - Debounced, case-insensitive product search with real-time URL synchronization.
+
+- 🛒 **Shopping Cart** - Persisted cart state with Zustand for a seamless shopping experience.
+- 👤 **User Profiles** - Comprehensive account management with profile completion tracking and activity charts.
+- 🌓 **Theme Support** - Seamless switching between Dark and Light modes using high-contrast themes.
 
 ### Admin Features
 
-📈 Advanced Analytics - Interactive charts (Recharts) for tracking user activity and sales.
-🛠️ Full CRUD - Manage products, categories, and users through a professional admin dashboard.
-📁 Cloudinary Integration - Automated image optimization and cloud storage for product assets.
+- 📈 **Advanced Analytics** - Interactive charts powered by Recharts for tracking user activity and real-time sales data.
+- ⚒️ **Full CRUD Operations** - Efficient management of products, categories, and users through a dedicated professional dashboard.
+- 📁 **Cloudinary Integration** - Automated image optimization and cloud storage ensuring fast delivery for all product assets.
 
 ## 🛠️ Tech Stack
 
@@ -63,31 +64,33 @@ The project uses [shadcn/ui](https://ui.shadcn.com/) components built on Radix U
 
 ## 📁 Project Structure
 
+```
 shoplit/
-├── prisma/ # Database schema & migrations
-├── public/ # Static assets (Favicon, local images)
+├── prisma/          # Database schema & migrations
+├── public/          # Static assets (Favicon, local images)
 ├── src/
-│ ├── animations/ # Global Framer Motion or CSS animations
-│ ├── app/ # Next.js App Router (Core Routes)
-│ │ ├── (client)/ # Customer-facing routes (Home, Products, Account)
-│ │ ├── admin/ # Protected Admin dashboard routes
-│ │ ├── api/ # Backend API endpoints
-│ │ ├── actions/ # Next.js Server Actions (Database logic)
-│ │ ├── globals.css # Tailwind global styles
-│ │ └── layout.tsx # Root layout with Providers
-│ ├── components/ # React Components
-│ │ ├── admin/ # Admin-specific UI (Charts, Tables)
-│ │ ├── client/ # Client-specific UI (Forms, Product Cards)
-│ │ ├── common/ # Shared components (Navbar, Footer)
-│ │ ├── skeletons/ # Loading states (Skeleton Loaders)
-│ │ └── ui/ # Base UI components (shadcn/ui)
-│ ├── hooks/ # Custom React hooks (useDebounce, etc.)
-│ ├── lib/ # Shared utilities (Schemas, Prisma client)
-│ ├── providers/ # Context Providers (Theme, Toast, Sidebar)
-│ ├── services/ # External API services (Cloudinary, Auth)
-│ ├── stores/ # Zustand state management
-│ └── types/ # TypeScript definitions & interfaces
+│ ├── animations/    # Global Framer Motion or CSS animations
+│ ├── app/           # Next.js App Router (Core Routes)
+│ │ ├── (client)/    # Customer-facing routes (Home, Products, Account)
+│ │ ├── admin/       # Protected Admin dashboard routes
+│ │ ├── api/         # Backend API endpoints
+│ │ ├── actions/     # Next.js Server Actions (Database logic)
+│ │ ├── globals.css  # Tailwind global styles
+│ │ └── layout.tsx   # Root layout with Providers
+│ ├── components/    # React Components
+│ │ ├── admin/       # Admin-specific UI (Charts, Tables)
+│ │ ├── client/      # Client-specific UI (Forms, Product Cards)
+│ │ ├── common/      # Shared components (Navbar, Footer)
+│ │ ├── skeletons/   # Loading states (Skeleton Loaders)
+│ │ └── ui/          # Base UI components (shadcn/ui)
+│ ├── hooks/         # Custom React hooks (useDebounce, etc.)
+│ ├── lib/           # Shared utilities (Schemas, Prisma client)
+│ ├── providers/     # Context Providers (Theme, Toast, Sidebar)
+│ ├── services/      # External API services (Cloudinary, Auth)
+│ ├── stores/        # Zustand state management
+│ └── types/         # TypeScript definitions & interfaces
 └── package.json
+```
 
 ## 🚀 Getting Started
 
