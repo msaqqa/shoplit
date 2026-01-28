@@ -6,8 +6,7 @@ A full-featured full-stack e-commerce solution built with Next.js 15, optimized 
 
 ### Customer Features
 
-### 🔍 Smart Search - Debounced, case-insensitive product search with real-time URL synchronization.
-
+- 🔍 **Smart Search** - Debounced, case-insensitive product search with real-time URL synchronization.
 - 🛒 **Shopping Cart** - Persisted cart state with Zustand for a seamless shopping experience.
 - 👤 **User Profiles** - Comprehensive account management with profile completion tracking and activity charts.
 - 🌓 **Theme Support** - Seamless switching between Dark and Light modes using high-contrast themes.

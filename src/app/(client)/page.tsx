@@ -14,7 +14,7 @@ export default async function HomePage({
     <div className="">
       <div className="relative aspect-[3/1] mb-12">
         <Image
-          src="https://res.cloudinary.com/dohht8sln/image/upload/v1769593981/featured_espz0x.png"
+          src="https://res.cloudinary.com/dohht8sln/image/upload/f_auto,q_auto/v1769593981/featured_espz0x.png"
           alt="Featured Product"
           fill
           priority
