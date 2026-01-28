@@ -34,7 +34,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { uploadImageToCloudinary } from "@/services/cloudinary";
 import { useRouter } from "next/navigation";
 import { updateUserById } from "@/app/actions/users";
-import { SidebarMenuButton } from "../ui/sidebar";
 import { Spinner } from "../ui/spinner";
 import { TUser } from "@/types/users";
 
@@ -109,8 +108,9 @@ function AddUser({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <SidebarMenuButton
-          className={`cursor-pointer ${tableBtn && "w-auto flex items-center gap-2 bg-blue-500 text-white px-2 py-1 text-sm rounded-md cursor-pointer"}`}
+        <Button
+          variant="ghost"
+          className={`justify-start gap-2 px-2 ${tableBtn ? "bg-blue-500 text-white hover:bg-blue-600" : ""}`}
         >
           {user ? (
             <>
@@ -123,7 +123,7 @@ function AddUser({
               <span>Add User</span>
             </>
           )}
-        </SidebarMenuButton>
+        </Button>
       </SheetTrigger>
       <SheetContent
         className="w-[400px] sm:w-[540px] overflow-y-auto"

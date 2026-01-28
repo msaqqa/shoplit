@@ -31,7 +31,7 @@ export async function getProducts({
     const response = await prisma.product.findMany({
       where: {
         ...(categoryId && { categoryId: Number(categoryId) }),
-        ...(search && { name: { contains: search } }),
+        ...(search && { name: { contains: search, mode: "insensitive" } }),
       },
       orderBy:
         sort === "newest"

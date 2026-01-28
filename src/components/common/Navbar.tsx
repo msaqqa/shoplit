@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import SearchBar from "../client/SearchBar";
+import SearchBar from "../common/SearchBar";
 import { Bell, Moon, Sun } from "lucide-react";
 import ShoppingCartIcon from "./ShoppingCartIcon";
 import { useTheme } from "next-themes";
@@ -13,17 +13,17 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import TogleUserIcon from "./TogleUserIcon";
-import SidebarButton from "../admin/SidebarButton";
 import useUserStore from "@/stores/userStore";
+import React from "react";
 
-function Navbar() {
+function Navbar({ SidebarButton }: { SidebarButton?: React.ComponentType }) {
   const { setTheme } = useTheme();
   const { user } = useUserStore();
   return (
     <nav className="w-full flex items-center justify-between pb-4 border-b border-gray-200 mb-6">
       {/* Right */}
       <div className="flex items-center gap-4">
-        <SidebarButton />
+        {SidebarButton && <SidebarButton />}
         <Link href="/" className="flex items-center">
           <Image
             src="/logo.png"

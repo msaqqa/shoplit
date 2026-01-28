@@ -1,43 +1,93 @@
 # 🛍️ Shoplit - Modern E-Commerce Platform
 
-A full-featured e-commerce platform built with Next.js, featuring a powerful admin panel, secure authentication, shopping cart, and order management.
+A full-featured full-stack e-commerce solution built with Next.js 15, optimized for speed and accessibility, featuring a powerful admin panel, secure authentication, shopping cart, and order management.
 
 ## ✨ Features
 
 ### Customer Features
 
-- 🛒 **Shopping Cart** - Add, update, and remove products
-- 🔍 **Product Search & Filtering** - Search products and filter by category
-- 👤 **User Authentication** - Secure sign up, sign in, and password reset
-- 📦 **Order Management** - View order history and track orders
-- 💳 **Payment Integration** - Secure payments with Stripe
-- 🎨 **Dark Mode** - Beautiful dark/light theme support
-- 📱 **Responsive Design** - Works seamlessly on all devices
+🔍 Smart Search - Debounced, case-insensitive product search with real-time URL synchronization.
+🛒 Shopping Cart - Persisted cart state with Zustand.
+👤 User Profiles - Account management with profile completion tracking and activity charts.
+🌓 Theme Support - Seamless switching between Dark and Light modes.
 
 ### Admin Features
 
-- 📊 **Dashboard** - Analytics charts and statistics
-- 🏷️ **Product Management** - Add, edit, and delete products
-- 📂 **Category Management** - Organize products by categories
-- 👥 **User Management** - Manage users and roles
-- 📋 **Order Management** - View and manage all orders
-- 📈 **Analytics** - Bar charts, pie charts, and area charts
-- 🖼️ **Image Upload** - Cloudinary integration for product images
+📈 Advanced Analytics - Interactive charts (Recharts) for tracking user activity and sales.
+🛠️ Full CRUD - Manage products, categories, and users through a professional admin dashboard.
+📁 Cloudinary Integration - Automated image optimization and cloud storage for product assets.
 
 ## 🛠️ Tech Stack
 
-- **Framework:** Next.js 15.4.5 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS 4
-- **Database:** Prisma ORM with postgreSQL
-- **Authentication:** JWT (jose)
-- **Payment:** Stripe
-- **Image Upload:** Cloudinary
-- **UI Components:** Radix UI, shadcn/ui
-- **State Management:** Zustand
-- **Forms:** React Hook Form + Zod validation
-- **Charts:** Recharts
-- **Email:** Resend
+- Framework: Next.js 15.4.5 (App Router)
+- Styling: Tailwind CSS 4
+- Database: Prisma ORM with PostgreSQL
+- Auth: JWT (jose) & Role-based Access Control
+- State: Zustand
+- UI: shadcn/ui (Radix UI)
+
+## 🔐 Authentication
+
+The application uses JWT-based authentication with secure password hashing using bcryptjs.
+
+- **Sign Up:** Create a new account
+- **Sign In:** Login with email and password
+- **Password Reset:** Reset forgotten passwords via email
+- **Role-based Access:** ADMIN and CLIENT roles
+
+## 💳 Payment Integration
+
+Stripe is integrated for secure payment processing:
+
+- Stripe Checkout for payment
+- Webhook handling for order confirmation
+- Order status tracking (success/failed)
+
+## 📦 Database Models
+
+- **User** - User accounts with roles and authentication
+- **Product** - Products with categories, sizes, colors, and images
+- **Category** - Product categories
+- **Order** - Customer orders
+- **OrderProduct** - Order items
+- **PasswordResetToken** - Password reset tokens
+
+## 🎨 UI Components
+
+The project uses [shadcn/ui](https://ui.shadcn.com/) components built on Radix UI:
+
+- Responsive design
+- Dark mode support
+- Accessible components
+- Customizable styling
+
+## 📁 Project Structure
+
+shoplit/
+├── prisma/ # Database schema & migrations
+├── public/ # Static assets (Favicon, local images)
+├── src/
+│ ├── animations/ # Global Framer Motion or CSS animations
+│ ├── app/ # Next.js App Router (Core Routes)
+│ │ ├── (client)/ # Customer-facing routes (Home, Products, Account)
+│ │ ├── admin/ # Protected Admin dashboard routes
+│ │ ├── api/ # Backend API endpoints
+│ │ ├── actions/ # Next.js Server Actions (Database logic)
+│ │ ├── globals.css # Tailwind global styles
+│ │ └── layout.tsx # Root layout with Providers
+│ ├── components/ # React Components
+│ │ ├── admin/ # Admin-specific UI (Charts, Tables)
+│ │ ├── client/ # Client-specific UI (Forms, Product Cards)
+│ │ ├── common/ # Shared components (Navbar, Footer)
+│ │ ├── skeletons/ # Loading states (Skeleton Loaders)
+│ │ └── ui/ # Base UI components (shadcn/ui)
+│ ├── hooks/ # Custom React hooks (useDebounce, etc.)
+│ ├── lib/ # Shared utilities (Schemas, Prisma client)
+│ ├── providers/ # Context Providers (Theme, Toast, Sidebar)
+│ ├── services/ # External API services (Cloudinary, Auth)
+│ ├── stores/ # Zustand state management
+│ └── types/ # TypeScript definitions & interfaces
+└── package.json
 
 ## 🚀 Getting Started
 
@@ -119,70 +169,6 @@ A full-featured e-commerce platform built with Next.js, featuring a powerful adm
    http://localhost:3000
    ```
 
-## 📁 Project Structure
-
-```
-shoplit/
-├── prisma/              # Database schema and migrations
-│   ├── schema.prisma
-│   └── migrations/
-├── public/              # Static assets
-│   └── products/        # Product images
-├── src/
-│   ├── app/             # Next.js App Router pages
-│   │   ├── (auth)/      # Authentication pages
-│   │   ├── admin/       # Admin panel pages
-│   │   ├── api/         # API routes
-│   │   ├── cart/        # Shopping cart
-│   │   ├── orders/      # Order pages
-│   │   └── products/    # Product pages
-│   ├── components/      # React components
-│   │   ├── admin/       # Admin components
-│   │   └── ui/          # UI components (shadcn/ui)
-│   ├── lib/             # Utilities and helpers
-│   │   ├── auth/        # Authentication utilities
-│   │   └── prisma.ts    # Prisma client
-│   ├── services/        # API services
-│   ├── stores/          # Zustand stores
-│   └── types/           # TypeScript types
-└── package.json
-```
-
-## 🔐 Authentication
-
-The application uses JWT-based authentication with secure password hashing using bcryptjs.
-
-- **Sign Up:** Create a new account
-- **Sign In:** Login with email and password
-- **Password Reset:** Reset forgotten passwords via email
-- **Role-based Access:** ADMIN and CLIENT roles
-
-## 💳 Payment Integration
-
-Stripe is integrated for secure payment processing:
-
-- Stripe Checkout for payment
-- Webhook handling for order confirmation
-- Order status tracking (success/failed)
-
-## 📦 Database Models
-
-- **User** - User accounts with roles and authentication
-- **Product** - Products with categories, sizes, colors, and images
-- **Category** - Product categories
-- **Order** - Customer orders
-- **OrderProduct** - Order items
-- **PasswordResetToken** - Password reset tokens
-
-## 🎨 UI Components
-
-The project uses [shadcn/ui](https://ui.shadcn.com/) components built on Radix UI:
-
-- Responsive design
-- Dark mode support
-- Accessible components
-- Customizable styling
-
 ## 📝 Available Scripts
 
 ```bash
@@ -207,8 +193,4 @@ This project is open source and available under the MIT License.
 
 ## 👨‍💻 Author
 
-Built with Mahmoud Alsaqqa using Next.js
-
----
-
-**Note:** Remember to set up your environment variables and configure Stripe, Cloudinary, and Resend accounts before deploying to production.
+Built by Mahmoud Alsaqqa using with Next.js.
