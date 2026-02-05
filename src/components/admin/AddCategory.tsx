@@ -4,7 +4,7 @@ import {
   categoryFormSchema,
 } from "@/lib/schemas/categories";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit, Plus, Projector } from "lucide-react";
+import { Plus, Projector } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import {
@@ -47,12 +47,17 @@ function AddCategory({
   const handleCategoryForm: SubmitHandler<CategoryFormInputs> = async (
     data,
   ) => {
-    setIsProcessing(true);
-    await (category ? updateCategory(category.id, data) : createCategory(data));
-    toast.success("Category added successfully");
-    setOpen(false);
-    router.refresh();
-    setIsProcessing(false);
+    try {
+      setIsProcessing(true);
+      await (category
+        ? updateCategory(category.id, data)
+        : createCategory(data));
+      toast.success("Category added successfully");
+      router.refresh();
+    } finally {
+      setIsProcessing(false);
+      setOpen(false);
+    }
   };
 
   return (
@@ -62,10 +67,7 @@ function AddCategory({
           className={`cursor-pointer ${tableBtn && "w-auto flex items-center gap-2 bg-blue-500 text-white px-2 py-1 text-sm rounded-md cursor-pointer"}`}
         >
           {category ? (
-            <>
-              <Edit />
-              <span>Edit Category</span>
-            </>
+            <span>Edit Category</span>
           ) : (
             <>
               <Plus />

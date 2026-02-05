@@ -13,7 +13,7 @@ export default async function AdminLayout({
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <div className="flex p-4">
+      <div className="w-full flex p-4">
         <AppSidebar />
         <div className="flex-1 flex flex-col">
           <Navbar SidebarButton={SidebarButton} />

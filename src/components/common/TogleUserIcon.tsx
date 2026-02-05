@@ -1,7 +1,7 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useUserStore from "@/stores/userStore";
-import { LogIn, ShoppingBasket, UserPlus } from "lucide-react";
+import { LayoutDashboard, LogIn, ShoppingBasket, UserPlus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import {
@@ -41,13 +41,19 @@ function TogleUserIcon() {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={user.avatar ?? ""} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent sideOffset={10}>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        {user.role === "ADMIN" && (
+          <DropdownMenuItem>
+            <LayoutDashboard className="size-[1.2rem] mr-2" />
+            <Link href="/admin">Dashboard</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem>
           <UserIcon className="size-[1.2rem] mr-2" />
           <Link href="/account">My Profile</Link>

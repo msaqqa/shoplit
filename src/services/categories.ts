@@ -15,7 +15,7 @@ export async function updateCategory(
   categoryId: number,
   data: CategoryFormInputs,
 ) {
-  const response = await api.post(`/categories/${categoryId}`, data);
+  const response = await api.put(`/categories/${categoryId}`, data);
   return response.data;
 }
 

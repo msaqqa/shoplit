@@ -1,6 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { DEFAULT_MESSAGES, ERROR_CODES } from "./error-constants";
+import { TApiErrorResponse } from "@/types/api";
 
 /**
  * Handles API errors consistently across the application
@@ -9,31 +10,11 @@ import { DEFAULT_MESSAGES, ERROR_CODES } from "./error-constants";
  * @returns {Object} Formatted error object
  */
 
-type Tdata = {
-  status: number;
-  message: string;
-  error: Error;
-  errors: Error;
-  response: {
-    status: number;
-    message: string;
-    error: Error;
-  };
-};
-
-type TErrorResponse = {
-  status: number | string;
-  message: string;
-  data: Tdata;
-  type: string;
-  validationErrors?: unknown;
-};
-
 export const handleApiError = (
   error: unknown,
   options = { showNotification: true, returnOnly: false },
 ) => {
-  let errorResponse!: TErrorResponse;
+  let errorResponse!: TApiErrorResponse;
 
   // Handle axios errors
   if (axios.isAxiosError(error)) {
@@ -117,16 +98,17 @@ export const handleApiError = (
     return errorResponse;
   }
 
+  // Show toast if enabled
+  const isBrowser = typeof window !== "undefined";
+  if (options.showNotification && isBrowser) {
+    toast.error(errorResponse.message);
+  }
+
   // Check if the error is "Fatal" (e.g., Server Crash or Network Failure)
   const isFatalError =
     errorResponse.status === ERROR_CODES.NETWORK_ERROR ||
     errorResponse.status === ERROR_CODES.TIMEOUT_ERROR ||
     Number(errorResponse.status) >= 500;
-
-  // Show toast if enabled
-  if (options.showNotification && !isFatalError) {
-    toast.error(errorResponse.message);
-  }
 
   // Throw fatal errors to show in the error boundary (Error.tsx)
   if (isFatalError) {

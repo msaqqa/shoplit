@@ -1,4 +1,5 @@
 "use client";
+import AddProduct from "@/components/admin/AddProduct";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -103,6 +104,9 @@ export const columns: ColumnDef<TProduct>[] = [
               onClick={() => navigator.clipboard.writeText(String(product.id))}
             >
               Copy product ID
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <AddProduct product={product} />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>

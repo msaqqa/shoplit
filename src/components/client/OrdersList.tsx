@@ -1,3 +1,4 @@
+"use client";
 import { getOrders } from "@/app/actions/orders";
 import {
   Table,
@@ -7,11 +8,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useAction } from "@/hooks/use-action";
+import useUserStore from "@/stores/userStore";
 import { TOrder } from "@/types/orders";
+import { useEffect, useState } from "react";
 
-async function OrdersList() {
-  const { data: result } = await getOrders();
-  const orders = result?.data || [];
+function OrdersList() {
+  const { user } = useUserStore();
+  const [orders, setOrders] = useState<TOrder[]>([]);
+  const { execute } = useAction();
+
+  useEffect(() => {
+    const loadData = async () => {
+      const { data: result } = await execute(() => getOrders({ id: user?.id }));
+      if (result && result.data) {
+        setOrders(result.data);
+      }
+    };
+    loadData();
+  }, [execute, user?.id]);
+
   if (!orders || orders?.length === 0) {
     return (
       <div className="w-full text-center py-20 text-gray-500">

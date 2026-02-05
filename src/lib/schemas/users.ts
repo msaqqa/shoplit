@@ -13,6 +13,10 @@ export const updateUserSchema = userFormSchema.omit({
   password: true,
 });
 
+export const updateUserServerSchema = updateUserSchema.extend({
+  id: z.number(),
+});
+
 // Exporting schema types
 export type UserFormInputs = z.infer<typeof userFormSchema>;
 export type UserUpdateInputs = z.infer<typeof updateUserSchema>;

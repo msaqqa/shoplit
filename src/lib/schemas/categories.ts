@@ -7,5 +7,9 @@ export const categoryFormSchema = z.object({
   icon: z.string().min(1, "Icon is required!"),
 });
 
+export const updateSchema = categoryFormSchema.extend({
+  id: z.number(),
+});
+
 // Exporting schema types
 export type CategoryFormInputs = z.infer<typeof categoryFormSchema>;

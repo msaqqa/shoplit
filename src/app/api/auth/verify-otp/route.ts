@@ -3,17 +3,19 @@ import { prisma } from "@/lib/prisma";
 import { hashOTP } from "@/lib/auth/otp";
 import { signToken } from "@/lib/auth/jwt";
 import { AppError } from "@/lib/error/route-error-handler";
+import { verifyOtpServerSchema } from "@/lib/schemas/auth";
 
 export async function POST(req: Request) {
   try {
-    const { email, otp } = await req.json();
-    if (!email || !otp) {
-      throw new AppError("Missing required fields.", 400);
+    const body = await req.json();
+    const validations = verifyOtpServerSchema.safeParse(body);
+    if (!validations.success) {
+      const errorMessage = validations.error.issues[0].message;
+      throw new AppError(errorMessage || "Invalid verify otp data.", 400);
     }
-
     // Check if token record exists
     const tokenRecord = await prisma.passwordResetToken.findFirst({
-      where: { email },
+      where: { email: body.email },
       orderBy: { createdAt: "desc" },
     });
     if (!tokenRecord) {
@@ -24,7 +26,7 @@ export async function POST(req: Request) {
       throw new AppError("OTP expired.", 400);
     }
     // check OTP
-    if (tokenRecord.tokenHash !== hashOTP(otp)) {
+    if (tokenRecord.tokenHash !== hashOTP(body.otp)) {
       throw new AppError("Invalid OTP.", 400);
     }
 
@@ -32,7 +34,7 @@ export async function POST(req: Request) {
     await prisma.passwordResetToken.delete({ where: { id: tokenRecord.id } });
 
     // create a token for resetting password
-    const resetToken = await signToken({ email }, "5m");
+    const resetToken = await signToken({ email: body.email }, "5m");
 
     const response = NextResponse.json({
       message: "OTP verified.",

@@ -6,10 +6,17 @@ import { revalidatePath } from "next/cache";
 import { deleteImageFromCloudinary } from "./cloudinary";
 import { actionWrapper } from "@/lib/action-wrapper";
 import { AppError } from "@/lib/error/route-error-handler";
-import { ProductFormInputs } from "@/lib/schemas/products";
+import { ProductFormInputs, productFormSchema } from "@/lib/schemas/products";
+import { validateAdmin } from "@/lib/auth/guards";
 
 export async function createProduct(data: ProductFormInputs) {
   return actionWrapper(async () => {
+    await validateAdmin();
+    const validations = productFormSchema.safeParse(data);
+    if (!validations.success) {
+      const errorMessage = validations.error.issues[0].message;
+      throw new AppError(errorMessage || "Invalid product data.", 400);
+    }
     const response = await prisma.product.create({
       data: {
         ...data,
@@ -59,29 +66,36 @@ export async function getProducts({
 
 export async function geTProductByID(id: number) {
   return actionWrapper(async () => {
-    const response = await prisma.product.findUnique({
-      where: { id },
-    });
-    return { data: response };
+    const product = await prisma.product.findUnique({ where: { id } });
+    if (!product) throw new AppError("Product not found.", 404);
+    return { data: product };
   });
 }
 
-// Update Product
-// export async function updateProduct(id: number, data: TProductFormEdit) {
-//   const response = await prisma.product.update({
-//     where: { id },
-//     data: {
-//       ...data,
-//       categoryId: data.categoryId !== undefined ? Number(data.categoryId) : undefined,
-//     },
-//   });
-//   revalidatePath("/admin/products");
-//   return { data: response, message: "Product updated successfully." };
-// }
+// Update product
+export async function updateProduct(id: number, data: ProductFormInputs) {
+  return actionWrapper(async () => {
+    await validateAdmin();
+    const response = await prisma.product.update({
+      where: { id },
+      data: {
+        ...data,
+        categoryId: Number(data.categoryId),
+      },
+    });
+    revalidatePath("/admin/products");
+    return { data: response, message: "Product updated successfully." };
+  });
+}
 
 export async function deleteProduct(id: number) {
   return actionWrapper(async () => {
+    await validateAdmin();
+    if (!id) {
+      throw new AppError("Product id is required.", 400);
+    }
     const product = await prisma.product.findUnique({ where: { id } });
+
     if (!product) throw new AppError("Product not found.", 404);
 
     if (product.images) {
@@ -90,8 +104,12 @@ export async function deleteProduct(id: number) {
         if (images[color]) await deleteImageFromCloudinary(images[color]);
       }
     }
-    await prisma.product.delete({ where: { id } });
+
+    const response = await prisma.product.delete({ where: { id } });
     revalidatePath("/admin/products");
-    return { data: product, message: "Product has been deleted successfully." };
+    return {
+      data: response,
+      message: "Product has been deleted successfully.",
+    };
   });
 }

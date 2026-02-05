@@ -2,6 +2,7 @@ import { TUser } from "@/types/users";
 import { comparePassword, hashPassword } from "../auth/password";
 import { prisma } from "../prisma";
 import { AppError } from "../error/route-error-handler";
+import { baseSignupSchema, loginUserSchema } from "../schemas/auth";
 
 export async function registerUser(data: {
   name: string;
@@ -9,6 +10,11 @@ export async function registerUser(data: {
   password: string;
   avatar?: string;
 }) {
+  const validations = baseSignupSchema.safeParse(data);
+  if (!validations.success) {
+    const errorMessage = validations.error.issues[0].message;
+    throw new AppError(errorMessage || "Invalid signup data.", 400);
+  }
   // Check if email already exists
   const checkEmail = await prisma.user.findUnique({
     where: { email: data.email },
@@ -24,17 +30,27 @@ export async function registerUser(data: {
       password: hashed,
       avatar: data.avatar,
     },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      avatar: true,
+    },
   });
 
-  // Return user without password
-  const { password: _, ...safeUser } = user;
-  return safeUser;
+  // Return user
+  return user;
 }
 
 export async function loginUser(data: {
   email: string;
   password: string;
 }): Promise<Omit<TUser, "password">> {
+  const validations = loginUserSchema.safeParse(data);
+  if (!validations.success) {
+    const errorMessage = validations.error.issues[0].message;
+    throw new AppError(errorMessage || "Invalid signin data.", 400);
+  }
   // Check if user exists
   const user = await prisma.user.findUnique({
     where: { email: data.email },

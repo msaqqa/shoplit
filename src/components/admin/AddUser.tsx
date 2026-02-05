@@ -36,6 +36,9 @@ import { useRouter } from "next/navigation";
 import { updateUserById } from "@/app/actions/users";
 import { Spinner } from "../ui/spinner";
 import { TUser } from "@/types/users";
+import { deleteImageFromCloudinary } from "@/app/actions/cloudinary";
+import useUserStore from "@/stores/userStore";
+import { useAction } from "@/hooks/use-action";
 
 function AddUser({
   user,
@@ -49,7 +52,9 @@ function AddUser({
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [preview, setPreview] = useState(user?.avatar || "");
   const [open, setOpen] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isImgProcessing, setIsImgProcessing] = useState(false);
+  const { signinUser } = useUserStore();
+  const { execute, isProcessing } = useAction();
 
   const form = useForm<UserFormInputs | UserUpdateInputs>({
     resolver: zodResolver(user ? updateUserSchema : userFormSchema),
@@ -69,6 +74,14 @@ function AddUser({
   ) => {
     if (!file) return;
     try {
+      setIsImgProcessing(true);
+      // get current image from form state
+      const oldImageUrl = form.getValues().avatar;
+      // if there's an old image for this color, delete it from Cloudinary
+      if (oldImageUrl) {
+        await deleteImageFromCloudinary(oldImageUrl);
+      }
+      // upload new image to Cloudinary
       const url = await uploadImageToCloudinary(file);
       setPreview(url);
       onChange?.(url);
@@ -77,13 +90,14 @@ function AddUser({
       form.setError("avatar", {
         message: "Failed to upload image. Please try again.",
       });
+    } finally {
+      setIsImgProcessing(false);
     }
   };
 
   const handleUserForm: SubmitHandler<
     UserFormInputs | UserUpdateInputs
   > = async (data: UserFormInputs | UserUpdateInputs) => {
-    setIsProcessing(true);
     const updatedUser = {
       ...user,
       name: data.name,
@@ -91,18 +105,19 @@ function AddUser({
       avatar: data.avatar,
     };
     if (user && user.id) {
-      const { data: result } = await updateUserById(user.id, updatedUser);
-      toast.success(result?.message);
+      const { data: result } = await execute(() =>
+        updateUserById(user.id, updatedUser),
+      );
+      if (result && result.data) {
+        toast.success(result?.message);
+        signinUser(result.data);
+      }
     } else {
       const result = await signupUserClient(data as UserFormInputs);
-      if (result && typeof result === "object" && "message" in result) {
-        toast.success((result as { message?: string }).message);
-      }
+      toast.success((result as { message?: string }).message);
     }
-    toast.success("User added successfully");
     setOpen(false);
     router.refresh();
-    setIsProcessing(false);
   };
 
   return (
@@ -171,7 +186,10 @@ function AddUser({
                           type="button"
                           onClick={() => inputRef.current?.click()}
                         >
-                          Upload
+                          Upload{" "}
+                          {isImgProcessing ? (
+                            <Spinner className="size-4 animate-spin" />
+                          ) : null}
                         </Button>
                       </div>
                     </FormControl>
@@ -247,12 +265,16 @@ function AddUser({
                   )}
                 />
               )}
-              <Button disabled={isProcessing} type="submit">
+              <Button
+                disabled={isImgProcessing || isProcessing}
+                type="submit"
+                className="w-full"
+              >
+                {user ? "Update" : "Add"} user
+                <User className="w-3 h-3" />
                 {isProcessing ? (
                   <Spinner className="size-4 animate-spin" />
                 ) : null}
-                {user ? "Update" : "Add"} user
-                <User className="w-3 h-3" />
               </Button>
             </form>
           </Form>

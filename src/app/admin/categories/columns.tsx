@@ -68,7 +68,6 @@ export const columns: ColumnDef<TCategory>[] = [
               Copy category ID
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              {/* className="px-2 py-1.5 rounded-sm text-sm hover:bg-accent hover:text-accent-foreground" */}
               <AddCategory category={category} />
             </DropdownMenuItem>
           </DropdownMenuContent>

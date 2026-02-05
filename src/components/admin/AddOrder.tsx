@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { createOrder } from "@/app/actions/orders";
+import { createOrder, updateOrder } from "@/app/actions/orders";
 import { toast } from "react-toastify";
 import { TProducts } from "@/types/products";
 import { TUsers } from "@/types/users";
@@ -37,12 +37,20 @@ import { getUsers } from "@/app/actions/users";
 import { Spinner } from "../ui/spinner";
 import { Plus, ShoppingBasket } from "lucide-react";
 import { SidebarMenuButton } from "../ui/sidebar";
+import { useAction } from "@/hooks/use-action";
+import { TOrder } from "@/types/orders";
 
-function AddOrder({ tableBtn = false }) {
+function AddOrder({
+  tableBtn = false,
+  order,
+}: {
+  tableBtn?: boolean;
+  order?: TOrder;
+}) {
   const [dataProducts, setProducts] = useState<TProducts>([]);
   const [users, setUsers] = useState<Omit<TUsers, "password">>([]);
   const [open, setOpen] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const { execute, isProcessing } = useAction();
 
   useEffect(() => {
     const loadData = async () => {
@@ -63,10 +71,11 @@ function AddOrder({ tableBtn = false }) {
   const form = useForm<OrderFormInputs>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
-      email: "",
-      amount: 0,
-      status: "success",
-      products: [{ name: "", quantity: 1, price: 0 }],
+      userId: order?.id,
+      email: order?.email,
+      amount: order?.amount,
+      status: order?.status || "success",
+      products: order?.products || [{ name: "", quantity: 1, price: 0 }],
     },
   });
 
@@ -90,14 +99,16 @@ function AddOrder({ tableBtn = false }) {
   }, [products, form]);
 
   const handleOrderForm = async (data: OrderFormInputs) => {
-    setIsProcessing(true);
-    const { data: result } = await createOrder({
-      ...data,
-      userId: Number(data.userId),
-    });
+    const { data: result } = await (order
+      ? execute(() => updateOrder(order.id, data))
+      : execute(() =>
+          createOrder({
+            ...data,
+            userId: Number(data.userId),
+          }),
+        ));
     toast.success(result?.message);
     setOpen(false);
-    setIsProcessing(false);
   };
 
   return (
@@ -106,13 +117,21 @@ function AddOrder({ tableBtn = false }) {
         <SidebarMenuButton
           className={`cursor-pointer ${tableBtn && "w-auto flex items-center gap-2 bg-blue-500 text-white px-2 py-1 text-sm rounded-md cursor-pointer"}`}
         >
-          <Plus />
-          <span>Add Oreder</span>
+          {order ? (
+            <span>Edit Order</span>
+          ) : (
+            <>
+              <Plus />
+              <span>Add Order</span>
+            </>
+          )}
         </SidebarMenuButton>
       </SheetTrigger>
       <SheetContent className="overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="mb-4">Add Order</SheetTitle>
+          <SheetTitle className="mb-4">
+            {order ? "Update" : "Add"} Order
+          </SheetTitle>
           <SheetDescription asChild>
             <Form {...form}>
               <form
@@ -378,7 +397,8 @@ function AddOrder({ tableBtn = false }) {
                   {isProcessing ? (
                     <Spinner className="size-4 animate-spin" />
                   ) : null}{" "}
-                  Add order <ShoppingBasket className="w-3 h-3" />
+                  {order ? "Update" : "Add"} order{" "}
+                  <ShoppingBasket className="w-3 h-3" />
                 </Button>
               </form>
             </Form>

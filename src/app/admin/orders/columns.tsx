@@ -1,4 +1,5 @@
 "use client";
+import AddOrder from "@/components/admin/AddOrder";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -71,7 +72,7 @@ export const columns: ColumnDef<TOrder>[] = [
             `p-1 rounded-md w-max text-xs`,
             status === "pending" && "bg-yellow-500/40",
             status === "success" && "bg-green-500/40",
-            status === "failed" && "bg-red-500/40"
+            status === "failed" && "bg-red-500/40",
           )}
         >
           {status as string}
@@ -111,9 +112,12 @@ export const columns: ColumnDef<TOrder>[] = [
             >
               Copy payment ID
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <AddOrder order={order} />
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`/users/${order.user?.id}`}>View customer</Link>
+              <Link href={`/admin/users/${order.user?.id}`}>View customer</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
