@@ -5,10 +5,11 @@ import { TProductsParams } from "@/types/products";
 import { revalidatePath } from "next/cache";
 import { deleteImageFromCloudinary } from "./cloudinary";
 import { actionWrapper } from "@/lib/action-wrapper";
-import { AppError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/app-error";
 import { ProductFormInputs, productFormSchema } from "@/lib/schemas/products";
 import { validateAdmin } from "@/lib/auth/guards";
 
+// Create product
 export async function createProduct(data: ProductFormInputs) {
   return actionWrapper(async () => {
     await validateAdmin();
@@ -28,6 +29,7 @@ export async function createProduct(data: ProductFormInputs) {
   });
 }
 
+// Get products
 export async function getProducts({
   categoryId,
   sort,
@@ -64,6 +66,7 @@ export async function getProducts({
   });
 }
 
+// Get single product
 export async function geTProductByID(id: number) {
   return actionWrapper(async () => {
     const product = await prisma.product.findUnique({ where: { id } });
@@ -88,6 +91,7 @@ export async function updateProduct(id: number, data: ProductFormInputs) {
   });
 }
 
+// Delete product
 export async function deleteProduct(id: number) {
   return actionWrapper(async () => {
     await validateAdmin();

@@ -136,9 +136,9 @@ function AddCategory({
             className="w-full bg-gray-800 hover:bg-gray-900 transition-all duration-300 text-white p-2 rounded-lg cursor-pointer flex items-center justify-center gap-2"
             disabled={isProcessing}
           >
-            {isProcessing ? <Spinner className="size-4 animate-spin" /> : null}
             {category ? "Update" : "Add"} category
             <Projector className="w-3 h-3" />
+            {isProcessing ? <Spinner className="size-4 animate-spin" /> : null}
           </button>
         </form>
       </SheetContent>

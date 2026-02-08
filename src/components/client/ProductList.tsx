@@ -1,4 +1,4 @@
-import { TProduct, TProductsParams } from "@/types/products";
+import { TProduct, TProducts, TProductsParams } from "@/types/products";
 import Categories from "./Categories";
 import Link from "next/link";
 import Filter from "./Filter";
@@ -13,22 +13,17 @@ async function ProductList({
   search,
   params,
 }: TProductsParams) {
-  // const { data: productsData } = await getProducts({
-  //   categoryId,
-  //   sort,
-  //   search,
-  //   params,
-  // });
-  // const result = await getCategories();
-  // const categories = (result as { data: TCategories }).data ?? [];
-  const [productsRes, categoriesRes] = await Promise.all([
-    getProducts({ categoryId, sort, search, params }),
-    getCategories<{ data: TCategories }>(),
-  ]);
-  const productsData = productsRes.data;
-  const categories = categoriesRes.data ?? [];
+  const { data: productsRes } = await getProducts({
+    categoryId,
+    sort,
+    search,
+    params,
+  });
+  const categoriesRes = await getCategories();
+  const categories = (categoriesRes as { data: TCategories }).data ?? [];
+  const products = (productsRes as { data: TProducts }).data ?? [];
   const renderProducts = () => {
-    if (!productsData || productsData.data.length === 0) {
+    if (!products || products.length === 0) {
       return (
         <div className="w-full text-center py-20 text-gray-500">
           No products found.
@@ -37,7 +32,7 @@ async function ProductList({
     } else {
       return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
-          {(productsData?.data ?? []).map((product) => (
+          {products.map((product) => (
             <ProductCard key={product.id} product={product as TProduct} />
           ))}
         </div>

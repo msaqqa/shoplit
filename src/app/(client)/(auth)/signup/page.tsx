@@ -40,6 +40,7 @@ export default function Page() {
     setIsProcessing(true);
     try {
       const result = await signupUserClient(data);
+      console.log("result", result);
       toast.success((result as { message: string }).message);
       router.push("/signin");
     } catch (error: unknown) {

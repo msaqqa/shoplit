@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { AppError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/app-error";
 import { NextResponse } from "next/server";
 import { generateOTP, hashOTP } from "@/lib/auth/otp";
 import { sendEmailOTP } from "@/lib/email/send-email-otp";

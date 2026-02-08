@@ -13,31 +13,52 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "react-toastify";
 import { Spinner } from "../ui/spinner";
+import { ActionResponse, ActionSuccess } from "@/types/action";
+import { TApiErrorResponse } from "@/types/api";
 
-type ConfirmDeleteDialogProps = {
+type PossibleResponse<T> =
+  | ActionSuccess<T>
+  | ActionResponse<T>
+  | TApiErrorResponse;
+
+type ConfirmDeleteDialogProps<T> = {
   trigger: ReactNode;
   title?: string;
   description?: string;
-  onConfirm: () => Promise<void>;
-  showToast?: boolean;
+  onConfirm: () => Promise<PossibleResponse<T>[]>;
 };
 
-function ConfirmDeleteDialog({
+function ConfirmDeleteDialog<T>({
   trigger,
   title = "Are you absolutely sure?",
   description = "This action cannot be undone.",
   onConfirm,
-  showToast = true,
-}: ConfirmDeleteDialogProps) {
+}: ConfirmDeleteDialogProps<T>) {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleConfirm = async () => {
     setIsProcessing(true);
-    await onConfirm();
-    if (showToast) {
-      toast.success("Deleted successfully");
+    const results = await onConfirm();
+    console.log("results", results);
+    // Check and show the errors for each individual row
+    let errorCount = 0;
+    results.map((res, index) => {
+      if ("type" in res && res.type == "error") {
+        errorCount++;
+        const errorMsg = res.data?.message || "Something went wrong";
+        toast.error(`${errorMsg} for item ${index + 1}`);
+      } else if ("error" in res && res.error != null) {
+        errorCount++;
+      }
+    });
+
+    if (errorCount === 0) {
+      const msg =
+        (results[0]?.data as { message: string })?.message ||
+        "Deleted successfully";
+      toast.success(msg);
+      setIsProcessing(false);
     }
-    setIsProcessing(false);
   };
 
   return (

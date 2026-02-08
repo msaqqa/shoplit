@@ -1,7 +1,7 @@
 import { TUser } from "@/types/users";
 import { comparePassword, hashPassword } from "../auth/password";
 import { prisma } from "../prisma";
-import { AppError } from "../error/route-error-handler";
+import { AppError } from "../error/app-error";
 import { baseSignupSchema, loginUserSchema } from "../schemas/auth";
 
 export async function registerUser(data: {

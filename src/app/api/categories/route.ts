@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { AppError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/app-error";
 import { revalidatePath } from "next/cache";
 import { Category } from "@prisma/client";
 import { categoryFormSchema } from "@/lib/schemas/categories";

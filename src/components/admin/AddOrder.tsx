@@ -53,7 +53,7 @@ function AddOrder({
   const { execute, isProcessing } = useAction();
 
   useEffect(() => {
-    const loadData = async () => {
+    const fetchData = async () => {
       const { data: productsData } = await getProducts();
       const fixedProductsData = (productsData?.data ?? []).map((product) => ({
         ...product,
@@ -65,13 +65,13 @@ function AddOrder({
       const { data: usersData } = await getUsers();
       setUsers(usersData?.data ?? []);
     };
-    loadData();
+    fetchData();
   }, []);
 
   const form = useForm<OrderFormInputs>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
-      userId: order?.id,
+      userId: order?.userId,
       email: order?.email,
       amount: order?.amount,
       status: order?.status || "success",
@@ -147,7 +147,7 @@ function AddOrder({
                       <FormLabel>User Name</FormLabel>
                       <FormControl className="w-full">
                         <Select
-                          value={String(field.value)}
+                          value={String(order ? order?.userId : field.value)}
                           onValueChange={(value) => {
                             field.onChange(Number(value));
                             const user = users.find(
@@ -394,11 +394,11 @@ function AddOrder({
                   className="w-full"
                   disabled={isProcessing}
                 >
+                  {order ? "Update" : "Add"} order
+                  <ShoppingBasket className="w-3 h-3" />
                   {isProcessing ? (
                     <Spinner className="size-4 animate-spin" />
-                  ) : null}{" "}
-                  {order ? "Update" : "Add"} order{" "}
-                  <ShoppingBasket className="w-3 h-3" />
+                  ) : null}
                 </Button>
               </form>
             </Form>

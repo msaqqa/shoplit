@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useAction } from "@/hooks/use-action";
 import useUserStore from "@/stores/userStore";
 import { TOrder } from "@/types/orders";
 import { useEffect, useState } from "react";
@@ -16,17 +15,16 @@ import { useEffect, useState } from "react";
 function OrdersList() {
   const { user } = useUserStore();
   const [orders, setOrders] = useState<TOrder[]>([]);
-  const { execute } = useAction();
 
   useEffect(() => {
-    const loadData = async () => {
-      const { data: result } = await execute(() => getOrders({ id: user?.id }));
+    const fetchData = async () => {
+      const { data: result } = await getOrders({ id: user?.id });
       if (result && result.data) {
         setOrders(result.data);
       }
     };
-    loadData();
-  }, [execute, user?.id]);
+    fetchData();
+  }, [user?.id]);
 
   if (!orders || orders?.length === 0) {
     return (

@@ -53,8 +53,10 @@ function AddUser({
   const [preview, setPreview] = useState(user?.avatar || "");
   const [open, setOpen] = useState(false);
   const [isImgProcessing, setIsImgProcessing] = useState(false);
+  const [isUserProcessing, setIsUserProcessing] = useState(false);
   const { signinUser } = useUserStore();
   const { execute, isProcessing } = useAction();
+  const { user: currentUser } = useUserStore();
 
   const form = useForm<UserFormInputs | UserUpdateInputs>({
     resolver: zodResolver(user ? updateUserSchema : userFormSchema),
@@ -110,11 +112,18 @@ function AddUser({
       );
       if (result && result.data) {
         toast.success(result?.message);
-        signinUser(result.data);
+        if (currentUser?.role !== "ADMIN") {
+          signinUser(result.data);
+        }
       }
     } else {
-      const result = await signupUserClient(data as UserFormInputs);
-      toast.success((result as { message?: string }).message);
+      try {
+        setIsUserProcessing(true);
+        const result = await signupUserClient(data as UserFormInputs);
+        toast.success((result as { message?: string }).message);
+      } finally {
+        setIsUserProcessing(false);
+      }
     }
     setOpen(false);
     router.refresh();
@@ -272,7 +281,7 @@ function AddUser({
               >
                 {user ? "Update" : "Add"} user
                 <User className="w-3 h-3" />
-                {isProcessing ? (
+                {isUserProcessing || isProcessing ? (
                   <Spinner className="size-4 animate-spin" />
                 ) : null}
               </Button>

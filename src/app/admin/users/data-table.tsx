@@ -22,7 +22,7 @@ import { Trash2 } from "lucide-react";
 import AddUser from "@/components/admin/AddUser";
 import ConfirmDeleteDialog from "@/components/common/confirm-delete-dialog";
 import { deleteUser } from "@/app/actions/users";
-import { toast } from "react-toastify";
+import { useAction } from "@/hooks/use-action";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -35,7 +35,7 @@ export function DataTable<TData extends { id: number }, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [showToast, setShowToast] = useState(false);
+  const { execute } = useAction();
 
   const table = useReactTable({
     data,
@@ -65,27 +65,15 @@ export function DataTable<TData extends { id: number }, TValue>({
               }
               title="Delete user?"
               description="This user(s) will be permanently removed."
-              showToast={showToast}
               onConfirm={async () => {
                 const selectedUserIds = table
                   .getSelectedRowModel()
                   .rows.map((row) => row?.original.id);
                 const results = await Promise.all(
-                  selectedUserIds.map((id) => deleteUser(id)),
+                  selectedUserIds.map((id) => execute(() => deleteUser(id))),
                 );
-                // Check and show the errors for each individual row
-                let successCount = 0;
-                results.map((res, index) => {
-                  if ("error" in res && res.error) {
-                    toast.error(
-                      `Error deleting user ${index + 1}: ${res.error.message}`,
-                    );
-                  } else {
-                    successCount++;
-                  }
-                });
-                if (successCount > 0) setShowToast(true);
                 setRowSelection({});
+                return results;
               }}
             />
           )}

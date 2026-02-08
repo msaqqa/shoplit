@@ -9,7 +9,6 @@ export const signupUserClient = async (data: {
 }) => {
   const response = await api.post("/auth/signup", data, {
     showNotification: false,
-    returnOnly: true,
   });
   return response.data;
 };
@@ -20,7 +19,6 @@ export const signinUserClient = async (data: {
 }) => {
   const response = await api.post("/auth/signin", data, {
     showNotification: false,
-    returnOnly: true,
   });
   return response.data;
 };
@@ -34,7 +32,6 @@ export const logout = async () => {
 export const forgetPassword = async (data: { email: string }) => {
   const response = await api.post("/auth/forget-password", data, {
     showNotification: false,
-    returnOnly: true,
   });
   return response.data;
 };
@@ -42,7 +39,6 @@ export const forgetPassword = async (data: { email: string }) => {
 export const verifyOtp = async (data: { email: string; otp: string }) => {
   const response = await api.post("/auth/verify-otp", data, {
     showNotification: false,
-    returnOnly: true,
   });
   return response.data;
 };
@@ -54,7 +50,6 @@ export const resetPassword = async (data: {
 }) => {
   const response = await api.post("/auth/reset-password", data, {
     showNotification: false,
-    returnOnly: true,
   });
   return response.data;
 };

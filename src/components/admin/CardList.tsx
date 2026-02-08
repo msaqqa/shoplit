@@ -133,7 +133,7 @@ async function CardList({ title }: { title: string }) {
     });
     popuarProducts = (result?.data as TProducts) || [];
   } else {
-    const { data: result } = await getOrders({ limit: 10 });
+    const { data: result } = await getOrders({ limit: 5 });
     latestTransactions = (result?.data as TOrders) || [];
   }
   return (

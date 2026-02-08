@@ -1,5 +1,5 @@
 import { validateAdmin } from "@/lib/auth/guards";
-import { AppError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/app-error";
 import { prisma } from "@/lib/prisma";
 import { updateSchema } from "@/lib/schemas/categories";
 import { Category } from "@prisma/client";

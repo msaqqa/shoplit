@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { actionWrapper } from "@/lib/action-wrapper";
 import { updateUserServerSchema, UserUpdateInputs } from "@/lib/schemas/users";
 import { deleteImageFromCloudinary } from "./cloudinary";
-import { AppError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/app-error";
 import { validateAdmin, validateUser } from "@/lib/auth/guards";
 
 // import { baseSignupSchema } from "@/lib/schemas/auth";
@@ -20,6 +20,7 @@ import { validateAdmin, validateUser } from "@/lib/auth/guards";
 //   return { data: response, message: "User has been created successfully." };
 // }
 
+// Get users
 export async function getUsers() {
   return actionWrapper(async () => {
     await validateAdmin();
@@ -38,6 +39,7 @@ export async function getUsers() {
   });
 }
 
+// Get single user
 export async function getUserById(id: number) {
   return actionWrapper(async () => {
     await validateAdmin();
@@ -60,6 +62,7 @@ export async function getUserById(id: number) {
   });
 }
 
+// Update user
 export async function updateUserById(id: number, data: UserUpdateInputs) {
   return actionWrapper(async () => {
     await validateUser();
@@ -77,6 +80,7 @@ export async function updateUserById(id: number, data: UserUpdateInputs) {
   });
 }
 
+// Delete user
 export async function deleteUser(id: number) {
   return actionWrapper(async () => {
     await validateAdmin();

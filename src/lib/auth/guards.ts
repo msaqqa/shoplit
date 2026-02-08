@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { AppError } from "../error/route-error-handler";
+import { AppError } from "../error/app-error";
 import { verifyToken } from "./jwt";
 
 // Validate user
@@ -20,6 +20,7 @@ export async function validateAdmin() {
   if (!token) {
     throw new AppError("Authentication required.", 401);
   }
+
   const decoded = await verifyToken(token);
   if (!decoded || decoded.role !== "ADMIN") {
     throw new AppError("Access denied. Admin privileges required.", 403);

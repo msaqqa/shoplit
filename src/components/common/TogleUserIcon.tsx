@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useUserStore from "@/stores/userStore";
 import { LayoutDashboard, LogIn, ShoppingBasket, UserPlus } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +24,7 @@ function TogleUserIcon() {
     router.push("/signin");
     signoutUser();
   };
+
   if (!user) {
     return (
       <>
@@ -42,7 +43,7 @@ function TogleUserIcon() {
       <DropdownMenuTrigger>
         <Avatar>
           <AvatarImage src={user.avatar ?? ""} />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>{user.name.slice(0, 2)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent sideOffset={10}>

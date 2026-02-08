@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth/jwt";
 import { hashPassword } from "@/lib/auth/password";
-import { AppError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/app-error";
 import { resetPasswordServerSchema } from "@/lib/schemas/auth";
 
 export async function POST(req: Request) {

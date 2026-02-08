@@ -2,7 +2,7 @@
 
 import { actionWrapper } from "@/lib/action-wrapper";
 import { validateAdmin, validateUser } from "@/lib/auth/guards";
-import { AppError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/app-error";
 import { prisma } from "@/lib/prisma";
 import { OrderFormInputs, orderFormSchema } from "@/lib/schemas/orders";
 import { revalidatePath } from "next/cache";
@@ -85,9 +85,8 @@ export async function deleteOrder(id: number) {
     if (!id) {
       throw new AppError("Order id is required.", 400);
     }
-    const order = await prisma.order.findUnique({ where: { id } });
-
-    if (!order) throw new AppError("Order not found.", 404);
+    const count = await prisma.order.count({ where: { id } });
+    if (count == 0) throw new AppError("Order not found.", 404);
 
     const response = await prisma.order.delete({
       where: { id },

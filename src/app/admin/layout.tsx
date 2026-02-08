@@ -1,8 +1,7 @@
 import AppSidebar from "@/components/admin/AppSidebar";
 import Navbar from "@/components/common/Navbar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
-import SidebarButton from "@/components/admin/SidebarButton";
 
 export default async function AdminLayout({
   children,
@@ -16,7 +15,7 @@ export default async function AdminLayout({
       <div className="w-full flex p-4">
         <AppSidebar />
         <div className="flex-1 flex flex-col">
-          <Navbar SidebarButton={SidebarButton} />
+          <Navbar SidebarButton={SidebarTrigger} />
           <div className="flex-1">{children}</div>
         </div>
       </div>

@@ -1,10 +1,10 @@
 import { Prisma } from "@prisma/client";
 import { DEFAULT_MESSAGES, ERROR_CODES } from "./error-constants";
-import { AppError } from "./route-error-handler";
+import { AppError } from "./app-error";
 import { headers } from "next/headers";
 import { ActionError } from "@/types/action";
 
-export const handleServerError = async (
+export const handleActionError = async (
   error: unknown,
 ): Promise<ActionError> => {
   const errorResponse: ActionError = {
@@ -13,26 +13,30 @@ export const handleServerError = async (
     isNetwork: false,
   };
 
+  // Custom application errors
   if (error instanceof AppError) {
     errorResponse.status = error.status;
     errorResponse.message = error.message;
     return errorResponse;
-    // Handle specific prisma errors when the error code is 'P2025' meaning the element not found
-  } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    if (error.code === "P2025") {
-      errorResponse.status = 404;
-      errorResponse.message = "The requested element is not found.";
-      return errorResponse;
-    }
-  } else {
-    const rawMessage = error instanceof Error ? error.message : String(error);
-    errorResponse.isNetwork =
-      rawMessage.includes("Can't reach database") ||
-      rawMessage.includes("connection pool");
+  }
 
-    if (errorResponse.isNetwork) {
+  // Prisma specific errors (Database errors)
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    // P1001: Can't reach database server
+    // P1002: The database server was reached but timed out
+    // P1008: Operations timed out
+    if (["P1001", "P1002", "P1008"].includes(error.code)) {
       errorResponse.status = ERROR_CODES.NETWORK_ERROR;
       errorResponse.message = DEFAULT_MESSAGES[ERROR_CODES.NETWORK_ERROR];
+      errorResponse.isNetwork = true;
+      return errorResponse;
+    }
+    // Error: item not found
+    // P2025: Record to update or delete not found
+    if (error.code === "P2025") {
+      errorResponse.status = ERROR_CODES.NOT_FOUND;
+      errorResponse.message = DEFAULT_MESSAGES[ERROR_CODES.NOT_FOUND];
+      return errorResponse;
     }
   }
 

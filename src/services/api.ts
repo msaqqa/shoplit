@@ -68,8 +68,13 @@ const createAxiosInstance = (baseURL: string): CustomAxiosInstance => {
       const returnOnly = error.config.returnOnly === true;
       const formattedError = handleApiError(error, {
         showNotification,
-        returnOnly,
       });
+
+      // Prevent Promise.all from crashing by returning the error as a resolved object
+      if (returnOnly) {
+        return formattedError;
+      }
+
       return Promise.reject(formattedError);
     },
   );

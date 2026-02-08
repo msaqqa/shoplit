@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashOTP } from "@/lib/auth/otp";
 import { signToken } from "@/lib/auth/jwt";
-import { AppError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/app-error";
 import { verifyOtpServerSchema } from "@/lib/schemas/auth";
 
 export async function POST(req: Request) {

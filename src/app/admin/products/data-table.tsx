@@ -23,7 +23,7 @@ import { Trash2 } from "lucide-react";
 import AddProduct from "@/components/admin/AddProduct";
 import ConfirmDeleteDialog from "@/components/common/confirm-delete-dialog";
 import { deleteProduct } from "@/app/actions/products";
-import { toast } from "react-toastify";
+import { useAction } from "@/hooks/use-action";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,7 +36,7 @@ export function DataTable<TData extends { id: number }, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [showToast, setShowToast] = useState(false);
+  const { execute } = useAction();
 
   const table = useReactTable({
     data,
@@ -66,27 +66,17 @@ export function DataTable<TData extends { id: number }, TValue>({
               }
               title="Delete product?"
               description="This product will be permanently removed."
-              showToast={true}
               onConfirm={async () => {
                 const selectedProductIds = table
                   .getSelectedRowModel()
                   .rows.map((row) => row.original.id);
                 const results = await Promise.all(
-                  selectedProductIds.map((id) => deleteProduct(id)),
+                  selectedProductIds.map((id) =>
+                    execute(() => deleteProduct(id)),
+                  ),
                 );
-                // Check and show the errors for each individual row
-                let successCount = 0;
-                results.map((res, index) => {
-                  if ("error" in res && res.error) {
-                    toast.error(
-                      `Error deleting product ${index + 1}: ${res.error.message}`,
-                    );
-                  } else {
-                    successCount++;
-                  }
-                });
-                if (successCount > 0) setShowToast(true);
                 setRowSelection({});
+                return results;
               }}
             />
           )}

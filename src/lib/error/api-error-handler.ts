@@ -12,7 +12,7 @@ import { TApiErrorResponse } from "@/types/api";
 
 export const handleApiError = (
   error: unknown,
-  options = { showNotification: true, returnOnly: false },
+  options = { showNotification: true },
 ) => {
   let errorResponse!: TApiErrorResponse;
 
@@ -91,11 +91,6 @@ export const handleApiError = (
         };
         console.error("Server Error:", errorResponse);
       }
-  }
-
-  // Return formatted error object immediately without throwing (useful for Auth/Forms)
-  if (options.returnOnly) {
-    return errorResponse;
   }
 
   // Show toast if enabled

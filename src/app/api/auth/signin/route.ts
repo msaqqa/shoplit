@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { signToken } from "@/lib/auth/jwt";
 import { loginUser } from "@/lib/server/auth";
-import { AppError } from "@/lib/error/route-error-handler";
+import { AppError } from "@/lib/error/app-error";
 
 export async function POST(req: Request) {
   try {
@@ -14,12 +14,7 @@ export async function POST(req: Request) {
     // create response
     const response = NextResponse.json({
       message: "Logged in successfully.",
-      data: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      data: user,
     });
 
     // set cookie

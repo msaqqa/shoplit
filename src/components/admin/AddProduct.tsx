@@ -57,12 +57,12 @@ function AddProduct({
   const { execute, isProcessing } = useAction();
 
   useEffect(() => {
-    const loadData = async () => {
+    const fetchData = async () => {
       const result = await getCategories();
       const categoriesData = (result as { data: TCategories }).data || [];
       setCategories(categoriesData);
     };
-    loadData();
+    fetchData();
   }, []);
 
   const form = useForm<ProductFormInputs>({
@@ -127,11 +127,11 @@ function AddProduct({
 
   const handleProductForm: SubmitHandler<ProductFormInputs> = async (data) => {
     console.log(data);
-      const { data: result } = await (product
-        ? execute(() => updateProduct(product.id, data))
-        : execute(() => createProduct(data)));
-      toast.success(result?.message);
-      setOpenProduct(false);
+    const { data: result } = await (product
+      ? execute(() => updateProduct(product.id, data))
+      : execute(() => createProduct(data)));
+    toast.success(result?.message);
+    setOpenProduct(false);
   };
 
   return (
@@ -378,7 +378,7 @@ function AddProduct({
               >
                 Add {product ? "Update" : "Add"} product
                 <Shirt className="w-3 h-3" />
-                {isImgProcessing || isProcessing ? (
+                {isProcessing ? (
                   <Spinner className="size-4 animate-spin" />
                 ) : null}
               </Button>

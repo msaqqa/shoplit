@@ -69,7 +69,7 @@ export function DataTable<TData extends { id: number }, TValue>({
                 const selectedCategoryIds = table
                   .getSelectedRowModel()
                   .rows.map((row) => row.original.id);
-                await Promise.all(
+                return await Promise.all(
                   selectedCategoryIds.map((id) => deleteCategory(id)),
                 ).finally(() => {
                   setRowSelection({});
