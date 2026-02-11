@@ -55,7 +55,8 @@ export async function loginUser(data: {
   const user = await prisma.user.findUnique({
     where: { email: data.email },
   });
-  if (!user) throw new AppError("User not found.", 404);
+  if (!user)
+    throw new AppError("User not found., Please create an account first!", 404);
 
   // Verify password
   const valid = await comparePassword(data.password, user.password);

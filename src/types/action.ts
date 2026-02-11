@@ -2,7 +2,6 @@
 export type ActionError = {
   message: string;
   status: number | string;
-  isNetwork: boolean;
 };
 
 // Action success type

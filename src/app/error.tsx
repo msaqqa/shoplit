@@ -31,7 +31,7 @@ export default function Error({
       errorDetails = {
         message: parsed.message || DEFAULT_MESSAGES.DEFAULT,
         status: parsed.status || ERROR_CODES.DEFAULT,
-        isNetwork: parsed.isNetwork || false,
+        isNetwork: errorDetails.isNetwork,
       };
     } catch {}
   }

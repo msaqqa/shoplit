@@ -110,7 +110,6 @@ export const handleApiError = (
     throw new Error(
       JSON.stringify({
         ...errorResponse,
-        isNetwork: errorResponse.status === ERROR_CODES.NETWORK_ERROR,
       }),
     );
   }
