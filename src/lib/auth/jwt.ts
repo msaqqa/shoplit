@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from "jose";
+import { env } from "@/lib/env";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
-const secret = new TextEncoder().encode(JWT_SECRET);
+const secret = new TextEncoder().encode(env.JWT_SECRET);
 
 // SIGN TOKEN
 export async function signToken(

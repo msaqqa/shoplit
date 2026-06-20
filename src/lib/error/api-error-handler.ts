@@ -49,7 +49,8 @@ export const handleApiError = (
   // Get default message if none provided
   if (!errorResponse.message) {
     errorResponse.message =
-      DEFAULT_MESSAGES[errorResponse.status] || DEFAULT_MESSAGES.DEFAULT;
+      DEFAULT_MESSAGES[errorResponse.status] ||
+      DEFAULT_MESSAGES[ERROR_CODES.DEFAULT];
   }
 
   // Handle specific error codes
@@ -86,8 +87,8 @@ export const handleApiError = (
       if (Number(errorResponse.status) >= 500) {
         errorResponse = {
           ...errorResponse,
-          status: ERROR_CODES.INTERNAL_SERVER_ERROR,
-          message: DEFAULT_MESSAGES[ERROR_CODES.INTERNAL_SERVER_ERROR],
+          status: ERROR_CODES.DEFAULT,
+          message: DEFAULT_MESSAGES[ERROR_CODES.DEFAULT],
         };
         console.error("Server Error:", errorResponse);
       }

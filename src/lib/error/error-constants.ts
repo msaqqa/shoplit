@@ -11,7 +11,7 @@ export const ERROR_CODES = {
   SERVICE_UNAVAILABLE: 503,
   NETWORK_ERROR: "NETWORK_ERROR",
   TIMEOUT_ERROR: "TIMEOUT_ERROR",
-  DEFAULT: "ERROR",
+  DEFAULT: "UNEXPECTED_ERROR",
 };
 
 /**
@@ -29,5 +29,5 @@ export const DEFAULT_MESSAGES = {
   [ERROR_CODES.NETWORK_ERROR]:
     "Unable to connect to the server. Please check your internet connection.",
   [ERROR_CODES.TIMEOUT_ERROR]: "The request timed out. Please try again.",
-  DEFAULT: "An unexpected error occurred.",
+  [ERROR_CODES.DEFAULT]: "An unexpected error occurred.",
 };

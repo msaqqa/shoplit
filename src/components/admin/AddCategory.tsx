@@ -20,6 +20,24 @@ import { SidebarMenuButton } from "../ui/sidebar";
 import { useState } from "react";
 import { Spinner } from "../ui/spinner";
 import { TCategory } from "@/types/categoryies";
+import * as LucideIcons from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+
+const iconNames = [
+  "Footprints",
+  "Glasses",
+  "Briefcase",
+  "Shirt",
+  "ShoppingBasket",
+  "Hand",
+  "Venus",
+];
 
 function AddCategory({
   category,
@@ -35,6 +53,9 @@ function AddCategory({
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
+    getValues,
   } = useForm<CategoryFormInputs>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
@@ -59,6 +80,13 @@ function AddCategory({
       setOpen(false);
     }
   };
+
+  const selectedIcon = watch("icon");
+  const IconComponent = selectedIcon
+    ? (LucideIcons[
+        selectedIcon as keyof typeof LucideIcons
+      ] as React.FC<LucideIcons.LucideProps>)
+    : null;
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -121,12 +149,28 @@ function AddCategory({
             <label htmlFor="icon" className="text-xs font-medium text-gray-500">
               Icon
             </label>
-            <input
-              className="border-b border-gray-200 py-2 outline-none test-sm"
-              id="icon"
-              placeholder="Briefcase"
-              {...register("icon")}
-            />
+            <div className="flex items-center gap-2  border-gray-200">
+              <Select
+                value={getValues("icon")}
+                onValueChange={(value) => setValue("icon", value)}
+              >
+                <SelectTrigger id="icon" className="w-full shrink-1">
+                  <SelectValue placeholder="Select a Icon" />
+                </SelectTrigger>
+                <SelectContent>
+                  {iconNames.map((name) => (
+                    <SelectItem key={name} value={name}>
+                      {name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {IconComponent && (
+                <div className="w-6 h-6 flex items-center justify-center text-gray-400">
+                  <IconComponent size={18} />
+                </div>
+              )}
+            </div>
             {errors.icon && (
               <p className="text-red-500 text-xs">{errors.icon.message}</p>
             )}

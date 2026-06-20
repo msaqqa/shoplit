@@ -7,9 +7,10 @@ import { prisma } from "@/lib/prisma";
 import { OrderFormInputs, orderFormSchema } from "@/lib/schemas/orders";
 import { revalidatePath } from "next/cache";
 
-// Create order
-export async function createOrder(data: OrderFormInputs) {
-  await validateUser();
+// Core order-creation logic without auth checks.
+// Used by both the user-facing action and the Stripe webhook (which is
+// authenticated via the Stripe signature, not the user's session cookie).
+export async function placeOrder(data: OrderFormInputs) {
   return actionWrapper(async () => {
     const validations = orderFormSchema.safeParse(data);
     if (!validations.success) {
@@ -30,6 +31,12 @@ export async function createOrder(data: OrderFormInputs) {
     revalidatePath("/admin/orders");
     return { data: response, message: "Order placed successfully." };
   });
+}
+
+// Create order (user-facing): requires an authenticated session.
+export async function createOrder(data: OrderFormInputs) {
+  await validateUser();
+  return placeOrder(data);
 }
 
 // Update order

@@ -17,7 +17,9 @@ export async function POST(req: Request) {
     if (!user) throw new AppError("This email is not registered.", 404);
     // 1. create OTP
     const otp = generateOTP();
-    // 2. save OTP hash in DB
+    // 2. remove any previous/expired tokens for this email to avoid buildup
+    await prisma.passwordResetToken.deleteMany({ where: { email: body.email } });
+    // 3. save OTP hash in DB
     await prisma.passwordResetToken.create({
       data: {
         email: body.email,
@@ -25,8 +27,8 @@ export async function POST(req: Request) {
         expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 min
       },
     });
-    // 3. send email OTP
-    sendEmailOTP(body.email, otp);
+    // 4. send email OTP (awaited so a send failure surfaces to the user)
+    await sendEmailOTP(body.email, otp);
     // 4. create response
     return NextResponse.json({ message: "OTP sent to email." });
   } catch (error: unknown) {

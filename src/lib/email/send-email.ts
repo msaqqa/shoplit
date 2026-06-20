@@ -9,10 +9,15 @@ export interface SendEmailProps {
 }
 
 export const sendEmail = async ({ to, subject, html }: SendEmailProps) => {
-  await resend.emails.send({
+  // Resend resolves with `{ data, error }` instead of throwing, so surface
+  // the failure explicitly rather than silently "succeeding".
+  const { error } = await resend.emails.send({
     from: "Your Store <onboarding@resend.dev>",
     to,
     subject,
     html,
   });
+  if (error) {
+    throw new Error(error.message || "Failed to send email.");
+  }
 };

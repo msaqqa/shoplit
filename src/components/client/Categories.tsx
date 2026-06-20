@@ -13,7 +13,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { TCategories } from "@/types/categoryies";
 
 export const categoryIcons: Record<string, React.ComponentType<LucideProps>> = {
-  Footprints: Footprints,
+  Footprints,
   Glasses,
   Briefcase,
   Shirt,
