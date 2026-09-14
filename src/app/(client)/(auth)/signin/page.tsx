@@ -48,7 +48,23 @@ export default function Page() {
       user?.role === "ADMIN" ? router.push("/admin") : router.push("/");
       signinUser(user);
     } catch (error: unknown) {
-      setError((error as { message: string }).message);
+      const rawMessage =
+        error instanceof Error
+          ? error.message
+          : typeof error === "object" && error !== null && "message" in error
+            ? String((error as { message: unknown }).message)
+            : "Unable to sign in. Please try again.";
+
+      try {
+        const parsed = JSON.parse(rawMessage) as { message?: unknown };
+        setError(
+          typeof parsed.message === "string"
+            ? parsed.message
+            : "Unable to sign in. Please try again.",
+        );
+      } catch {
+        setError(rawMessage);
+      }
     } finally {
       setIsProcessing(false);
     }

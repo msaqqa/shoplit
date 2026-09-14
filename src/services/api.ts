@@ -82,6 +82,4 @@ const createAxiosInstance = (baseURL: string): CustomAxiosInstance => {
   return instance;
 };
 
-export const api = createAxiosInstance(
-  `${process.env.NEXT_PUBLIC_API_BASE_URL}/api`,
-);
+export const api = createAxiosInstance("/api");
