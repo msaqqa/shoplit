@@ -4,8 +4,8 @@ import Link from "next/link";
 import Filter from "./Filter";
 import ProductCard from "./ProductCard";
 import { getProducts } from "@/app/actions/products";
-import { getCategories } from "@/services/categories";
 import { TCategories } from "@/types/categoryies";
+import { prisma } from "@/lib/prisma";
 
 async function ProductList({
   categoryId,
@@ -19,8 +19,9 @@ async function ProductList({
     search,
     params,
   });
-  const categoriesRes = await getCategories();
-  const categories = (categoriesRes as { data: TCategories }).data ?? [];
+  const categories = (await prisma.category.findMany({
+    orderBy: { id: "asc" },
+  })) as TCategories;
   const products = (productsRes as { data: TProducts }).data ?? [];
   const renderProducts = () => {
     if (!products || products.length === 0) {
