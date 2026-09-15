@@ -21,7 +21,9 @@ export async function POST(req: Request) {
     response.cookies.set("token", token, {
       httpOnly: true,
       sameSite: process.env.CORS_ORIGINS ? "none" : "lax",
-      secure: process.env.CORS_ORIGINS ? true : process.env.NODE_ENV === "production",
+      secure: process.env.CORS_ORIGINS
+        ? true
+        : process.env.NODE_ENV === "production",
       path: "/",
     });
     return response;
