@@ -32,6 +32,7 @@ interface CustomAxiosInstance extends AxiosInstance {
 const createAxiosInstance = (baseURL: string): CustomAxiosInstance => {
   const instance = axios.create({
     baseURL,
+    withCredentials: true,
     headers: {
       "Content-Type": "application/json",
     },
@@ -82,4 +83,6 @@ const createAxiosInstance = (baseURL: string): CustomAxiosInstance => {
   return instance;
 };
 
-export const api = createAxiosInstance("/api");
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
+
+export const api = createAxiosInstance(`${apiBaseUrl || ""}/api`);

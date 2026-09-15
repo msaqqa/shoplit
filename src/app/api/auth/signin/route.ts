@@ -20,7 +20,8 @@ export async function POST(req: Request) {
     // set cookie
     response.cookies.set("token", token, {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: process.env.CORS_ORIGINS ? "none" : "lax",
+      secure: process.env.CORS_ORIGINS ? true : process.env.NODE_ENV === "production",
       path: "/",
     });
     return response;
